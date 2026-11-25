@@ -107,10 +107,10 @@ function createTestState(): McpStateStore {
   };
 }
 
-test('MCP protocol catalog exposes all 17 tools, 9 static resources, 4 templates, 4 prompts, and valid RPC dispatch', async () => {
+test('MCP protocol catalog exposes all 20 tools, 11 static resources, 4 templates, 4 prompts, and valid RPC dispatch', async () => {
   assert.equal(MCP_SERVER_VERSION, '3.0.0');
-  assert.equal(MCP_TOOLS.length, 17);
-  assert.equal(MCP_RESOURCES.length, 9);
+  assert.equal(MCP_TOOLS.length, 20);
+  assert.equal(MCP_RESOURCES.length, 11);
   assert.equal(MCP_RESOURCE_TEMPLATES.length, 4);
   assert.equal(MCP_PROMPTS.length, 4);
 
@@ -127,6 +127,9 @@ test('MCP protocol catalog exposes all 17 tools, 9 static resources, 4 templates
     'compare_targets',
     'manage_runs',
     'manage_synthetics_canaries',
+    'manage_comparison_topology',
+    'manage_schedules',
+    'get_aws_iac_blueprint',
   ]) {
     assert.ok(names.has(requiredTool), `Missing MCP tool ${requiredTool}`);
   }
@@ -135,7 +138,7 @@ test('MCP protocol catalog exposes all 17 tools, 9 static resources, 4 templates
   assert.ok(snippets.length >= 4);
   assert.ok(
     snippets.some(
-      (s) => s.instructions.includes('17') || s.code.includes('manage_environment')
+      (s) => s.instructions.includes('20') || s.code.includes('manage_environment')
     )
   );
 
@@ -158,7 +161,7 @@ test('MCP protocol catalog exposes all 17 tools, 9 static resources, 4 templates
     }
   );
   const listBody = list.body as { result: { tools: Array<{ name: string }> } };
-  assert.equal(listBody.result.tools.length, 17);
+  assert.equal(listBody.result.tools.length, 20);
 
   const promptRes = await dispatchMcpJsonRpc(
     {

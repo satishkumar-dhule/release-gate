@@ -954,10 +954,10 @@ export const MCP_TOOLS: McpToolDefinition[] = [
   },
   {
     name: 'rerun_check',
-    title: 'Re-probe Live Edge Check',
+    title: 'Re-run Single Check via AWS Synthetics',
     category: 'Live Execution',
     description:
-      'Executes a live HTTP multi-hop edge probe against Staging/Production and updates the server run store with measured timings, headers, cookies, and status.',
+      'Dispatches a single check through the AWS CloudWatch Synthetics Canary runner (syn-nodejs-puppeteer-9.1 / canary-har-runner.handler) with optional comparison topology routing headers/URLs, updating the server run store and Canary sync telemetry.',
     readOnlyHint: false,
     inputSchema: {
       type: 'object',
@@ -979,9 +979,25 @@ export const MCP_TOOLS: McpToolDefinition[] = [
         },
         network: {
           type: 'string',
-          description: 'Edge network to probe.',
+          description: 'Edge network / Canary side to probe.',
           enum: ['staging', 'prod'],
           default: 'staging',
+        },
+        topologyModeId: {
+          type: 'string',
+          description:
+            'Optional comparison topology preset (prod-stage-akamai, prod-stage-aws-header, prod-stage-url, prod-prod-multicdn, prod-prod-url).',
+          enum: [
+            'prod-stage-akamai',
+            'prod-stage-aws-header',
+            'prod-stage-url',
+            'prod-prod-multicdn',
+            'prod-prod-url',
+          ],
+        },
+        customHeaders: {
+          type: 'object',
+          description: 'Optional custom routing headers (e.g. {"x-aws-cf-cd-staging": "true"}).',
         },
       },
       required: ['appId', 'testId'],
@@ -995,10 +1011,10 @@ export const MCP_TOOLS: McpToolDefinition[] = [
   },
   {
     name: 'run_live_gate',
-    title: 'Trigger Full Property Gate Run',
+    title: 'Trigger Full AWS Synthetics Canary Gate Run',
     category: 'Live Execution',
     description:
-      'Triggers a live AWS Synthetics / Edge HTTP probe suite run for a target (<app>.<env>.<net>) and evaluates the Release Gate against baseline.',
+      'Dispatches a full suite execution through the AWS CloudWatch Synthetics Canary pipeline (ak-<app>-<env>-<net>, runtime syn-nodejs-puppeteer-9.1) for a target (<app>.<env>.<net>) and evaluates the 3-dimension Release Gate against baseline.',
     readOnlyHint: false,
     inputSchema: {
       type: 'object',
@@ -1013,6 +1029,18 @@ export const MCP_TOOLS: McpToolDefinition[] = [
           description: 'Optional execution PoP override (iad, nrt, fra, sin, lhr).',
           default: 'iad',
         },
+        topologyModeId: {
+          type: 'string',
+          description:
+            'Optional comparison topology preset (prod-stage-akamai, prod-stage-aws-header, prod-stage-url, prod-prod-multicdn, prod-prod-url).',
+          enum: [
+            'prod-stage-akamai',
+            'prod-stage-aws-header',
+            'prod-stage-url',
+            'prod-prod-multicdn',
+            'prod-prod-url',
+          ],
+        },
       },
       required: ['targetId'],
     },
@@ -1026,7 +1054,7 @@ export const MCP_TOOLS: McpToolDefinition[] = [
     title: 'Manage Synthetic Runs & Baselines',
     category: 'Live Execution',
     description:
-      'List, inspect, pin as golden baseline, delete, purge historical runs for a target, or seed a live fleet run across properties.',
+      'List, inspect, pin as golden baseline, delete, purge historical runs for a target, or seed a live fleet run across properties via AWS CloudWatch Synthetics.',
     readOnlyHint: false,
     inputSchema: {
       type: 'object',
@@ -1118,6 +1146,175 @@ export const MCP_TOOLS: McpToolDefinition[] = [
       appId: 'www',
     },
   },
+  {
+    name: 'manage_comparison_topology',
+    title: 'Manage Prod/Stage & Multi-CDN Topology',
+    category: 'Envs & Properties',
+    description:
+      'Configure how Side A (Candidate) and Side B (Baseline) are compared across Prod-vs-Stage or Prod-vs-Prod using Same URL + Edge DNS/IP (Akamai), Same URL + Custom Header (AWS CloudFront / Canary), or Different URLs, and apply 1-click environment templates.',
+    readOnlyHint: false,
+    inputSchema: {
+      type: 'object',
+      properties: {
+        action: {
+          type: 'string',
+          description: 'Comparison topology operation.',
+          enum: [
+            'list_presets',
+            'get_active',
+            'select_preset',
+            'set_custom_routing',
+            'apply_env_template',
+          ],
+          default: 'get_active',
+        },
+        appId: {
+          type: 'string',
+          description: 'Target property ID (e.g. www, login, developer).',
+          default: 'www',
+        },
+        presetId: {
+          type: 'string',
+          description: 'Topology preset ID for action=select_preset.',
+          enum: [
+            'prod-stage-akamai',
+            'prod-stage-aws-header',
+            'prod-stage-url',
+            'prod-prod-multicdn',
+            'prod-prod-url',
+          ],
+          default: 'prod-stage-akamai',
+        },
+        templateId: {
+          type: 'string',
+          description: '1-click environment template ID for action=apply_env_template.',
+          enum: [
+            'tpl-akamai-same-url',
+            'tpl-aws-cf-header',
+            'tpl-different-stage-url',
+            'tpl-prod-vs-prod-multicdn',
+          ],
+        },
+        sideABaseUrl: {
+          type: 'string',
+          description: 'Custom Side A (Candidate) base URL for action=set_custom_routing.',
+        },
+        sideBBaseUrl: {
+          type: 'string',
+          description: 'Custom Side B (Baseline) base URL for action=set_custom_routing.',
+        },
+        sideAHeaders: {
+          type: 'object',
+          description: 'Custom Side A routing headers JSON object (e.g. {"x-aws-cf-cd-staging": "true"}).',
+        },
+        sideBHeaders: {
+          type: 'object',
+          description: 'Custom Side B routing headers JSON object.',
+        },
+        sideAEdgeIp: {
+          type: 'string',
+          description: 'Custom Side A edge override IP or hostname.',
+        },
+        sideBEdgeIp: {
+          type: 'string',
+          description: 'Custom Side B edge override IP or hostname.',
+        },
+      },
+      required: ['action'],
+    },
+    sampleArguments: {
+      action: 'get_active',
+      appId: 'www',
+    },
+  },
+  {
+    name: 'manage_schedules',
+    title: 'Manage Scheduled Runs & SLA Policies',
+    category: 'Live Execution',
+    description:
+      'List scheduled AWS Synthetics Canary run telemetry, inspect SLA compliance, trigger an immediate scheduled tick, or update schedule interval (1m–60m), PoP strategy, and latency SLOs.',
+    readOnlyHint: false,
+    inputSchema: {
+      type: 'object',
+      properties: {
+        action: {
+          type: 'string',
+          description: 'Schedule operation to execute.',
+          enum: ['list', 'get', 'trigger_tick', 'update_policy'],
+          default: 'get',
+        },
+        appId: {
+          type: 'string',
+          description: 'Property ID (e.g. www, login, japan).',
+          default: 'www',
+        },
+        range: {
+          type: 'string',
+          description: 'Time window for SLA analytics (1h, 6h, 24h, 7d).',
+          enum: ['1h', '6h', '24h', '7d'],
+          default: '24h',
+        },
+        enabled: {
+          type: 'boolean',
+          description: 'Enable or pause scheduled runs (action=update_policy).',
+        },
+        intervalMinutes: {
+          type: 'integer',
+          description: 'Execution cadence in minutes: 1, 5, 10, 15, 30, or 60.',
+        },
+        strategy: {
+          type: 'string',
+          description: 'PoP distribution strategy (round-robin, all-pops, primary-regional).',
+          enum: ['round-robin', 'all-pops', 'primary-regional'],
+        },
+        assignedPops: {
+          type: 'array',
+          description: 'Assigned edge PoP codes (e.g. ["iad", "fra", "nrt"]).',
+        },
+        slaTargetPct: {
+          type: 'number',
+          description: 'Target availability SLA percentage (e.g. 99.9).',
+        },
+        slaWarningMs: {
+          type: 'integer',
+          description: 'Latency warning threshold in milliseconds.',
+        },
+        slaCriticalMs: {
+          type: 'integer',
+          description: 'Latency critical SLO threshold in milliseconds.',
+        },
+      },
+      required: ['action'],
+    },
+    sampleArguments: {
+      action: 'get',
+      appId: 'www',
+      range: '24h',
+    },
+  },
+  {
+    name: 'get_aws_iac_blueprint',
+    title: 'Export AWS Synthetics & Terraform IaC Blueprint',
+    category: 'Evidence & Repro',
+    description:
+      'Generates live Config-as-Code artifacts synced with current properties and test suites: Terraform HCL stack, AWS CloudWatch Synthetics Canary Puppeteer script, Bedrock Nova Lite visual judge script, and OpenAPI 3.1 spec.',
+    readOnlyHint: true,
+    inputSchema: {
+      type: 'object',
+      properties: {
+        artifact: {
+          type: 'string',
+          description: 'Which infrastructure blueprint artifact to export.',
+          enum: ['all', 'terraform', 'canary_script', 'bedrock_judge', 'openapi'],
+          default: 'all',
+        },
+      },
+      required: [],
+    },
+    sampleArguments: {
+      artifact: 'all',
+    },
+  },
 ];
 
 export const MCP_RESOURCES: McpResourceDefinition[] = [
@@ -1128,8 +1325,20 @@ export const MCP_RESOURCES: McpResourceDefinition[] = [
     mimeType: 'application/json',
   },
   {
+    uri: 'gate://synthetics/canaries',
+    name: 'AWS CloudWatch Synthetics Canary Inventory',
+    description: 'All managed AWS CloudWatch Synthetics Canaries (ak-<app>-<env>-<net>), sync status, S3 manifest keys, and recent fan-out batches.',
+    mimeType: 'application/json',
+  },
+  {
+    uri: 'gate://topology/presets',
+    name: 'Prod/Stage & Multi-CDN Comparison Topologies',
+    description: 'Supported comparison presets (Akamai Edge DNS, AWS CloudFront Header, Different URLs, Multi-CDN Prod vs Prod) and active routing profiles.',
+    mimeType: 'application/json',
+  },
+  {
     uri: 'gate://properties/catalog',
-    name: 'Akamai Properties & Edge Networks',
+    name: 'Properties & Edge Networks Catalog',
     description: 'Single-source-of-truth hostMaps, edge suffixes, IPs, and AWS regions.',
     mimeType: 'application/json',
   },

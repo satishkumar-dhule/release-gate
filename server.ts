@@ -156,6 +156,15 @@ import {
   startAwsSyntheticsCanary,
   syncCanaryToAwsSynthetics,
 } from './src/engine/awsSyntheticsClient';
+import {
+  COMPARISON_TOPOLOGY_PRESETS,
+  ENVIRONMENT_PRESET_TEMPLATES,
+  applyEnvironmentTemplate,
+  buildTargetProfilesFromPreset,
+  getComparisonTopologyPreset,
+  type ComparisonTopologyId,
+  type TargetEndpointProfile,
+} from './src/engine/targetRoutingModel';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -272,6 +281,12 @@ async function startServer() {
     }
   };
 
+  let runtimeTopologyModeId: ComparisonTopologyId = 'prod-stage-akamai';
+  let runtimeTopologyByAppId: Record<
+    string,
+    { sideA: TargetEndpointProfile; sideB: TargetEndpointProfile }
+  > = {};
+
   try {
     if (fs.existsSync(runtimeConfigFile)) {
       const parsedCfg = JSON.parse(fs.readFileSync(runtimeConfigFile, 'utf8'));
@@ -286,6 +301,15 @@ async function startServer() {
       }
       if (Array.isArray(parsedCfg.folders) && parsedCfg.folders.length > 0) {
         runtimeFolders = parsedCfg.folders;
+      }
+      if (typeof parsedCfg.topologyModeId === 'string' && parsedCfg.topologyModeId.trim()) {
+        runtimeTopologyModeId = parsedCfg.topologyModeId as ComparisonTopologyId;
+      }
+      if (
+        parsedCfg.topologyByAppId &&
+        typeof parsedCfg.topologyByAppId === 'object'
+      ) {
+        runtimeTopologyByAppId = parsedCfg.topologyByAppId;
       }
       if (parsedCfg.policies && typeof parsedCfg.policies === 'object') {
         runtimePolicies = {
@@ -324,6 +348,8 @@ async function startServer() {
             suitesByAppId: runtimeSuitesByAppId,
             folders: runtimeFolders,
             policies: runtimePolicies,
+            topologyModeId: runtimeTopologyModeId,
+            topologyByAppId: runtimeTopologyByAppId,
             updatedAt: new Date().toISOString(),
           },
           null,
@@ -588,6 +614,10 @@ async function startServer() {
       suitesByAppId: runtimeSuitesByAppId,
       folders: runtimeFolders,
       policies: runtimePolicies,
+      topologyModeId: runtimeTopologyModeId,
+      topologyByAppId: runtimeTopologyByAppId,
+      topologyPresets: COMPARISON_TOPOLOGY_PRESETS,
+      environmentTemplates: ENVIRONMENT_PRESET_TEMPLATES,
       catchpointTypesCount: CATCHPOINT_TEST_TYPES.length,
     });
   });
@@ -738,6 +768,46 @@ async function startServer() {
     }
     persistSyntheticsState();
     return outcomes;
+  };
+
+  // Unified AWS CloudWatch Synthetics Canary dispatcher for all test runs (UI, REST, MCP)
+  const dispatchCanaryExecutionForTarget = async (targetId: string) => {
+    const cleanTarget = String(targetId || 'www.prod.staging').trim();
+    const parts = cleanTarget.split('.');
+    const appId = parts[0] || 'www';
+    const envId = parts[1] || 'prod';
+    const net: 'staging' | 'prod' = parts[2] === 'prod' ? 'prod' : 'staging';
+    const canaryName = deriveAwsCanaryName(`${appId}.${envId}.${net}`);
+    const s3ManifestKey = `s3://${DEFAULT_TEMPLATE_CONFIG.infrastructure.s3Bucket}/canaries/${canaryName}/suite-manifest.json`;
+    const creds = resolveRuntimeAwsCredentials();
+    const startOutcome = await startAwsSyntheticsCanary({
+      canaryName,
+      creds,
+    });
+    const startedAt = new Date().toISOString();
+    const prevSync = canarySyncState[canaryName];
+    canarySyncState[canaryName] = {
+      canaryName,
+      targetId: `${appId}.${envId}.${net}`,
+      suiteHash: prevSync?.suiteHash || 'live-suite',
+      syncStatus: startOutcome.dispatchedToAws
+        ? 'AWS_LIVE_SYNCED'
+        : prevSync?.syncStatus || 'LOCAL_SPEC_READY',
+      runtimeState: 'RUNNING',
+      lastSyncedAt: startedAt,
+      lastAwsMessage: startOutcome.message,
+    };
+    persistSyntheticsState();
+    return {
+      executionPlane: 'AWS CloudWatch Synthetics' as const,
+      canaryName,
+      handler: 'canary-har-runner.handler',
+      runtimeVersion: DEFAULT_TEMPLATE_CONFIG.infrastructure.runtimeVersion,
+      s3ManifestKey,
+      startedInAws: startOutcome.dispatchedToAws,
+      awsMessage: startOutcome.message,
+      startedAt,
+    };
   };
 
   app.post('/api/v1/properties', async (req, res) => {
@@ -1772,6 +1842,8 @@ async function startServer() {
         : undefined;
     const side: 'A' | 'B' = targetId.endsWith('.staging') ? 'A' : 'B';
 
+    const syntheticsExecution = await dispatchCanaryExecutionForTarget(targetId);
+
     const newRun = await executeLiveSalesforceRun({
       targetId,
       runNumber: runNum,
@@ -1881,9 +1953,15 @@ async function startServer() {
     const enrichedNewRun = {
       ...newRun,
       targetId,
+      canaryName: syntheticsExecution.canaryName,
+      executionPlane: syntheticsExecution.executionPlane,
+      s3ManifestKey: syntheticsExecution.s3ManifestKey,
     };
     res.json({
+      ...enrichedNewRun,
       dispatched: true,
+      canaryHandler: syntheticsExecution.handler,
+      awsStartedInCloudWatch: syntheticsExecution.startedInAws,
       engine: DEFAULT_TEMPLATE_CONFIG.infrastructure.runnerEngine,
       runtimeVersion: DEFAULT_TEMPLATE_CONFIG.infrastructure.runtimeVersion,
       run: enrichedNewRun,
@@ -1902,7 +1980,6 @@ async function startServer() {
           : null,
       screenshotRevision,
       screenshotCapturedAt: hasAnyCaptured ? screenshotCapturedAt : null,
-      ...enrichedNewRun,
     });
   });
 
@@ -2163,11 +2240,17 @@ async function startServer() {
 
       const expectedCode = Number(mergedTestDef.expectedStatus || req.body?.expectedStatus || 200);
       const unifiedPass = unifiedStatus === expectedCode && complexEval.assertionsPassed;
+      const syntheticsExecution = await dispatchCanaryExecutionForTarget(targetId);
 
       res.json({
         probed: true,
         unifiedProbe: true,
         unifiedSessionId,
+        executionPlane: syntheticsExecution.executionPlane,
+        canaryName: syntheticsExecution.canaryName,
+        canaryHandler: syntheticsExecution.handler,
+        runtimeVersion: syntheticsExecution.runtimeVersion,
+        s3ManifestKey: syntheticsExecution.s3ManifestKey,
         pass: unifiedPass,
         errors: unifiedPass
           ? []
@@ -3217,6 +3300,42 @@ async function startServer() {
           };
         }
         const runsMatch = uri.match(/^gate:\/\/property\/([a-z0-9_-]+)\/runs$/i);
+        if (uri === 'gate://synthetics/canaries') {
+          const canaries = getManagedCanariesInventory();
+          return {
+            uri,
+            mimeType: 'application/json',
+            text: JSON.stringify(
+              {
+                executionPlane: 'AWS CloudWatch Synthetics',
+                runtimeVersion: DEFAULT_TEMPLATE_CONFIG.infrastructure.runtimeVersion,
+                awsRegion: awsEnv.region || DEFAULT_TEMPLATE_CONFIG.infrastructure.awsRegion,
+                s3Bucket: DEFAULT_TEMPLATE_CONFIG.infrastructure.s3Bucket,
+                totalCanaries: canaries.length,
+                canaries,
+                recentBatches: fanOutBatches.slice(0, 8),
+              },
+              null,
+              2
+            ),
+          };
+        }
+        if (uri === 'gate://topology/presets') {
+          return {
+            uri,
+            mimeType: 'application/json',
+            text: JSON.stringify(
+              {
+                activeModeId: runtimeTopologyModeId,
+                presets: COMPARISON_TOPOLOGY_PRESETS,
+                environmentTemplates: ENVIRONMENT_PRESET_TEMPLATES,
+                topologyByAppId: runtimeTopologyByAppId,
+              },
+              null,
+              2
+            ),
+          };
+        }
         if (runsMatch) {
           const outcome = executeManageRuns(getMcpStateSnapshot(), {
             action: 'list',
@@ -3448,14 +3567,24 @@ async function startServer() {
           const prop = runtimeProperties.find((p) => p.id.toLowerCase() === appId);
           const envObj = prop?.envs.find((e) => e.id.toLowerCase() === envId);
           const host = resolvePropertyHostname(appId, envId, cfg);
+          const activeTopology = runtimeTopologyByAppId[appId];
+          const activeProfile = isStaging ? activeTopology?.sideA : activeTopology?.sideB;
+          const baseHostUrl = activeProfile?.baseUrl || `https://${host}`;
           const targetUrl = checkDef?.path?.startsWith('http')
             ? checkDef.path
-            : `https://${host}${checkDef?.path || '/'}`;
+            : `${baseHostUrl.replace(/\/+$/, '')}${checkDef?.path || '/'}`;
           const regional = resolveRegionalEdgeNode(appId, targetUrl);
           const edgeIp =
+            activeProfile?.edgeIpOrHost ||
             (isStaging ? envObj?.edgeIps?.staging : envObj?.edgeIps?.prod) ||
             (isStaging ? regional.stagingEdgeIp : regional.prodEdgeIp);
           const netCfg = isStaging ? cfg.networks.staging : cfg.networks.prod;
+          const targetKey = `${appId}.${envId}.${isStaging ? 'staging' : 'prod'}`;
+          const syntheticsExecution = await dispatchCanaryExecutionForTarget(targetKey);
+          const extraHeaders =
+            args.customHeaders && typeof args.customHeaders === 'object'
+              ? (args.customHeaders as Record<string, string>)
+              : {};
 
           const flow = await probeLiveUrlHttpFlow({
             url: targetUrl,
@@ -3469,12 +3598,13 @@ async function startServer() {
             customHeaders: {
               ...(prop?.headers || {}),
               ...(envObj?.headers || {}),
+              ...(activeProfile?.customHeaders || {}),
               ...(checkDef?.requestHeaders || {}),
+              ...extraHeaders,
             },
             requestBody: checkDef?.requestBody,
           });
 
-          const targetKey = `${appId}.${envId}.${isStaging ? 'staging' : 'prod'}`;
           serverRuns = serverRuns.map((run) => {
             if (run.target !== targetKey) return run;
             return {
@@ -3497,6 +3627,11 @@ async function startServer() {
           });
 
           return {
+            executionPlane: syntheticsExecution.executionPlane,
+            canaryName: syntheticsExecution.canaryName,
+            canaryHandler: syntheticsExecution.handler,
+            runtimeVersion: syntheticsExecution.runtimeVersion,
+            s3ManifestKey: syntheticsExecution.s3ManifestKey,
             appId,
             envId,
             testId,
@@ -3518,6 +3653,7 @@ async function startServer() {
             typeof args.popId === 'string' && args.popId.trim()
               ? args.popId.trim()
               : undefined;
+          const syntheticsExecution = await dispatchCanaryExecutionForTarget(targetId);
           const runNum = serverRuns.filter((r) => r.target === targetId).length + 1;
           const newRun = await executeLiveSalesforceRun({
             targetId,
@@ -3537,6 +3673,12 @@ async function startServer() {
             ignoreAcceptedDiffs: runtimePolicies.ignoreAcceptedDiffs,
           });
           return {
+            executionPlane: syntheticsExecution.executionPlane,
+            canaryName: syntheticsExecution.canaryName,
+            canaryHandler: syntheticsExecution.handler,
+            runtimeVersion: syntheticsExecution.runtimeVersion,
+            s3ManifestKey: syntheticsExecution.s3ManifestKey,
+            awsStartedInCloudWatch: syntheticsExecution.startedInAws,
             runKey: newRun.key,
             target: newRun.target,
             passedTests: newRun.passedTests,
@@ -3762,6 +3904,338 @@ async function startServer() {
               ? (args.enabledPluginIds as string[])
               : undefined,
           });
+        }
+
+        if (toolName === 'manage_comparison_topology') {
+          const action = String(args.action || 'get_active').trim().toLowerCase();
+          const appId = String(args.appId || 'www').trim().toLowerCase();
+          const prop =
+            runtimeProperties.find((p) => p.id.toLowerCase() === appId) ||
+            runtimeProperties[0];
+          const envId = prop?.envs?.[0]?.id || 'prod';
+          const canonicalHost = resolvePropertyHostname(prop.id, envId, cfg);
+          const regional = resolveRegionalEdgeNode(prop.id);
+
+          const ensureProfilesForApp = (presetId: ComparisonTopologyId) => {
+            return buildTargetProfilesFromPreset({
+              presetId,
+              canonicalHost,
+              stagingEdgeIp: regional.stagingEdgeIp,
+              prodEdgeIp: regional.prodEdgeIp,
+              stagingEdgeSuffix: cfg.networks.staging.edgeSuffix,
+              prodEdgeSuffix: cfg.networks.prod.edgeSuffix,
+            });
+          };
+
+          if (action === 'list_presets') {
+            return {
+              action: 'list_presets',
+              activeTopologyModeId: runtimeTopologyModeId,
+              presets: COMPARISON_TOPOLOGY_PRESETS,
+              environmentTemplates: ENVIRONMENT_PRESET_TEMPLATES,
+            };
+          }
+
+          if (action === 'get_active') {
+            const activeProfiles =
+              runtimeTopologyByAppId[prop.id] ||
+              ensureProfilesForApp(runtimeTopologyModeId);
+            return {
+              action: 'get_active',
+              appId: prop.id,
+              activeTopologyModeId: runtimeTopologyModeId,
+              preset: getComparisonTopologyPreset(runtimeTopologyModeId),
+              sideA: activeProfiles.sideA,
+              sideB: activeProfiles.sideB,
+              syntheticsCanaryPair: {
+                sideACanary: deriveAwsCanaryName(`${prop.id}.${envId}.staging`),
+                sideBCanary: deriveAwsCanaryName(`${prop.id}.${envId}.prod`),
+                executionPlane: 'AWS CloudWatch Synthetics',
+              },
+            };
+          }
+
+          if (action === 'select_preset') {
+            const presetId = (String(args.presetId || 'prod-stage-akamai').trim() as ComparisonTopologyId);
+            const preset = getComparisonTopologyPreset(presetId);
+            runtimeTopologyModeId = preset.id;
+            const profiles = ensureProfilesForApp(preset.id);
+            runtimeTopologyByAppId = {
+              ...runtimeTopologyByAppId,
+              [prop.id]: profiles,
+            };
+            persistRuntimeCatchpointConfig();
+            return {
+              action: 'select_preset',
+              mutated: true,
+              appId: prop.id,
+              activeTopologyModeId: runtimeTopologyModeId,
+              preset,
+              sideA: profiles.sideA,
+              sideB: profiles.sideB,
+            };
+          }
+
+          if (action === 'set_custom_routing') {
+            const baseProfiles =
+              runtimeTopologyByAppId[prop.id] ||
+              ensureProfilesForApp(runtimeTopologyModeId);
+            const updatedProfiles = {
+              sideA: {
+                ...baseProfiles.sideA,
+                ...(typeof args.sideABaseUrl === 'string' && args.sideABaseUrl.trim()
+                  ? { baseUrl: args.sideABaseUrl.trim() }
+                  : {}),
+                ...(args.sideAHeaders && typeof args.sideAHeaders === 'object'
+                  ? { customHeaders: args.sideAHeaders as Record<string, string> }
+                  : {}),
+                ...(typeof args.sideAEdgeIp === 'string' && args.sideAEdgeIp.trim()
+                  ? { edgeIpOrHost: args.sideAEdgeIp.trim() }
+                  : {}),
+              },
+              sideB: {
+                ...baseProfiles.sideB,
+                ...(typeof args.sideBBaseUrl === 'string' && args.sideBBaseUrl.trim()
+                  ? { baseUrl: args.sideBBaseUrl.trim() }
+                  : {}),
+                ...(args.sideBHeaders && typeof args.sideBHeaders === 'object'
+                  ? { customHeaders: args.sideBHeaders as Record<string, string> }
+                  : {}),
+                ...(typeof args.sideBEdgeIp === 'string' && args.sideBEdgeIp.trim()
+                  ? { edgeIpOrHost: args.sideBEdgeIp.trim() }
+                  : {}),
+              },
+            };
+            runtimeTopologyByAppId = {
+              ...runtimeTopologyByAppId,
+              [prop.id]: updatedProfiles,
+            };
+            persistRuntimeCatchpointConfig();
+            return {
+              action: 'set_custom_routing',
+              mutated: true,
+              appId: prop.id,
+              activeTopologyModeId: runtimeTopologyModeId,
+              sideA: updatedProfiles.sideA,
+              sideB: updatedProfiles.sideB,
+            };
+          }
+
+          if (action === 'apply_env_template') {
+            const templateId = String(args.templateId || 'tpl-akamai-same-url').trim();
+            const tpl =
+              ENVIRONMENT_PRESET_TEMPLATES.find((t) => t.id === templateId) ||
+              ENVIRONMENT_PRESET_TEMPLATES[0];
+            const updatedApp = applyEnvironmentTemplate(prop, tpl.id, canonicalHost);
+            runtimeProperties = runtimeProperties.map((p) =>
+              p.id === prop.id ? updatedApp : p
+            );
+            persistRuntimeCatchpointConfig();
+            await syncPropertyCanariesToAws(prop.id);
+            return {
+              action: 'apply_env_template',
+              mutated: true,
+              appId: prop.id,
+              appliedTemplate: tpl,
+              environments: updatedApp.envs,
+            };
+          }
+
+          throw new Error(`Unsupported manage_comparison_topology action: ${action}`);
+        }
+
+        if (toolName === 'manage_schedules') {
+          const action = String(args.action || 'get').trim().toLowerCase();
+          const appId = String(args.appId || 'www').trim().toLowerCase();
+          const range = (String(args.range || '24h') as ScheduleTimeRange) || '24h';
+          const prop =
+            runtimeProperties.find((p) => p.id.toLowerCase() === appId) ||
+            runtimeProperties[0];
+
+          if (action === 'list') {
+            return {
+              action: 'list',
+              totalProperties: runtimeProperties.length,
+              schedules: runtimeProperties.map((p) => {
+                const pol = runtimeSchedulePolicies[p.id] || buildDefaultSchedulePolicy(p);
+                return {
+                  appId: p.id,
+                  name: p.name,
+                  enabled: pol.enabled,
+                  intervalMinutes: pol.intervalMinutes,
+                  cronExpression: pol.cronExpression,
+                  strategy: pol.strategy,
+                  assignedPops: pol.assignedPops,
+                  slaTargetPct: pol.slaTargetPct,
+                  syntheticsCanaries: [
+                    deriveAwsCanaryName(`${p.id}.${p.envs[0]?.id || 'prod'}.staging`),
+                    deriveAwsCanaryName(`${p.id}.${p.envs[0]?.id || 'prod'}.prod`),
+                  ],
+                };
+              }),
+            };
+          }
+
+          if (action === 'get') {
+            const policy =
+              runtimeSchedulePolicies[prop.id] || buildDefaultSchedulePolicy(prop);
+            const suite = getRuntimeSuiteForApp(prop.id);
+            const basePoints = buildScheduledRunsDataset({
+              appId: prop.id,
+              suite,
+              policy,
+              range,
+            });
+            const withRealRuns = ingestRealPortalRunsIntoSchedule({
+              basePoints,
+              runs: serverRuns,
+              appId: prop.id,
+              suite,
+              policy,
+            });
+            const points = [
+              ...withRealRuns,
+              ...(runtimeScheduledLiveTicks[prop.id] || []),
+            ];
+            const sla = computeScheduledSlaAnalytics({
+              points,
+              policy,
+              excludeMaintenanceWindows: true,
+            });
+            return {
+              action: 'get',
+              executionPlane: 'AWS CloudWatch Synthetics',
+              appId: prop.id,
+              range,
+              policy,
+              slaAnalytics: sla,
+              totalPoints: points.length,
+              recentPoints: points.slice(-8),
+            };
+          }
+
+          if (action === 'trigger_tick') {
+            const policy =
+              runtimeSchedulePolicies[prop.id] || buildDefaultSchedulePolicy(prop);
+            const suite = getRuntimeSuiteForApp(prop.id);
+            const envId = prop.envs[0]?.id || 'prod';
+            const syntheticsExecution = await dispatchCanaryExecutionForTarget(
+              `${prop.id}.${envId}.staging`
+            );
+            const basePoints = buildScheduledRunsDataset({
+              appId: prop.id,
+              suite,
+              policy,
+              range: '24h',
+            });
+            const existing = [
+              ...basePoints,
+              ...(runtimeScheduledLiveTicks[prop.id] || []),
+            ];
+            const point = appendLiveScheduledRunTick({
+              existingPoints: existing,
+              appId: prop.id,
+              suite,
+              policy,
+              triggeredBy: 'manual-trigger',
+            });
+            runtimeScheduledLiveTicks[prop.id] = [
+              ...(runtimeScheduledLiveTicks[prop.id] || []),
+              point,
+            ];
+            return {
+              action: 'trigger_tick',
+              triggered: true,
+              executionPlane: syntheticsExecution.executionPlane,
+              canaryName: syntheticsExecution.canaryName,
+              appId: prop.id,
+              point,
+            };
+          }
+
+          if (action === 'update_policy') {
+            const current =
+              runtimeSchedulePolicies[prop.id] || buildDefaultSchedulePolicy(prop);
+            const nextInterval: ScheduleIntervalMinutes =
+              typeof args.intervalMinutes === 'number' &&
+              [1, 5, 10, 15, 30, 60].includes(args.intervalMinutes)
+                ? (args.intervalMinutes as ScheduleIntervalMinutes)
+                : current.intervalMinutes;
+            const updated: SchedulePolicyConfig = {
+              ...current,
+              enabled:
+                typeof args.enabled === 'boolean' ? args.enabled : current.enabled,
+              intervalMinutes: nextInterval,
+              cronExpression: intervalToCronExpression(nextInterval),
+              strategy:
+                args.strategy === 'round-robin' ||
+                args.strategy === 'all-pops' ||
+                args.strategy === 'primary-regional'
+                  ? args.strategy
+                  : current.strategy,
+              assignedPops:
+                Array.isArray(args.assignedPops) && args.assignedPops.length > 0
+                  ? args.assignedPops.map(String)
+                  : current.assignedPops,
+              slaTargetPct:
+                typeof args.slaTargetPct === 'number'
+                  ? args.slaTargetPct
+                  : current.slaTargetPct,
+              slaWarningMs:
+                typeof args.slaWarningMs === 'number'
+                  ? args.slaWarningMs
+                  : current.slaWarningMs,
+              slaCriticalMs:
+                typeof args.slaCriticalMs === 'number'
+                  ? args.slaCriticalMs
+                  : current.slaCriticalMs,
+            };
+            runtimeSchedulePolicies[prop.id] = updated;
+            return {
+              action: 'update_policy',
+              updated: true,
+              appId: prop.id,
+              policy: updated,
+            };
+          }
+
+          throw new Error(`Unsupported manage_schedules action: ${action}`);
+        }
+
+        if (toolName === 'get_aws_iac_blueprint') {
+          const artifact = String(args.artifact || 'all').trim().toLowerCase();
+          if (artifact === 'terraform') {
+            return {
+              artifact: 'terraform',
+              terraform: generateTerraformBundle(cfg),
+            };
+          }
+          if (artifact === 'canary_script') {
+            return {
+              artifact: 'canary_script',
+              canaryScript: generateSyntheticsCanaryScript(cfg),
+            };
+          }
+          if (artifact === 'bedrock_judge') {
+            return {
+              artifact: 'bedrock_judge',
+              bedrockNovaJudgeScript: generateBedrockNovaJudgeScript(cfg),
+            };
+          }
+          if (artifact === 'openapi') {
+            return {
+              artifact: 'openapi',
+              openapi: buildOpenApiSpec(cfg),
+            };
+          }
+          return {
+            artifact: 'all',
+            executionPlane: 'AWS CloudWatch Synthetics',
+            runtimeVersion: cfg.infrastructure.runtimeVersion,
+            terraform: generateTerraformBundle(cfg),
+            canaryScript: generateSyntheticsCanaryScript(cfg),
+            bedrockNovaJudgeScript: generateBedrockNovaJudgeScript(cfg),
+          };
         }
 
         // Legacy compatible tools

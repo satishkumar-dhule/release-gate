@@ -376,6 +376,35 @@ export default function App() {
             setIgnoreAcceptedDiffs(serverPolicies.ignoreAcceptedDiffs);
           }
         }
+        if (typeof data.topologyModeId === 'string' && data.topologyModeId.trim()) {
+          setTopologyModeId(data.topologyModeId as ComparisonTopologyModeId);
+        }
+        if (data.topologyByAppId && typeof data.topologyByAppId === 'object') {
+          const mapped: Record<
+            string,
+            { candidate: TargetEndpointProfile; baseline: TargetEndpointProfile }
+          > = {};
+          for (const [k, val] of Object.entries(
+            data.topologyByAppId as Record<
+              string,
+              {
+                sideA?: TargetEndpointProfile;
+                sideB?: TargetEndpointProfile;
+                candidate?: TargetEndpointProfile;
+                baseline?: TargetEndpointProfile;
+              }
+            >
+          )) {
+            const c = val?.candidate || val?.sideA;
+            const b = val?.baseline || val?.sideB;
+            if (c && b) {
+              mapped[k] = { candidate: c, baseline: b };
+            }
+          }
+          if (Object.keys(mapped).length > 0) {
+            setCustomProfilesByApp((prev) => ({ ...prev, ...mapped }));
+          }
+        }
       })
       .catch(() => undefined);
 
@@ -711,7 +740,12 @@ export default function App() {
           suiteAppId: runRecord.suiteAppId || runRecord.appId,
           testType: testDef?.testType || targetRes.testType,
           httpMethod: testDef?.httpMethod || targetRes.httpMethod,
-          requestHeaders: testDef?.requestHeaders,
+          requestHeaders: {
+            ...((runRecord.network === 'staging'
+              ? activeCandidateProfile?.customHeaders
+              : activeBaselineProfile?.customHeaders) || {}),
+            ...(testDef?.requestHeaders || {}),
+          },
           requestBody: testDef?.requestBody,
           port: testDef?.port,
           dnsRecordType: testDef?.dnsRecordType,

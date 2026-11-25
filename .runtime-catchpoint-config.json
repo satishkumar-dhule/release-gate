@@ -2491,5 +2491,72 @@
     "acceptedVisualParams": {},
     "ignoreAcceptedDiffs": true
   },
-  "updatedAt": "2026-11-24T04:27:16.801Z"
+  "topologyModeId": "prod-stage-aws-header",
+  "topologyByAppId": {
+    "www": {
+      "sideA": {
+        "role": "candidate",
+        "label": "Candidate (AWS Stage Header)",
+        "tier": "STAGE",
+        "provider": "AWS CloudFront",
+        "routingMechanism": "custom-header",
+        "baseUrl": "https://www.salesforce.com",
+        "hostname": "www.salesforce.com",
+        "edgeHost": "d2sfdc-stage.cloudfront.net",
+        "edgeIp": "18.165.83.19",
+        "customHeaders": {
+          "aws-cf-cd-staging": "true",
+          "x-canary-stage": "candidate"
+        },
+        "summaryNote": "Same URL (www.salesforce.com) + Header aws-cf-cd-staging: true"
+      },
+      "sideB": {
+        "role": "baseline",
+        "label": "Baseline (AWS Prod Live)",
+        "tier": "PROD",
+        "provider": "AWS CloudFront",
+        "routingMechanism": "custom-header",
+        "baseUrl": "https://www.salesforce.com",
+        "hostname": "www.salesforce.com",
+        "edgeHost": "d2sfdc-prod.cloudfront.net",
+        "edgeIp": "18.165.83.42",
+        "customHeaders": {
+          "aws-cf-cd-staging": "false"
+        },
+        "summaryNote": "Same URL (www.salesforce.com) on AWS CloudFront Production"
+      },
+      "candidate": {
+        "role": "candidate",
+        "label": "Candidate (AWS Stage Header)",
+        "tier": "STAGE",
+        "provider": "AWS CloudFront",
+        "routingMechanism": "custom-header",
+        "baseUrl": "https://www.salesforce.com",
+        "hostname": "www.salesforce.com",
+        "edgeHost": "d2sfdc-stage.cloudfront.net",
+        "edgeIp": "18.165.83.19",
+        "customHeaders": {
+          "aws-cf-cd-staging": "true",
+          "x-canary-stage": "candidate"
+        },
+        "summaryNote": "Same URL (www.salesforce.com) + Header aws-cf-cd-staging: true"
+      },
+      "baseline": {
+        "role": "baseline",
+        "label": "Baseline (AWS Prod Live)",
+        "tier": "PROD",
+        "provider": "AWS CloudFront",
+        "routingMechanism": "custom-header",
+        "baseUrl": "https://www.salesforce.com",
+        "hostname": "www.salesforce.com",
+        "edgeHost": "d2sfdc-prod.cloudfront.net",
+        "edgeIp": "18.165.83.42",
+        "customHeaders": {
+          "aws-cf-cd-staging": "false"
+        },
+        "summaryNote": "Same URL (www.salesforce.com) on AWS CloudFront Production"
+      }
+    }
+  },
+  "updatedAt": "2026-11-25T12:54:12.863Z"
 }

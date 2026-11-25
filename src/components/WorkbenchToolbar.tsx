@@ -967,7 +967,17 @@ export const WorkbenchToolbar: React.FC<WorkbenchToolbarProps> = ({
             })}
           </div>
 
-          <div className="flex items-center gap-3 shrink-0">
+          <div className="flex items-center gap-2.5 shrink-0">
+            <span
+              data-testid="compare-synthetics-canary-badge"
+              className="hidden sm:inline-flex items-center gap-1 rounded border border-emerald-500/30 bg-emerald-500/10 px-1.5 py-0.5 font-mono text-[10px] font-semibold text-emerald-700 dark:text-emerald-300"
+              title="All test runs execute via AWS CloudWatch Synthetics Canaries (syn-nodejs-puppeteer-9.1)"
+            >
+              <span>AWS Synthetics:</span>
+              <span>
+                ak-{activeAppId}-prod-stg ↔ ak-{activeAppId}-prod-prd
+              </span>
+            </span>
             <button
               type="button"
               onClick={() => setRoutingEditorOpen((v) => !v)}

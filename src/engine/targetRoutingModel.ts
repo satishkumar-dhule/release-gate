@@ -43,6 +43,7 @@ export interface TargetEndpointProfile {
   hostname: string;
   edgeHost?: string;
   edgeIp?: string;
+  edgeIpOrHost?: string;
   customHeaders: Record<string, string>;
   summaryNote: string;
 }
@@ -558,3 +559,80 @@ export const QUICK_ENVIRONMENT_TEMPLATES: QuickEnvironmentTemplate[] = [
     },
   },
 ];
+
+export type ComparisonTopologyId = ComparisonTopologyModeId;
+
+export const COMPARISON_TOPOLOGY_PRESETS: ComparisonTopologyPreset[] =
+  getComparisonTopologyPresets('www.salesforce.com');
+
+export const ENVIRONMENT_PRESET_TEMPLATES: QuickEnvironmentTemplate[] =
+  QUICK_ENVIRONMENT_TEMPLATES;
+
+export function getComparisonTopologyPreset(
+  presetId: ComparisonTopologyModeId | string,
+  canonicalHost = 'www.salesforce.com',
+  alternateStageHost?: string
+): ComparisonTopologyPreset {
+  const presets = getComparisonTopologyPresets(canonicalHost, alternateStageHost);
+  return presets.find((p) => p.id === presetId) || presets[0];
+}
+
+export function buildTargetProfilesFromPreset(params: {
+  presetId: ComparisonTopologyModeId | string;
+  canonicalHost: string;
+  stagingEdgeIp?: string;
+  prodEdgeIp?: string;
+  stagingEdgeSuffix?: string;
+  prodEdgeSuffix?: string;
+}): {
+  sideA: TargetEndpointProfile;
+  sideB: TargetEndpointProfile;
+  candidate: TargetEndpointProfile;
+  baseline: TargetEndpointProfile;
+} {
+  const preset = getComparisonTopologyPreset(params.presetId, params.canonicalHost);
+  const sideA: TargetEndpointProfile = {
+    ...preset.candidate,
+    ...(params.stagingEdgeIp && preset.candidate.routingMechanism === 'edge-dns'
+      ? { edgeIp: params.stagingEdgeIp }
+      : {}),
+  };
+  const sideB: TargetEndpointProfile = {
+    ...preset.baseline,
+    ...(params.prodEdgeIp && preset.baseline.routingMechanism === 'edge-dns'
+      ? { edgeIp: params.prodEdgeIp }
+      : {}),
+  };
+  return {
+    sideA,
+    sideB,
+    candidate: sideA,
+    baseline: sideB,
+  };
+}
+
+export function applyEnvironmentTemplate<
+  T extends { id: string; name: string; envs: EnvironmentConfig[] }
+>(app: T, templateId: string, canonicalHost: string): T {
+  const normalizedId =
+    templateId === 'tpl-akamai-same-url'
+      ? 'tpl-akamai-stage-prod'
+      : templateId === 'tpl-different-stage-url'
+      ? 'tpl-different-url-stage'
+      : templateId === 'tpl-prod-vs-prod-multicdn'
+      ? 'tpl-prod-prod-multicdn'
+      : templateId;
+  const tpl =
+    QUICK_ENVIRONMENT_TEMPLATES.find((t) => t.id === normalizedId) ||
+    QUICK_ENVIRONMENT_TEMPLATES[0];
+  const newEnv = tpl.buildEnv(canonicalHost);
+  const exists = app.envs.some((e) => e.id === newEnv.id);
+  const nextEnvs = exists
+    ? app.envs.map((e) => (e.id === newEnv.id ? newEnv : e))
+    : [...app.envs, newEnv];
+  return {
+    ...app,
+    envs: nextEnvs,
+  };
+}
+

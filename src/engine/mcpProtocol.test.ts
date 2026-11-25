@@ -15,9 +15,9 @@ import {
 } from './mcpProtocol';
 
 describe('mcpProtocol JSON-RPC 2.0 Engine', () => {
-  it('exposes complete tool, resource, and prompt catalogs without schedules or AI chat bloat', () => {
-    assert.equal(MCP_TOOLS.length, 17);
-    assert.equal(MCP_RESOURCES.length, 9);
+  it('exposes complete 20-tool, 11-resource, and prompt catalogs covering all 4 portal workspaces', () => {
+    assert.equal(MCP_TOOLS.length, 20);
+    assert.equal(MCP_RESOURCES.length, 11);
     assert.equal(MCP_RESOURCE_TEMPLATES.length, 4);
     assert.equal(MCP_PROMPTS.length, 4);
 
@@ -153,7 +153,8 @@ describe('mcpProtocol JSON-RPC 2.0 Engine', () => {
 
     const manifest = buildMcpManifest('https://gate.example.com');
     assert.equal(manifest.transport.endpoint, 'https://gate.example.com/api/v1/mcp/rpc');
-    assert.equal(manifest.counts.tools, 17);
+    assert.equal(manifest.counts.tools, 20);
+    assert.equal(manifest.counts.resources, 11);
 
     const snippets = buildMcpClientSnippets('https://gate.example.com');
     assert.equal(snippets.length, 6);

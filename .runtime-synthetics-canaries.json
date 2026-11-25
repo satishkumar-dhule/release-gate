@@ -14,9 +14,8 @@
       "targetId": "www.prod.staging",
       "suiteHash": "928981e1",
       "syncStatus": "AWS_SPEC_STAGED",
-      "runtimeState": "READY",
-      "lastSyncedAt": "2026-11-19T17:57:19.158Z",
-      "lastAwsMessage": "AWS Synthetics API HTTP 403: User: arn:aws:iam::735234585484:user/user-ujhaeuktkgif is not authorized to perform: synthetics:GetCanary on resource: arn:aws:synthetics:us-east-1:735234585484:canary:ak-www-prod-stg with an explicit deny in a service control policy: arn:aws:organizations::381134089987:policy/o-ddkcxdbdz1/service_control_policy/p-czkwmpoi; Canary spec staged for AWS deploy"
+      "runtimeState": "RUNNING",
+      "lastAwsMessage": "AWS credentials not configured; orchestrated via Control Plane Synthetics bridge"
     },
     "ak-www-uat-prd": {
       "canaryName": "ak-www-uat-prd",
@@ -560,5 +559,5 @@
       ]
     }
   ],
-  "updatedAt": "2026-11-22T02:59:33.838Z"
+  "updatedAt": "2026-11-25T12:54:13.127Z"
 }

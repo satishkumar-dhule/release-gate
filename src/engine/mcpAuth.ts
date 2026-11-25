@@ -48,13 +48,14 @@ export const MCP_SCOPES_CATALOG: McpScopeMeta[] = [
       'get_curl_reproduction',
       'evaluate_visual_diff_nova_lite',
       'run_gate_plugin_pipeline',
+      'get_aws_iac_blueprint',
     ],
   },
   {
     scope: 'mcp:write:env',
     label: 'Write Envs & Properties',
-    description: 'Create, update, clone, reorder, and delete properties, environments, hostMaps, and edge IPs.',
-    tools: ['manage_property', 'manage_environment'],
+    description: 'Create, update, clone, reorder, and delete properties, environments, hostMaps, comparison topologies, and edge IPs.',
+    tools: ['manage_property', 'manage_environment', 'manage_comparison_topology'],
   },
   {
     scope: 'mcp:write:tests',
@@ -71,8 +72,8 @@ export const MCP_SCOPES_CATALOG: McpScopeMeta[] = [
   {
     scope: 'mcp:exec',
     label: 'Live Execution & Canaries',
-    description: 'Trigger live edge probes, full property gates, run pinning/purging, and AWS Synthetics canaries.',
-    tools: ['rerun_check', 'run_live_gate', 'manage_runs', 'manage_synthetics_canaries'],
+    description: 'Trigger live edge probes, full property gates, run pinning/purging, scheduled ticks, and AWS Synthetics canaries.',
+    tools: ['rerun_check', 'run_live_gate', 'manage_runs', 'manage_synthetics_canaries', 'manage_schedules'],
   },
   {
     scope: 'mcp:admin',
@@ -551,8 +552,18 @@ export function resolveRequiredMcpScope(
     return { scope: 'mcp:read', isReadOnly: true, targetAppId };
   }
 
-  if (cleanTool === 'manage_property' || cleanTool === 'manage_environment') {
-    if (action === 'list' || action === 'get' || !action) {
+  if (
+    cleanTool === 'manage_property' ||
+    cleanTool === 'manage_environment' ||
+    cleanTool === 'manage_comparison_topology'
+  ) {
+    if (
+      action === 'list' ||
+      action === 'get' ||
+      action === 'list_presets' ||
+      action === 'get_active' ||
+      !action
+    ) {
       return { scope: 'mcp:read', isReadOnly: true, targetAppId };
     }
     return { scope: 'mcp:write:env', isReadOnly: false, targetAppId };
@@ -570,6 +581,16 @@ export function resolveRequiredMcpScope(
       return { scope: 'mcp:read', isReadOnly: true, targetAppId };
     }
     return { scope: 'mcp:write:policies', isReadOnly: false, targetAppId };
+  }
+
+  if (cleanTool === 'manage_schedules') {
+    if (action === 'list' || action === 'get' || !action) {
+      return { scope: 'mcp:read', isReadOnly: true, targetAppId };
+    }
+    if (action === 'update_policy') {
+      return { scope: 'mcp:write:env', isReadOnly: false, targetAppId };
+    }
+    return { scope: 'mcp:exec', isReadOnly: false, targetAppId };
   }
 
   if (

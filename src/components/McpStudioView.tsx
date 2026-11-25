@@ -228,6 +228,46 @@ const ACTION_PARAM_MAP: Record<string, Record<string, string[]>> = {
     purge_target: ['action', 'target', 'keepLatest'],
     seed_fleet: ['action'],
   },
+  manage_synthetics_canaries: {
+    list: ['action', 'appId'],
+    status: ['action', 'appId'],
+    deep_dive: ['action', 'canaryName'],
+    sync: ['action', 'appId'],
+    start: ['action', 'canaryName'],
+    fan_out: ['action', 'appId', 'scope', 'network'],
+  },
+  manage_comparison_topology: {
+    list_presets: ['action'],
+    get_active: ['action', 'appId'],
+    select_preset: ['action', 'appId', 'presetId'],
+    set_custom_routing: [
+      'action',
+      'appId',
+      'sideABaseUrl',
+      'sideBBaseUrl',
+      'sideAHeaders',
+      'sideBHeaders',
+      'sideAEdgeIp',
+      'sideBEdgeIp',
+    ],
+    apply_env_template: ['action', 'appId', 'templateId'],
+  },
+  manage_schedules: {
+    list: ['action'],
+    get: ['action', 'appId', 'range'],
+    trigger_tick: ['action', 'appId'],
+    update_policy: [
+      'action',
+      'appId',
+      'enabled',
+      'intervalMinutes',
+      'strategy',
+      'assignedPops',
+      'slaTargetPct',
+      'slaWarningMs',
+      'slaCriticalMs',
+    ],
+  },
 };
 
 function getVisibleKeysForAction(
@@ -423,6 +463,76 @@ function buildToolPresets(toolName: string, appId: string): ToolPreset[] {
     return [
       { label: 'List Runs', args: { action: 'list', appId: site, limit: 15 } },
       { label: 'Seed Fleet', args: { action: 'seed_fleet' } },
+    ];
+  }
+  if (toolName === 'manage_synthetics_canaries') {
+    return [
+      { label: 'List Canaries', args: { action: 'list', appId: site } },
+      {
+        label: 'Deep-Dive Canary',
+        args: { action: 'deep_dive', canaryName: `ak-${site}-prod-stg` },
+      },
+      {
+        label: 'Start Canary',
+        args: { action: 'start', canaryName: `ak-${site}-prod-stg` },
+      },
+      {
+        label: 'Fan-Out Property',
+        args: { action: 'fan_out', appId: site, scope: 'property', network: 'both' },
+      },
+    ];
+  }
+  if (toolName === 'manage_comparison_topology') {
+    return [
+      { label: 'Get Active Topology', args: { action: 'get_active', appId: site } },
+      { label: 'List All Presets', args: { action: 'list_presets' } },
+      {
+        label: 'Prod vs Stage (Akamai Edge)',
+        args: { action: 'select_preset', appId: site, presetId: 'prod-stage-akamai' },
+      },
+      {
+        label: 'Prod vs Stage (AWS Header)',
+        args: { action: 'select_preset', appId: site, presetId: 'prod-stage-aws-header' },
+      },
+      {
+        label: 'Prod vs Stage (Diff URL)',
+        args: { action: 'select_preset', appId: site, presetId: 'prod-stage-url' },
+      },
+      {
+        label: 'Prod vs Prod (Multi-CDN)',
+        args: { action: 'select_preset', appId: site, presetId: 'prod-prod-multicdn' },
+      },
+      {
+        label: 'Apply AWS CF Template',
+        args: { action: 'apply_env_template', appId: site, templateId: 'tpl-aws-cf-header' },
+      },
+    ];
+  }
+  if (toolName === 'manage_schedules') {
+    return [
+      { label: 'Get SLA & Schedule', args: { action: 'get', appId: site, range: '24h' } },
+      { label: 'List All Schedules', args: { action: 'list' } },
+      { label: 'Trigger Canary Tick', args: { action: 'trigger_tick', appId: site } },
+      {
+        label: 'Set 5m All-PoPs Cadence',
+        args: {
+          action: 'update_policy',
+          appId: site,
+          enabled: true,
+          intervalMinutes: 5,
+          strategy: 'all-pops',
+          slaTargetPct: 99.9,
+        },
+      },
+    ];
+  }
+  if (toolName === 'get_aws_iac_blueprint') {
+    return [
+      { label: 'Export All IaC', args: { artifact: 'all' } },
+      { label: 'Terraform HCL', args: { artifact: 'terraform' } },
+      { label: 'Synthetics Canary Script', args: { artifact: 'canary_script' } },
+      { label: 'Bedrock Nova Lite Judge', args: { artifact: 'bedrock_judge' } },
+      { label: 'OpenAPI 3.1 Spec', args: { artifact: 'openapi' } },
     ];
   }
   return [];
@@ -1279,6 +1389,15 @@ export const McpStudioView: React.FC<McpStudioViewProps> = ({
         </div>
 
         <div className="flex flex-wrap items-center gap-1.5 shrink-0">
+          <span
+            data-testid="mcp-synthetics-plane-badge"
+            className="inline-flex h-6.5 items-center gap-1.5 rounded border border-emerald-500/30 bg-emerald-500/10 px-2 font-mono text-[10px] font-semibold text-emerald-700 dark:text-emerald-300"
+            title="Every MCP and UI test run dispatches through AWS CloudWatch Synthetics Canaries (syn-nodejs-puppeteer-9.1)"
+          >
+            <span>AWS CloudWatch Synthetics</span>
+            <span className="text-muted-foreground">·</span>
+            <span>ak-{activeAppId || 'www'}-prod-stg ↔ ak-{activeAppId || 'www'}-prod-prd</span>
+          </span>
           {handshakeStatus.checked && (
             <span
               data-testid="mcp-handshake-status"
