@@ -1,0 +1,3170 @@
+{
+  "www-T01": {
+    "url": "https://www.salesforce.com/",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:54:33.181Z",
+    "sideA": {
+      "bytes": 90327,
+      "sha256": "a63f7f848976fa069d77c76a7ec7c391355ecd9e2cd49f6ecf8fe439a2d01ace",
+      "path": "/screenshots/www-T01-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 112457,
+      "sha256": "b0289c9022966596edccbe43dd50eeed66691a371b19f2d25e9b5f696649e532",
+      "path": "/screenshots/www-T01-sideB.jpg"
+    },
+    "pixelDiffPercent": 63.89,
+    "changedPixels": 38847,
+    "totalPixels": 60800,
+    "changedBox": {
+      "x": 0,
+      "y": 1.6,
+      "w": 68.8,
+      "h": 98.4
+    },
+    "zones": {
+      "headerPct": 34.7,
+      "heroCenterPct": 95.41,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 95.65,
+      "footerPct": 68.05,
+      "headerEdgeContrastA": 5.47,
+      "headerEdgeContrastB": 6.56,
+      "rightEdgeContrastA": 0.72,
+      "rightEdgeContrastB": 0.63,
+      "meanLumDiff": 21.35
+    }
+  },
+  "www-T02": {
+    "url": "https://www.salesforce.com/sales/",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:54:35.765Z",
+    "sideA": {
+      "bytes": 55159,
+      "sha256": "20efcafbeb0125c6069b553b7e086726815c9a0528ad3c9d62982654b4e699e1",
+      "path": "/screenshots/www-T02-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 55159,
+      "sha256": "20efcafbeb0125c6069b553b7e086726815c9a0528ad3c9d62982654b4e699e1",
+      "path": "/screenshots/www-T02-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "www-T03": {
+    "url": "https://www.salesforce.com/artificial-intelligence/",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:54:39.834Z",
+    "sideA": {
+      "bytes": 77797,
+      "sha256": "da92b5dd418583b48e6506956dcd8df472a74dca4d987182589d9640cc8fc56e",
+      "path": "/screenshots/www-T03-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 77761,
+      "sha256": "7dae4c119474538aee4dcb568eadabe4b42caa6f0d6982dcf2d62dc60fb95657",
+      "path": "/screenshots/www-T03-sideB.jpg"
+    },
+    "pixelDiffPercent": 0.08,
+    "changedPixels": 50,
+    "totalPixels": 60800,
+    "changedBox": {
+      "x": 30.6,
+      "y": 32.6,
+      "w": 38.4,
+      "h": 11.6
+    },
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0.24,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "headerEdgeContrastA": 15.03,
+      "headerEdgeContrastB": 15.03,
+      "rightEdgeContrastA": 8.34,
+      "rightEdgeContrastB": 8.34,
+      "meanLumDiff": 0
+    }
+  },
+  "www-T04": {
+    "url": "https://www.salesforce.com/crm",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:54:44.547Z",
+    "sideA": {
+      "bytes": 76773,
+      "sha256": "1b1b88694ebb4ae69bc0080daa930e497db69b24dd2847c0bb4495008c2a54cc",
+      "path": "/screenshots/www-T04-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 76773,
+      "sha256": "1b1b88694ebb4ae69bc0080daa930e497db69b24dd2847c0bb4495008c2a54cc",
+      "path": "/screenshots/www-T04-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "www-T05": {
+    "url": "https://www.salesforce.com/form/signup/freetrial-sales/",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:54:46.451Z",
+    "sideA": {
+      "bytes": 80207,
+      "sha256": "8966488311c64d4b387efb9e7f0e942b37638a029bdd62b9d8ac87fc1599faed",
+      "path": "/screenshots/www-T05-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 80207,
+      "sha256": "8966488311c64d4b387efb9e7f0e942b37638a029bdd62b9d8ac87fc1599faed",
+      "path": "/screenshots/www-T05-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "www-T06": {
+    "url": "https://www.salesforce.com/editions-pricing/sales-cloud/",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:54:48.850Z",
+    "sideA": {
+      "bytes": 86855,
+      "sha256": "80a4dc3c5018320ff4b0f3e0d549c6561678ef745478a61937910f4802acd31b",
+      "path": "/screenshots/www-T06-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 86855,
+      "sha256": "80a4dc3c5018320ff4b0f3e0d549c6561678ef745478a61937910f4802acd31b",
+      "path": "/screenshots/www-T06-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "www-T07": {
+    "url": "https://www.salesforce.com/small-business/",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:54:52.149Z",
+    "sideA": {
+      "bytes": 75120,
+      "sha256": "279fdb6ad340c02f3654244959b840c9b71d12c1c4027a7463cb5702200c6cd7",
+      "path": "/screenshots/www-T07-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 75120,
+      "sha256": "279fdb6ad340c02f3654244959b840c9b71d12c1c4027a7463cb5702200c6cd7",
+      "path": "/screenshots/www-T07-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "www-T08": {
+    "url": "https://www.salesforce.com/company/",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:54:54.621Z",
+    "sideA": {
+      "bytes": 100393,
+      "sha256": "5d89b8b3c93b1d341729f398f855637438a27ac528fa7a5e4471a6a59d2b0d70",
+      "path": "/screenshots/www-T08-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 100393,
+      "sha256": "5d89b8b3c93b1d341729f398f855637438a27ac528fa7a5e4471a6a59d2b0d70",
+      "path": "/screenshots/www-T08-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "login-T01": {
+    "url": "https://login.salesforce.com/",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:54:56.457Z",
+    "sideA": {
+      "bytes": 45202,
+      "sha256": "e9221683a48ef5a0be7977bf247c76ad5229c14ebe6b942c866eae7d24e78abb",
+      "path": "/screenshots/login-T01-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 45202,
+      "sha256": "e9221683a48ef5a0be7977bf247c76ad5229c14ebe6b942c866eae7d24e78abb",
+      "path": "/screenshots/login-T01-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "login-T02": {
+    "url": "https://login.salesforce.com/services/oauth2/authorize",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:54:57.955Z",
+    "sideA": {
+      "bytes": 126290,
+      "sha256": "528350d68f18cf66ab80e47ee99dd91cbb81bf493063686bced484e0a67f0b41",
+      "path": "/screenshots/login-T02-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 126290,
+      "sha256": "528350d68f18cf66ab80e47ee99dd91cbb81bf493063686bced484e0a67f0b41",
+      "path": "/screenshots/login-T02-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "login-T03": {
+    "url": "https://login.salesforce.com/.well-known/idp-configuration",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:54:59.541Z",
+    "sideA": {
+      "bytes": 133901,
+      "sha256": "37cfa33bd38647fe53da7c6d948ceacaee5cec9f75edfd0f47329a5f8743dcc1",
+      "path": "/screenshots/login-T03-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 122924,
+      "sha256": "b21aa8aa7a621885e81d0b899342389822656ba67cd9695cb8b92cfc3e53ef78",
+      "path": "/screenshots/login-T03-sideB.jpg"
+    },
+    "pixelDiffPercent": 5.77,
+    "changedPixels": 3508,
+    "totalPixels": 60800,
+    "changedBox": {
+      "x": 0,
+      "y": 0,
+      "w": 100,
+      "h": 68.4
+    },
+    "zones": {
+      "headerPct": 42.15,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0.01,
+      "footerPct": 0,
+      "headerEdgeContrastA": 26.9,
+      "headerEdgeContrastB": 15.67,
+      "rightEdgeContrastA": 22.32,
+      "rightEdgeContrastB": 22.28,
+      "meanLumDiff": 8.77
+    }
+  },
+  "login-T04": {
+    "url": "https://login.salesforce.com/services/auth/idp",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:55:00.867Z",
+    "sideA": {
+      "bytes": 105382,
+      "sha256": "21cd3ac005c6bb77a2a0baabb5f2c3c49db470028f1b3da10ce52da1d58d35a8",
+      "path": "/screenshots/login-T04-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 105382,
+      "sha256": "21cd3ac005c6bb77a2a0baabb5f2c3c49db470028f1b3da10ce52da1d58d35a8",
+      "path": "/screenshots/login-T04-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "login-T05": {
+    "url": "https://login.salesforce.com/setup/secur/mfa",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:55:02.522Z",
+    "sideA": {
+      "bytes": 86606,
+      "sha256": "20d6f8654b1133ca0976f04030e3a8b2238a1ec4778078ccf3eca7b108df0390",
+      "path": "/screenshots/login-T05-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 86606,
+      "sha256": "20d6f8654b1133ca0976f04030e3a8b2238a1ec4778078ccf3eca7b108df0390",
+      "path": "/screenshots/login-T05-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "login-T06": {
+    "url": "https://login.salesforce.com/secur/forgotpassword.jsp",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:55:04.344Z",
+    "sideA": {
+      "bytes": 60319,
+      "sha256": "d963919ae4850059143e89a1eea6d4e75c0972370f88406c4d2c0febcc89e513",
+      "path": "/screenshots/login-T06-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 60319,
+      "sha256": "d963919ae4850059143e89a1eea6d4e75c0972370f88406c4d2c0febcc89e513",
+      "path": "/screenshots/login-T06-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "login-T07": {
+    "url": "https://login.salesforce.com/services/auth/sso",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:55:05.651Z",
+    "sideA": {
+      "bytes": 122687,
+      "sha256": "83df2254c32c31e15445876d5c7e419f2f5204809e87c795eac863594b2448a6",
+      "path": "/screenshots/login-T07-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 122687,
+      "sha256": "83df2254c32c31e15445876d5c7e419f2f5204809e87c795eac863594b2448a6",
+      "path": "/screenshots/login-T07-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "login-T08": {
+    "url": "https://login.salesforce.com/id/health",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:55:07.177Z",
+    "sideA": {
+      "bytes": 98981,
+      "sha256": "e0898149912967043406b07a37e7d2cdf3b1e7a9744b87f60c9aea7ae3fc9a62",
+      "path": "/screenshots/login-T08-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 98981,
+      "sha256": "e0898149912967043406b07a37e7d2cdf3b1e7a9744b87f60c9aea7ae3fc9a62",
+      "path": "/screenshots/login-T08-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "developer-T01": {
+    "url": "https://developer.salesforce.com/",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:55:11.487Z",
+    "sideA": {
+      "bytes": 111724,
+      "sha256": "c44cd79e07cd2535d4eb926daa3bc87a585e1330b7709f33a8741a71644b2f61",
+      "path": "/screenshots/developer-T01-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 111724,
+      "sha256": "c44cd79e07cd2535d4eb926daa3bc87a585e1330b7709f33a8741a71644b2f61",
+      "path": "/screenshots/developer-T01-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "developer-T02": {
+    "url": "https://developer.salesforce.com/docs/apis",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:55:14.393Z",
+    "sideA": {
+      "bytes": 94676,
+      "sha256": "fb3f2f1138fe28ab00105ad93dbfd5375eac39eededbba854c7959c89b38ad15",
+      "path": "/screenshots/developer-T02-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 94676,
+      "sha256": "fb3f2f1138fe28ab00105ad93dbfd5375eac39eededbba854c7959c89b38ad15",
+      "path": "/screenshots/developer-T02-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "developer-T03": {
+    "url": "https://developer.salesforce.com/tools/lwc",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:55:20.656Z",
+    "sideA": {
+      "bytes": 121869,
+      "sha256": "d68078fdaac7dd66e6ecc786313b1db8a0fbe60cc9603d3812e22177e5391891",
+      "path": "/screenshots/developer-T03-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 124995,
+      "sha256": "f09ee40f8656eda474a00f7660655169b10f0cd39ddcbb9fdd3a5b5eb57f2952",
+      "path": "/screenshots/developer-T03-sideB.jpg"
+    },
+    "pixelDiffPercent": 18.19,
+    "changedPixels": 11060,
+    "totalPixels": 60800,
+    "changedBox": {
+      "x": 3.1,
+      "y": 2.6,
+      "w": 93.1,
+      "h": 89.5
+    },
+    "zones": {
+      "headerPct": 18.23,
+      "heroCenterPct": 25.46,
+      "rightPanelPct": 12.31,
+      "lowerBodyPct": 11.57,
+      "footerPct": 14.25,
+      "headerEdgeContrastA": 35.94,
+      "headerEdgeContrastB": 28.91,
+      "rightEdgeContrastA": 14.62,
+      "rightEdgeContrastB": 14.37,
+      "meanLumDiff": 1.93
+    }
+  },
+  "developer-T04": {
+    "url": "https://developer.salesforce.com/docs/atlas.en-us.apexref.meta/apexref/",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:55:23.292Z",
+    "sideA": {
+      "bytes": 39301,
+      "sha256": "1d31e042ef6e0093f7a657410f0851e5f30b3adb4b3eceb8182e81736a170039",
+      "path": "/screenshots/developer-T04-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 39301,
+      "sha256": "1d31e042ef6e0093f7a657410f0851e5f30b3adb4b3eceb8182e81736a170039",
+      "path": "/screenshots/developer-T04-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "developer-T05": {
+    "url": "https://developer.salesforce.com/tools/vscode/agentforce",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:55:25.990Z",
+    "sideA": {
+      "bytes": 124996,
+      "sha256": "0abce4174909fa9b2f53776c7b98a4ab64b37f9547bdfc5c74795f7414bb1701",
+      "path": "/screenshots/developer-T05-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 124996,
+      "sha256": "0abce4174909fa9b2f53776c7b98a4ab64b37f9547bdfc5c74795f7414bb1701",
+      "path": "/screenshots/developer-T05-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "developer-T06": {
+    "url": "https://developer.salesforce.com/signup",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:55:28.182Z",
+    "sideA": {
+      "bytes": 40320,
+      "sha256": "bf1694d8f4ff2e03bf6097464a6c70964bc64a79b609cc40c4488406c2b7c25c",
+      "path": "/screenshots/developer-T06-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 40320,
+      "sha256": "bf1694d8f4ff2e03bf6097464a6c70964bc64a79b609cc40c4488406c2b7c25c",
+      "path": "/screenshots/developer-T06-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "developer-T07": {
+    "url": "https://developer.salesforce.com/docs/atlas.en-us.c360a_api.meta",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:55:31.459Z",
+    "sideA": {
+      "bytes": 54189,
+      "sha256": "6c69c077f3988eed15f03633959fb951cf7e7067542ab6c200ad6903aedac7ce",
+      "path": "/screenshots/developer-T07-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 54189,
+      "sha256": "6c69c077f3988eed15f03633959fb951cf7e7067542ab6c200ad6903aedac7ce",
+      "path": "/screenshots/developer-T07-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "developer-T08": {
+    "url": "https://developer.salesforce.com/forums",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:55:38.588Z",
+    "sideA": {
+      "bytes": 97506,
+      "sha256": "3ad7d672c97b663a52ff22b256f815a8f692fd15963130ab7942d50b0c6b1d26",
+      "path": "/screenshots/developer-T08-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 97506,
+      "sha256": "3ad7d672c97b663a52ff22b256f815a8f692fd15963130ab7942d50b0c6b1d26",
+      "path": "/screenshots/developer-T08-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "help-T01": {
+    "url": "https://help.salesforce.com/s/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:06:19.730Z",
+    "sideA": {
+      "bytes": 86606,
+      "sha256": "20d6f8654b1133ca0976f04030e3a8b2238a1ec4778078ccf3eca7b108df0390",
+      "path": "/screenshots/help-T01-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 79649,
+      "sha256": "fc196ce48bbfd8e562603870ecb5377ab299fc7f5c65574064f513ed3765088a",
+      "path": "/screenshots/help-T01-sideB.jpg"
+    },
+    "pixelDiffPercent": 0.57,
+    "changedPixels": 344,
+    "totalPixels": 60800,
+    "changedBox": {
+      "x": 3.1,
+      "y": 2.1,
+      "w": 92.8,
+      "h": 4.2
+    },
+    "zones": {
+      "headerPct": 4.13,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "headerEdgeContrastA": 12.35,
+      "headerEdgeContrastB": 1.02,
+      "rightEdgeContrastA": 13.2,
+      "rightEdgeContrastB": 13.2,
+      "meanLumDiff": 0.54
+    }
+  },
+  "help-T02": {
+    "url": "https://help.salesforce.com/s/articleView",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:06:24.404Z",
+    "sideA": {
+      "bytes": 46622,
+      "sha256": "92a2ac36f56aeea8fbda3bf57eaba241d9da29a097d0630e359251a3a23b8778",
+      "path": "/screenshots/help-T02-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 46622,
+      "sha256": "92a2ac36f56aeea8fbda3bf57eaba241d9da29a097d0630e359251a3a23b8778",
+      "path": "/screenshots/help-T02-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "help-T03": {
+    "url": "https://help.salesforce.com/s/cases",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:06:35.347Z",
+    "sideA": {
+      "bytes": 6520,
+      "sha256": "a27a44e4e765bfad0b219f8e90ae9ab475b0a206d7edb51eeab84b9ecca107f1",
+      "path": "/screenshots/help-T03-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 6520,
+      "sha256": "a27a44e4e765bfad0b219f8e90ae9ab475b0a206d7edb51eeab84b9ecca107f1",
+      "path": "/screenshots/help-T03-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "help-T04": {
+    "url": "https://help.salesforce.com/s/release-notes",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:06:44.392Z",
+    "sideA": {
+      "bytes": 45532,
+      "sha256": "8ae449f7ee893b4725ee5e2360a3021cecba68093787aec966c9d1d0afcc49ac",
+      "path": "/screenshots/help-T04-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 45693,
+      "sha256": "9e238c975ac3cd588539eb704a42440501ca4ae3e3bfcdd355213aa25b7a9ac5",
+      "path": "/screenshots/help-T04-sideB.jpg"
+    },
+    "pixelDiffPercent": 3.15,
+    "changedPixels": 1917,
+    "totalPixels": 60800,
+    "changedBox": {
+      "x": 0,
+      "y": 9.5,
+      "w": 100,
+      "h": 45.3
+    },
+    "zones": {
+      "headerPct": 5.1,
+      "heroCenterPct": 3.96,
+      "rightPanelPct": 5.56,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "headerEdgeContrastA": 17.09,
+      "headerEdgeContrastB": 16.96,
+      "rightEdgeContrastA": 7.05,
+      "rightEdgeContrastB": 6.82,
+      "meanLumDiff": 0.39
+    }
+  },
+  "help-T05": {
+    "url": "https://help.salesforce.com/s/known-issues",
+    "status": 200,
+    "capturedAt": "2026-11-12T16:11:34.303Z",
+    "sideA": {
+      "bytes": 45430,
+      "sha256": "766e40db8ef2f2a4ac120e22a49a31ee6b5d95c9766b9302d8bccc3444d4ab57",
+      "path": "/screenshots/help-T05-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 45430,
+      "sha256": "766e40db8ef2f2a4ac120e22a49a31ee6b5d95c9766b9302d8bccc3444d4ab57",
+      "path": "/screenshots/help-T05-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "help-T06": {
+    "url": "https://help.salesforce.com/s/guides",
+    "status": 200,
+    "capturedAt": "2026-11-12T16:11:40.294Z",
+    "sideA": {
+      "bytes": 38367,
+      "sha256": "25a1366360721420e78bf3c65190f3c6a2b8231f386a2098adeb1fbcbacc686b",
+      "path": "/screenshots/help-T06-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 38367,
+      "sha256": "25a1366360721420e78bf3c65190f3c6a2b8231f386a2098adeb1fbcbacc686b",
+      "path": "/screenshots/help-T06-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "help-T07": {
+    "url": "https://help.salesforce.com/s/contactsupport",
+    "status": 200,
+    "capturedAt": "2026-11-12T16:11:45.514Z",
+    "sideA": {
+      "bytes": 44593,
+      "sha256": "21c06554ae747c30a9ff9545775812cfea8513a9e0a2e0186e1ec2320c4e7b9d",
+      "path": "/screenshots/help-T07-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 44593,
+      "sha256": "21c06554ae747c30a9ff9545775812cfea8513a9e0a2e0186e1ec2320c4e7b9d",
+      "path": "/screenshots/help-T07-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "help-T08": {
+    "url": "https://help.salesforce.com/s/groups",
+    "status": 200,
+    "capturedAt": "2026-11-12T16:11:52.568Z",
+    "sideA": {
+      "bytes": 45581,
+      "sha256": "0091c9ef4408f52f712e6adabc9da8fad4a0b06880655bd925eda014e3349394",
+      "path": "/screenshots/help-T08-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 45581,
+      "sha256": "0091c9ef4408f52f712e6adabc9da8fad4a0b06880655bd925eda014e3349394",
+      "path": "/screenshots/help-T08-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "trailhead-T01": {
+    "url": "https://trailhead.salesforce.com/",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:56:31.853Z",
+    "sideA": {
+      "bytes": 115070,
+      "sha256": "923632012834c304c08d6fb40be2e6311137ef70d0c3a888542abcb03e61f532",
+      "path": "/screenshots/trailhead-T01-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 115070,
+      "sha256": "923632012834c304c08d6fb40be2e6311137ef70d0c3a888542abcb03e61f532",
+      "path": "/screenshots/trailhead-T01-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "trailhead-T02": {
+    "url": "https://trailhead.salesforce.com/en/credentials/agentforcespecialist",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:56:38.516Z",
+    "sideA": {
+      "bytes": 118307,
+      "sha256": "16c2d74d2ca9ac1eb24b75edd41ba1aac2d2bfb7af322225a16b7a20ef7b10cf",
+      "path": "/screenshots/trailhead-T02-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 118307,
+      "sha256": "16c2d74d2ca9ac1eb24b75edd41ba1aac2d2bfb7af322225a16b7a20ef7b10cf",
+      "path": "/screenshots/trailhead-T02-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "trailhead-T03": {
+    "url": "https://trailhead.salesforce.com/en/modules",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:56:43.543Z",
+    "sideA": {
+      "bytes": 123409,
+      "sha256": "63036510db468adbc828b148d8699831fef8db4583460728e7f1caf315aafa32",
+      "path": "/screenshots/trailhead-T03-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 119018,
+      "sha256": "7bbf759c666a645dfb8dd82f228b8658842e352074cd54c5d173c9578182ffff",
+      "path": "/screenshots/trailhead-T03-sideB.jpg"
+    },
+    "pixelDiffPercent": 5.65,
+    "changedPixels": 3437,
+    "totalPixels": 60800,
+    "changedBox": {
+      "x": 0,
+      "y": 0,
+      "w": 100,
+      "h": 6.3
+    },
+    "zones": {
+      "headerPct": 41.31,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "headerEdgeContrastA": 39.8,
+      "headerEdgeContrastB": 43.42,
+      "rightEdgeContrastA": 29.14,
+      "rightEdgeContrastB": 29.14,
+      "meanLumDiff": 7.38
+    }
+  },
+  "trailhead-T04": {
+    "url": "https://trailhead.salesforce.com/en/career-paths",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:56:49.117Z",
+    "sideA": {
+      "bytes": 89634,
+      "sha256": "94958f1859dbabfe9ec0153e5f86957d3dd975f9d494e0353db797ddba91ec68",
+      "path": "/screenshots/trailhead-T04-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 89634,
+      "sha256": "94958f1859dbabfe9ec0153e5f86957d3dd975f9d494e0353db797ddba91ec68",
+      "path": "/screenshots/trailhead-T04-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "trailhead-T05": {
+    "url": "https://trailhead.salesforce.com/en/community",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:56:55.319Z",
+    "sideA": {
+      "bytes": 108560,
+      "sha256": "0851a1884a7533ef8f31ee7e6ee9f6535a007fa2103368a9ea92014a44a4ded9",
+      "path": "/screenshots/trailhead-T05-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 108560,
+      "sha256": "0851a1884a7533ef8f31ee7e6ee9f6535a007fa2103368a9ea92014a44a4ded9",
+      "path": "/screenshots/trailhead-T05-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "trailhead-T06": {
+    "url": "https://trailhead.salesforce.com/en/trailhead-playground",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:57:01.962Z",
+    "sideA": {
+      "bytes": 124178,
+      "sha256": "5e7117acc099ad157ed75a0ce321a5fbd53f2b7005aef81a7514552a01b8f841",
+      "path": "/screenshots/trailhead-T06-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 124178,
+      "sha256": "5e7117acc099ad157ed75a0ce321a5fbd53f2b7005aef81a7514552a01b8f841",
+      "path": "/screenshots/trailhead-T06-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "trailhead-T07": {
+    "url": "https://trailhead.salesforce.com/en/credentials/administrator",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:57:07.975Z",
+    "sideA": {
+      "bytes": 103167,
+      "sha256": "5c662762d6b9e5f118846ffcee3ef98bf79f9053bd983a7bd5cc21b2eec82f9f",
+      "path": "/screenshots/trailhead-T07-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 103167,
+      "sha256": "5c662762d6b9e5f118846ffcee3ef98bf79f9053bd983a7bd5cc21b2eec82f9f",
+      "path": "/screenshots/trailhead-T07-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "trailhead-T08": {
+    "url": "https://trailhead.salesforce.com/en/ranks",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:57:14.229Z",
+    "sideA": {
+      "bytes": 87342,
+      "sha256": "06e564c1b72afddd87fbde054fdd8d39b47b69b890944f3d3f2723e933e9a721",
+      "path": "/screenshots/trailhead-T08-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 87342,
+      "sha256": "06e564c1b72afddd87fbde054fdd8d39b47b69b890944f3d3f2723e933e9a721",
+      "path": "/screenshots/trailhead-T08-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "status-T01": {
+    "url": "https://status.salesforce.com/",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:57:17.173Z",
+    "sideA": {
+      "bytes": 105382,
+      "sha256": "21cd3ac005c6bb77a2a0baabb5f2c3c49db470028f1b3da10ce52da1d58d35a8",
+      "path": "/screenshots/status-T01-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 105382,
+      "sha256": "21cd3ac005c6bb77a2a0baabb5f2c3c49db470028f1b3da10ce52da1d58d35a8",
+      "path": "/screenshots/status-T01-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "status-T02": {
+    "url": "https://status.salesforce.com/instances",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:57:19.195Z",
+    "sideA": {
+      "bytes": 107015,
+      "sha256": "643066e70f4b85b8782242a5e6914b211c1acead37f935b9123d3890e6c858e6",
+      "path": "/screenshots/status-T02-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 107015,
+      "sha256": "643066e70f4b85b8782242a5e6914b211c1acead37f935b9123d3890e6c858e6",
+      "path": "/screenshots/status-T02-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "status-T03": {
+    "url": "https://status.salesforce.com/maintenance",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:57:21.217Z",
+    "sideA": {
+      "bytes": 89463,
+      "sha256": "be7015a9c764a99623f94be54a708a2e35a3a754573aaf274997258359955525",
+      "path": "/screenshots/status-T03-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 82122,
+      "sha256": "189905f024c95df877dfd981c97b10f8412c25c844670f86f559e117b995d0f5",
+      "path": "/screenshots/status-T03-sideB.jpg"
+    },
+    "pixelDiffPercent": 5.49,
+    "changedPixels": 3340,
+    "totalPixels": 60800,
+    "changedBox": {
+      "x": 0,
+      "y": 0,
+      "w": 100,
+      "h": 6.3
+    },
+    "zones": {
+      "headerPct": 40.14,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "headerEdgeContrastA": 44.58,
+      "headerEdgeContrastB": 40.37,
+      "rightEdgeContrastA": 7.15,
+      "rightEdgeContrastB": 7.15,
+      "meanLumDiff": 7.51
+    }
+  },
+  "status-T04": {
+    "url": "https://status.salesforce.com/compliance",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:57:23.204Z",
+    "sideA": {
+      "bytes": 107478,
+      "sha256": "e76c388749b3e0427ad7924f3992198e48dd0ea5ae01d6884c7d41656f9adc0c",
+      "path": "/screenshots/status-T04-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 107478,
+      "sha256": "e76c388749b3e0427ad7924f3992198e48dd0ea5ae01d6884c7d41656f9adc0c",
+      "path": "/screenshots/status-T04-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "status-T05": {
+    "url": "https://status.salesforce.com/incidents",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:57:25.355Z",
+    "sideA": {
+      "bytes": 51946,
+      "sha256": "fda86276dee0d0fbf7355c55ee144bb741112c94003061a0fb4104762f9a045d",
+      "path": "/screenshots/status-T05-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 51946,
+      "sha256": "fda86276dee0d0fbf7355c55ee144bb741112c94003061a0fb4104762f9a045d",
+      "path": "/screenshots/status-T05-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "status-T06": {
+    "url": "https://status.salesforce.com/api/v1/status",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:57:27.457Z",
+    "sideA": {
+      "bytes": 85180,
+      "sha256": "96561b2e8edb89aa0b43dee7693380e0322dac10e3c7b6487de74dc0af8beac4",
+      "path": "/screenshots/status-T06-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 85180,
+      "sha256": "96561b2e8edb89aa0b43dee7693380e0322dac10e3c7b6487de74dc0af8beac4",
+      "path": "/screenshots/status-T06-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "status-T07": {
+    "url": "https://status.salesforce.com/subscribe",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:57:29.489Z",
+    "sideA": {
+      "bytes": 109103,
+      "sha256": "4b246a52536d9a082d1af26f292dacd0ec4fc1579fe9368c7caddeca72ef6881",
+      "path": "/screenshots/status-T07-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 109103,
+      "sha256": "4b246a52536d9a082d1af26f292dacd0ec4fc1579fe9368c7caddeca72ef6881",
+      "path": "/screenshots/status-T07-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "status-T08": {
+    "url": "https://status.salesforce.com/edge-telemetry",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:57:31.493Z",
+    "sideA": {
+      "bytes": 98981,
+      "sha256": "e0898149912967043406b07a37e7d2cdf3b1e7a9744b87f60c9aea7ae3fc9a62",
+      "path": "/screenshots/status-T08-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 98981,
+      "sha256": "e0898149912967043406b07a37e7d2cdf3b1e7a9744b87f60c9aea7ae3fc9a62",
+      "path": "/screenshots/status-T08-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "appexchange-T01": {
+    "url": "https://appexchange.salesforce.com/",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:57:36.935Z",
+    "sideA": {
+      "bytes": 21842,
+      "sha256": "f8fcca517dfb007d5ae691a7c88bc73db919ad33709150f8ba710bd84909f404",
+      "path": "/screenshots/appexchange-T01-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 21842,
+      "sha256": "f8fcca517dfb007d5ae691a7c88bc73db919ad33709150f8ba710bd84909f404",
+      "path": "/screenshots/appexchange-T01-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "appexchange-T02": {
+    "url": "https://appexchange.salesforce.com/category/agentforce",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:57:53.817Z",
+    "sideA": {
+      "bytes": 86935,
+      "sha256": "651b4093de0125f2ae92ed76bfb45aa0b2b237c2035c42cabea426571c642da4",
+      "path": "/screenshots/appexchange-T02-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 86935,
+      "sha256": "651b4093de0125f2ae92ed76bfb45aa0b2b237c2035c42cabea426571c642da4",
+      "path": "/screenshots/appexchange-T02-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "appexchange-T03": {
+    "url": "https://appexchange.salesforce.com/top-apps",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:58:01.015Z",
+    "sideA": {
+      "bytes": 113651,
+      "sha256": "8b3885605317d318c47424161ca12f189705ab85eceeb12b593eac69871022c2",
+      "path": "/screenshots/appexchange-T03-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 120501,
+      "sha256": "2048c3bff8863a4031eb09f23ec3a65f1a8d026ad9957a74811127a986ee1604",
+      "path": "/screenshots/appexchange-T03-sideB.jpg"
+    },
+    "pixelDiffPercent": 15.07,
+    "changedPixels": 9162,
+    "totalPixels": 60800,
+    "changedBox": {
+      "x": 2.5,
+      "y": 8.4,
+      "w": 94.7,
+      "h": 91.6
+    },
+    "zones": {
+      "headerPct": 5.91,
+      "heroCenterPct": 20.06,
+      "rightPanelPct": 11.55,
+      "lowerBodyPct": 10.3,
+      "footerPct": 20.16,
+      "headerEdgeContrastA": 23.59,
+      "headerEdgeContrastB": 31.22,
+      "rightEdgeContrastA": 23.66,
+      "rightEdgeContrastB": 25.83,
+      "meanLumDiff": 0.95
+    }
+  },
+  "appexchange-T04": {
+    "url": "https://appexchange.salesforce.com/industries",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:58:09.278Z",
+    "sideA": {
+      "bytes": 116705,
+      "sha256": "9d92bc7edfb68a76463ad31d22df5d3250642bd1731428891814e1cf2754cf1a",
+      "path": "/screenshots/appexchange-T04-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 116705,
+      "sha256": "9d92bc7edfb68a76463ad31d22df5d3250642bd1731428891814e1cf2754cf1a",
+      "path": "/screenshots/appexchange-T04-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "appexchange-T05": {
+    "url": "https://appexchange.salesforce.com/consultants",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:58:17.576Z",
+    "sideA": {
+      "bytes": 100575,
+      "sha256": "55fdfd11586e537885070017e01943e4e067d0dee87d74521b487521bf063b60",
+      "path": "/screenshots/appexchange-T05-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 100575,
+      "sha256": "55fdfd11586e537885070017e01943e4e067d0dee87d74521b487521bf063b60",
+      "path": "/screenshots/appexchange-T05-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "appexchange-T06": {
+    "url": "https://appexchange.salesforce.com/security-review",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:58:24.726Z",
+    "sideA": {
+      "bytes": 95418,
+      "sha256": "c92dadc41fbcede5d04ec6b7102e3e85e543702ba2799f52b6cedf41b1efd39c",
+      "path": "/screenshots/appexchange-T06-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 95418,
+      "sha256": "c92dadc41fbcede5d04ec6b7102e3e85e543702ba2799f52b6cedf41b1efd39c",
+      "path": "/screenshots/appexchange-T06-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "appexchange-T07": {
+    "url": "https://appexchange.salesforce.com/components",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:58:28.624Z",
+    "sideA": {
+      "bytes": 63764,
+      "sha256": "087aa66679c0c5505a6e6e5e72f48331f9a10dd080e8dc173a50375b8cd6a028",
+      "path": "/screenshots/appexchange-T07-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 63764,
+      "sha256": "087aa66679c0c5505a6e6e5e72f48331f9a10dd080e8dc173a50375b8cd6a028",
+      "path": "/screenshots/appexchange-T07-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "appexchange-T08": {
+    "url": "https://appexchange.salesforce.com/publishers",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:58:37.479Z",
+    "sideA": {
+      "bytes": 88823,
+      "sha256": "6514a2ba7c6e7f0795791fb042b9d92a340b04ac7d63d5ebdf5704905e156967",
+      "path": "/screenshots/appexchange-T08-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 88823,
+      "sha256": "6514a2ba7c6e7f0795791fb042b9d92a340b04ac7d63d5ebdf5704905e156967",
+      "path": "/screenshots/appexchange-T08-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "partners-T01": {
+    "url": "https://partners.salesforce.com/",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:58:46.104Z",
+    "sideA": {
+      "bytes": 53668,
+      "sha256": "c7891dd03cfd6f116d1898cf81255a71e3c71f6a600b08d55d4d53b9e3c29a45",
+      "path": "/screenshots/partners-T01-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 53668,
+      "sha256": "c7891dd03cfd6f116d1898cf81255a71e3c71f6a600b08d55d4d53b9e3c29a45",
+      "path": "/screenshots/partners-T01-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "partners-T02": {
+    "url": "https://partners.salesforce.com/program",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:58:53.351Z",
+    "sideA": {
+      "bytes": 20135,
+      "sha256": "70557bdd8567f2a282e6659306962c612d62e8d8169c9674eb8439902e0fd218",
+      "path": "/screenshots/partners-T02-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 20135,
+      "sha256": "70557bdd8567f2a282e6659306962c612d62e8d8169c9674eb8439902e0fd218",
+      "path": "/screenshots/partners-T02-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "partners-T03": {
+    "url": "https://partners.salesforce.com/isv",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:58:59.425Z",
+    "sideA": {
+      "bytes": 48028,
+      "sha256": "6fb2665b6137f183a7f097a0e820d03627183695db5bc3690f6e2ed7ea93cdab",
+      "path": "/screenshots/partners-T03-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 26080,
+      "sha256": "e1a4ff69af89ae1bf49ba5ff66ef346ec49ead8a9a721273c4c9013bba6d0df3",
+      "path": "/screenshots/partners-T03-sideB.jpg"
+    },
+    "pixelDiffPercent": 2.78,
+    "changedPixels": 1693,
+    "totalPixels": 60800,
+    "changedBox": {
+      "x": 0,
+      "y": 46.3,
+      "w": 100,
+      "h": 53.7
+    },
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0.17,
+      "rightPanelPct": 2.8,
+      "lowerBodyPct": 5.48,
+      "footerPct": 9.5,
+      "headerEdgeContrastA": 20.54,
+      "headerEdgeContrastB": 20.54,
+      "rightEdgeContrastA": 6.21,
+      "rightEdgeContrastB": 0,
+      "meanLumDiff": 1.95
+    }
+  },
+  "partners-T04": {
+    "url": "https://partners.salesforce.com/learning",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:59:06.489Z",
+    "sideA": {
+      "bytes": 25943,
+      "sha256": "6b01fbe3f9db232e01a68d7e8952c2ae12d326d50b994c14f05daa42cdcdbffe",
+      "path": "/screenshots/partners-T04-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 25943,
+      "sha256": "6b01fbe3f9db232e01a68d7e8952c2ae12d326d50b994c14f05daa42cdcdbffe",
+      "path": "/screenshots/partners-T04-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "partners-T05": {
+    "url": "https://partners.salesforce.com/leads",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:59:12.381Z",
+    "sideA": {
+      "bytes": 26335,
+      "sha256": "d83f8ef6dc566b0ec131255b0ea678fb8338a3b25405406d29eccbc976b6eaa4",
+      "path": "/screenshots/partners-T05-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 26335,
+      "sha256": "d83f8ef6dc566b0ec131255b0ea678fb8338a3b25405406d29eccbc976b6eaa4",
+      "path": "/screenshots/partners-T05-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "partners-T06": {
+    "url": "https://partners.salesforce.com/navigator",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:59:18.412Z",
+    "sideA": {
+      "bytes": 23305,
+      "sha256": "bf2d4ac453d1aea86d7423905e0660ac52c14549b28dca75aace29357a9a650b",
+      "path": "/screenshots/partners-T06-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 23305,
+      "sha256": "bf2d4ac453d1aea86d7423905e0660ac52c14549b28dca75aace29357a9a650b",
+      "path": "/screenshots/partners-T06-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "partners-T07": {
+    "url": "https://partners.salesforce.com/marketing",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:59:24.338Z",
+    "sideA": {
+      "bytes": 52629,
+      "sha256": "f16008623e8d93887353492503d48feb88191a15c601382e4298f5e383b1b4fe",
+      "path": "/screenshots/partners-T07-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 52629,
+      "sha256": "f16008623e8d93887353492503d48feb88191a15c601382e4298f5e383b1b4fe",
+      "path": "/screenshots/partners-T07-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "partners-T08": {
+    "url": "https://partners.salesforce.com/governance",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:59:31.020Z",
+    "sideA": {
+      "bytes": 60897,
+      "sha256": "022a02e0af78c8d5b9f6eec7b011b4018a26bf5bcc8657528a7672f8221972ec",
+      "path": "/screenshots/partners-T08-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 60897,
+      "sha256": "022a02e0af78c8d5b9f6eec7b011b4018a26bf5bcc8657528a7672f8221972ec",
+      "path": "/screenshots/partners-T08-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "apac-T01": {
+    "url": "https://www.salesforce.com/ap/",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:59:35.425Z",
+    "sideA": {
+      "bytes": 95843,
+      "sha256": "8557ef4dfa704a06541470e74a7000bd21a6880a31dbb3393242b10e637425c3",
+      "path": "/screenshots/apac-T01-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 95843,
+      "sha256": "8557ef4dfa704a06541470e74a7000bd21a6880a31dbb3393242b10e637425c3",
+      "path": "/screenshots/apac-T01-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "apac-T02": {
+    "url": "https://www.salesforce.com/ap/sales/",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:59:38.717Z",
+    "sideA": {
+      "bytes": 114322,
+      "sha256": "317861f6536fddd15d5334adf9454a88cba695016cf9e394a157b2f4a7e362be",
+      "path": "/screenshots/apac-T02-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 114322,
+      "sha256": "317861f6536fddd15d5334adf9454a88cba695016cf9e394a157b2f4a7e362be",
+      "path": "/screenshots/apac-T02-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "apac-T03": {
+    "url": "https://www.salesforce.com/ap/artificial-intelligence/",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:59:42.665Z",
+    "sideA": {
+      "bytes": 80935,
+      "sha256": "a0cafcbc7a8faafc1a9fca67225947c4c661177831593ad2ab7da2f09b66def7",
+      "path": "/screenshots/apac-T03-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 80472,
+      "sha256": "f375af7241f3b72993a957c6fe158000d6c63db6809d0001cca909849b90e118",
+      "path": "/screenshots/apac-T03-sideB.jpg"
+    },
+    "pixelDiffPercent": 12.56,
+    "changedPixels": 7635,
+    "totalPixels": 60800,
+    "changedBox": {
+      "x": 0,
+      "y": 12.6,
+      "w": 100,
+      "h": 87.4
+    },
+    "zones": {
+      "headerPct": 7.69,
+      "heroCenterPct": 13.98,
+      "rightPanelPct": 4.72,
+      "lowerBodyPct": 19.77,
+      "footerPct": 17.41,
+      "headerEdgeContrastA": 14.96,
+      "headerEdgeContrastB": 14.97,
+      "rightEdgeContrastA": 4.22,
+      "rightEdgeContrastB": 4.15,
+      "meanLumDiff": 3.97
+    }
+  },
+  "apac-T04": {
+    "url": "https://www.salesforce.com/ap/customer-stories/",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:59:45.367Z",
+    "sideA": {
+      "bytes": 107278,
+      "sha256": "f18b7ba9456d2144eaf527ba6fdff978729fe1470547a149d329df05b9df05b6",
+      "path": "/screenshots/apac-T04-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 107278,
+      "sha256": "f18b7ba9456d2144eaf527ba6fdff978729fe1470547a149d329df05b9df05b6",
+      "path": "/screenshots/apac-T04-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "apac-T05": {
+    "url": "https://www.salesforce.com/au/",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:59:49.014Z",
+    "sideA": {
+      "bytes": 99824,
+      "sha256": "73c746c67221c825e229adae153a5e4d9462a230f6b06bcacce43162dbd920c2",
+      "path": "/screenshots/apac-T05-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 99824,
+      "sha256": "73c746c67221c825e229adae153a5e4d9462a230f6b06bcacce43162dbd920c2",
+      "path": "/screenshots/apac-T05-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "apac-T06": {
+    "url": "https://www.salesforce.com/in/",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:59:53.404Z",
+    "sideA": {
+      "bytes": 105651,
+      "sha256": "41527317dccbbca4d7db3d61d532c1e25a9fb099f3593e624499f6093994b346",
+      "path": "/screenshots/apac-T06-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 105651,
+      "sha256": "41527317dccbbca4d7db3d61d532c1e25a9fb099f3593e624499f6093994b346",
+      "path": "/screenshots/apac-T06-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "apac-T07": {
+    "url": "https://www.salesforce.com/ap/crm/",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:59:55.998Z",
+    "sideA": {
+      "bytes": 117960,
+      "sha256": "08c5dee0df6c98659dd64a260e3be9658f670fc6eed1bd90d27c4b190bb5ece0",
+      "path": "/screenshots/apac-T07-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 117960,
+      "sha256": "08c5dee0df6c98659dd64a260e3be9658f670fc6eed1bd90d27c4b190bb5ece0",
+      "path": "/screenshots/apac-T07-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "apac-T08": {
+    "url": "https://www.salesforce.com/ap/company/our-story/",
+    "status": 200,
+    "capturedAt": "2026-11-13T04:59:58.548Z",
+    "sideA": {
+      "bytes": 101971,
+      "sha256": "8cf88e5b837adf1ae93890d2a07854bb0e57f02f89b27af84f5b65de1cfe44a1",
+      "path": "/screenshots/apac-T08-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 101971,
+      "sha256": "8cf88e5b837adf1ae93890d2a07854bb0e57f02f89b27af84f5b65de1cfe44a1",
+      "path": "/screenshots/apac-T08-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "emea-T01": {
+    "url": "https://www.salesforce.com/eu/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:00:03.112Z",
+    "sideA": {
+      "bytes": 103134,
+      "sha256": "d99990bb5aad9660d912202f7af75aaee226785fef78fed8c5916812950d8cde",
+      "path": "/screenshots/emea-T01-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 103134,
+      "sha256": "d99990bb5aad9660d912202f7af75aaee226785fef78fed8c5916812950d8cde",
+      "path": "/screenshots/emea-T01-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "emea-T02": {
+    "url": "https://www.salesforce.com/eu/sales/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:00:05.895Z",
+    "sideA": {
+      "bytes": 101877,
+      "sha256": "dc1162aa08987dfa368ca5e88c5e21586559a9ad32337a51fc9c0b5c0157c1d1",
+      "path": "/screenshots/emea-T02-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 101877,
+      "sha256": "dc1162aa08987dfa368ca5e88c5e21586559a9ad32337a51fc9c0b5c0157c1d1",
+      "path": "/screenshots/emea-T02-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "emea-T03": {
+    "url": "https://www.salesforce.com/eu/artificial-intelligence/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:00:09.747Z",
+    "sideA": {
+      "bytes": 80903,
+      "sha256": "2a105b1ebd60c58f88309a82bdd65359dc0452679c7f522622c31866ac34b66c",
+      "path": "/screenshots/emea-T03-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 80468,
+      "sha256": "ad6b9412685b96ad200efa9917ae12d18e1d8c66325df06116d755505c0f25cf",
+      "path": "/screenshots/emea-T03-sideB.jpg"
+    },
+    "pixelDiffPercent": 12.52,
+    "changedPixels": 7612,
+    "totalPixels": 60800,
+    "changedBox": {
+      "x": 0,
+      "y": 12.6,
+      "w": 100,
+      "h": 87.4
+    },
+    "zones": {
+      "headerPct": 7.69,
+      "heroCenterPct": 13.87,
+      "rightPanelPct": 4.72,
+      "lowerBodyPct": 19.77,
+      "footerPct": 17.41,
+      "headerEdgeContrastA": 14.96,
+      "headerEdgeContrastB": 14.97,
+      "rightEdgeContrastA": 4.22,
+      "rightEdgeContrastB": 4.15,
+      "meanLumDiff": 4.04
+    }
+  },
+  "emea-T04": {
+    "url": "https://www.salesforce.com/fr/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:00:13.636Z",
+    "sideA": {
+      "bytes": 108385,
+      "sha256": "b7aed19ea3eb806f807758b214b9669232baa9866b3cd1fc711a45da9bafb436",
+      "path": "/screenshots/emea-T04-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 108385,
+      "sha256": "b7aed19ea3eb806f807758b214b9669232baa9866b3cd1fc711a45da9bafb436",
+      "path": "/screenshots/emea-T04-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "emea-T05": {
+    "url": "https://www.salesforce.com/es/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:00:18.114Z",
+    "sideA": {
+      "bytes": 105312,
+      "sha256": "26e31a8d0d409a4c1a81d4a03ca739e1e0b37432878d47122a9b7bb17df3f823",
+      "path": "/screenshots/emea-T05-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 105312,
+      "sha256": "26e31a8d0d409a4c1a81d4a03ca739e1e0b37432878d47122a9b7bb17df3f823",
+      "path": "/screenshots/emea-T05-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "emea-T06": {
+    "url": "https://www.salesforce.com/it/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:00:22.418Z",
+    "sideA": {
+      "bytes": 102083,
+      "sha256": "55d5102b53d5f42c0bafc0c185bfbe34862d577fb4b9ad2844fa84eb0b48bdb3",
+      "path": "/screenshots/emea-T06-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 102083,
+      "sha256": "55d5102b53d5f42c0bafc0c185bfbe34862d577fb4b9ad2844fa84eb0b48bdb3",
+      "path": "/screenshots/emea-T06-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "emea-T07": {
+    "url": "https://www.salesforce.com/nl/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:00:26.068Z",
+    "sideA": {
+      "bytes": 114346,
+      "sha256": "e755c9cd9a9d2769f23d2fe57f6fcdb6bda5abc01d7a969cce36869165b111ae",
+      "path": "/screenshots/emea-T07-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 114346,
+      "sha256": "e755c9cd9a9d2769f23d2fe57f6fcdb6bda5abc01d7a969cce36869165b111ae",
+      "path": "/screenshots/emea-T07-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "emea-T08": {
+    "url": "https://www.salesforce.com/eu/company/our-story/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:00:28.331Z",
+    "sideA": {
+      "bytes": 101971,
+      "sha256": "8cf88e5b837adf1ae93890d2a07854bb0e57f02f89b27af84f5b65de1cfe44a1",
+      "path": "/screenshots/emea-T08-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 101971,
+      "sha256": "8cf88e5b837adf1ae93890d2a07854bb0e57f02f89b27af84f5b65de1cfe44a1",
+      "path": "/screenshots/emea-T08-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "americas-T01": {
+    "url": "https://www.salesforce.com/mx/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:00:32.953Z",
+    "sideA": {
+      "bytes": 105275,
+      "sha256": "e082a6004a8794cc14468643ac39546229e1c0e27315ac46319830b295236151",
+      "path": "/screenshots/americas-T01-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 105275,
+      "sha256": "e082a6004a8794cc14468643ac39546229e1c0e27315ac46319830b295236151",
+      "path": "/screenshots/americas-T01-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "americas-T02": {
+    "url": "https://www.salesforce.com/mx/sales/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:00:35.414Z",
+    "sideA": {
+      "bytes": 133250,
+      "sha256": "157b47bfa1e193bf0cf81c18d71549eae0d39d660c12cf47569ad1ddd77ebd3b",
+      "path": "/screenshots/americas-T02-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 133250,
+      "sha256": "157b47bfa1e193bf0cf81c18d71549eae0d39d660c12cf47569ad1ddd77ebd3b",
+      "path": "/screenshots/americas-T02-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "americas-T03": {
+    "url": "https://www.salesforce.com/br/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:00:39.072Z",
+    "sideA": {
+      "bytes": 108629,
+      "sha256": "1676f427ba9cf22eabc8b72d1079bff77d1658a1a642da122e99fd34ad8be25d",
+      "path": "/screenshots/americas-T03-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 105211,
+      "sha256": "76494f69a492c26a8cf87881fa3f7ad1529a0834865febfc63a0a020618553e4",
+      "path": "/screenshots/americas-T03-sideB.jpg"
+    },
+    "pixelDiffPercent": 18.75,
+    "changedPixels": 11402,
+    "totalPixels": 60800,
+    "changedBox": {
+      "x": 0,
+      "y": 12.6,
+      "w": 100,
+      "h": 87.4
+    },
+    "zones": {
+      "headerPct": 7.69,
+      "heroCenterPct": 23.63,
+      "rightPanelPct": 10.16,
+      "lowerBodyPct": 30.76,
+      "footerPct": 19.26,
+      "headerEdgeContrastA": 15.71,
+      "headerEdgeContrastB": 15.71,
+      "rightEdgeContrastA": 14.33,
+      "rightEdgeContrastB": 13.38,
+      "meanLumDiff": 3.38
+    }
+  },
+  "americas-T04": {
+    "url": "https://www.salesforce.com/br/sales/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:00:41.675Z",
+    "sideA": {
+      "bytes": 131618,
+      "sha256": "2f91d386468cada92ba58677fdb48adf86b5dae40e9a68cdb118b56b15ceaeff",
+      "path": "/screenshots/americas-T04-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 131618,
+      "sha256": "2f91d386468cada92ba58677fdb48adf86b5dae40e9a68cdb118b56b15ceaeff",
+      "path": "/screenshots/americas-T04-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "americas-T05": {
+    "url": "https://www.salesforce.com/ca/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:00:45.305Z",
+    "sideA": {
+      "bytes": 103490,
+      "sha256": "c474f2850b9b5d7005e96554ac1b8985870d07ebdd8287c8d9227154742a4dd6",
+      "path": "/screenshots/americas-T05-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 103490,
+      "sha256": "c474f2850b9b5d7005e96554ac1b8985870d07ebdd8287c8d9227154742a4dd6",
+      "path": "/screenshots/americas-T05-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "americas-T06": {
+    "url": "https://www.salesforce.com/fr-ca/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:00:48.025Z",
+    "sideA": {
+      "bytes": 126033,
+      "sha256": "1e7f1e260abda3f71496723fc0fc62aa9dae4e802f0ebd25e2f949f0949b5e15",
+      "path": "/screenshots/americas-T06-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 126033,
+      "sha256": "1e7f1e260abda3f71496723fc0fc62aa9dae4e802f0ebd25e2f949f0949b5e15",
+      "path": "/screenshots/americas-T06-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "americas-T07": {
+    "url": "https://www.salesforce.com/mx/crm/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:00:50.348Z",
+    "sideA": {
+      "bytes": 118957,
+      "sha256": "3b9bc37757d2c38111e71199b81dca49e71f6eccae0c7027f44c8623d69bac6c",
+      "path": "/screenshots/americas-T07-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 118957,
+      "sha256": "3b9bc37757d2c38111e71199b81dca49e71f6eccae0c7027f44c8623d69bac6c",
+      "path": "/screenshots/americas-T07-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "americas-T08": {
+    "url": "https://www.salesforce.com/br/crm/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:00:52.717Z",
+    "sideA": {
+      "bytes": 127868,
+      "sha256": "b869d39dd5fa4e9a9356b6013b622fe5160c5aeadd851d54fe419566096b836e",
+      "path": "/screenshots/americas-T08-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 127868,
+      "sha256": "b869d39dd5fa4e9a9356b6013b622fe5160c5aeadd851d54fe419566096b836e",
+      "path": "/screenshots/americas-T08-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "japan-T01": {
+    "url": "https://www.salesforce.com/jp/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:00:55.850Z",
+    "sideA": {
+      "bytes": 116061,
+      "sha256": "6a5e4d451aabb693fa1e6ece6ae71f4ef0e72d5c5964c6c49c500a778640ce19",
+      "path": "/screenshots/japan-T01-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 116061,
+      "sha256": "6a5e4d451aabb693fa1e6ece6ae71f4ef0e72d5c5964c6c49c500a778640ce19",
+      "path": "/screenshots/japan-T01-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "japan-T02": {
+    "url": "https://www.salesforce.com/jp/sales/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:00:58.325Z",
+    "sideA": {
+      "bytes": 84922,
+      "sha256": "296becc51afd9ced4c92251c0b163393259e0e20f2f38d65afa37f35a16af556",
+      "path": "/screenshots/japan-T02-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 84922,
+      "sha256": "296becc51afd9ced4c92251c0b163393259e0e20f2f38d65afa37f35a16af556",
+      "path": "/screenshots/japan-T02-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "japan-T03": {
+    "url": "https://www.salesforce.com/jp/artificial-intelligence/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:01:02.223Z",
+    "sideA": {
+      "bytes": 104424,
+      "sha256": "0a338112ba7ae9709628b35fa8ce9ed24c4a74a644e6da3b6f20a86229a7c163",
+      "path": "/screenshots/japan-T03-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 105922,
+      "sha256": "451b5a6fd0547ef2b19501ec7f1656c67f1c10d4834999663fec4a485674c2e4",
+      "path": "/screenshots/japan-T03-sideB.jpg"
+    },
+    "pixelDiffPercent": 13.08,
+    "changedPixels": 7955,
+    "totalPixels": 60800,
+    "changedBox": {
+      "x": 0.6,
+      "y": 15.8,
+      "w": 98.8,
+      "h": 81.1
+    },
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 20.82,
+      "rightPanelPct": 5.32,
+      "lowerBodyPct": 13.83,
+      "footerPct": 14.55,
+      "headerEdgeContrastA": 17.05,
+      "headerEdgeContrastB": 17.05,
+      "rightEdgeContrastA": 23.6,
+      "rightEdgeContrastB": 23.7,
+      "meanLumDiff": 3.04
+    }
+  },
+  "japan-T04": {
+    "url": "https://www.salesforce.com/jp/customer-stories/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:01:04.713Z",
+    "sideA": {
+      "bytes": 83495,
+      "sha256": "61835a795cff34ed66c950cd856f62d5fb7d919f7655da9568ecfec411efd877",
+      "path": "/screenshots/japan-T04-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 83495,
+      "sha256": "61835a795cff34ed66c950cd856f62d5fb7d919f7655da9568ecfec411efd877",
+      "path": "/screenshots/japan-T04-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "japan-T05": {
+    "url": "https://www.salesforce.com/jp/crm/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:01:07.114Z",
+    "sideA": {
+      "bytes": 93603,
+      "sha256": "fe06e50c7c78f8eb05bb9afa39352487dd6d7fb9c3909d9f58c3902c5eb9702f",
+      "path": "/screenshots/japan-T05-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 93603,
+      "sha256": "fe06e50c7c78f8eb05bb9afa39352487dd6d7fb9c3909d9f58c3902c5eb9702f",
+      "path": "/screenshots/japan-T05-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "japan-T06": {
+    "url": "https://www.salesforce.com/jp/sales/pricing/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:01:09.681Z",
+    "sideA": {
+      "bytes": 93487,
+      "sha256": "90b9bd31584edf1d43a63167d22fdbf2bc10b41b07ccdb2c65610c88ab1d26a5",
+      "path": "/screenshots/japan-T06-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 93487,
+      "sha256": "90b9bd31584edf1d43a63167d22fdbf2bc10b41b07ccdb2c65610c88ab1d26a5",
+      "path": "/screenshots/japan-T06-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "japan-T07": {
+    "url": "https://www.salesforce.com/jp/service/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:01:12.765Z",
+    "sideA": {
+      "bytes": 78183,
+      "sha256": "a90c74a6ed9f06e38e1b68c5223152830699f5e6cb186c744606c21505568c6b",
+      "path": "/screenshots/japan-T07-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 78183,
+      "sha256": "a90c74a6ed9f06e38e1b68c5223152830699f5e6cb186c744606c21505568c6b",
+      "path": "/screenshots/japan-T07-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "japan-T08": {
+    "url": "https://www.salesforce.com/jp/company/our-story/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:01:15.215Z",
+    "sideA": {
+      "bytes": 110618,
+      "sha256": "a48f0702a6e999d64d912f8c8294d013ca84dcd930f2cef699d666b1733a13ba",
+      "path": "/screenshots/japan-T08-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 110618,
+      "sha256": "a48f0702a6e999d64d912f8c8294d013ca84dcd930f2cef699d666b1733a13ba",
+      "path": "/screenshots/japan-T08-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "uk-T01": {
+    "url": "https://www.salesforce.com/uk/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:01:19.696Z",
+    "sideA": {
+      "bytes": 101206,
+      "sha256": "39a776ff27f2c5558926a890704fc7f36e0ccc7dde70577c9d934b7830ead6f6",
+      "path": "/screenshots/uk-T01-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 101206,
+      "sha256": "39a776ff27f2c5558926a890704fc7f36e0ccc7dde70577c9d934b7830ead6f6",
+      "path": "/screenshots/uk-T01-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "uk-T02": {
+    "url": "https://www.salesforce.com/uk/sales/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:01:22.087Z",
+    "sideA": {
+      "bytes": 109674,
+      "sha256": "b043c8854b20e68efd81c2407f55acfa2537095ba3763e93671f4eb5703369de",
+      "path": "/screenshots/uk-T02-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 109674,
+      "sha256": "b043c8854b20e68efd81c2407f55acfa2537095ba3763e93671f4eb5703369de",
+      "path": "/screenshots/uk-T02-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "uk-T03": {
+    "url": "https://www.salesforce.com/uk/artificial-intelligence/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:01:25.761Z",
+    "sideA": {
+      "bytes": 80707,
+      "sha256": "7d0027bb36e78da142049addd19868a2fd96cf97335c63083db2dbc1c5f7e125",
+      "path": "/screenshots/uk-T03-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 80401,
+      "sha256": "ccfa07d397ce660802632abfcd1c0285e0bfb8fd1d837bec5c171c0ba67bfa0e",
+      "path": "/screenshots/uk-T03-sideB.jpg"
+    },
+    "pixelDiffPercent": 12.55,
+    "changedPixels": 7628,
+    "totalPixels": 60800,
+    "changedBox": {
+      "x": 0,
+      "y": 12.6,
+      "w": 100,
+      "h": 87.4
+    },
+    "zones": {
+      "headerPct": 7.69,
+      "heroCenterPct": 13.94,
+      "rightPanelPct": 4.72,
+      "lowerBodyPct": 19.77,
+      "footerPct": 17.41,
+      "headerEdgeContrastA": 14.96,
+      "headerEdgeContrastB": 14.97,
+      "rightEdgeContrastA": 4.22,
+      "rightEdgeContrastB": 4.15,
+      "meanLumDiff": 3.88
+    }
+  },
+  "uk-T04": {
+    "url": "https://www.salesforce.com/uk/customer-stories/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:01:28.631Z",
+    "sideA": {
+      "bytes": 112777,
+      "sha256": "72b5377c37283476d944f0057f6adab9fe29f4c08126c19a0533dfd9c6413722",
+      "path": "/screenshots/uk-T04-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 112777,
+      "sha256": "72b5377c37283476d944f0057f6adab9fe29f4c08126c19a0533dfd9c6413722",
+      "path": "/screenshots/uk-T04-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "uk-T05": {
+    "url": "https://www.salesforce.com/uk/crm/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:01:31.036Z",
+    "sideA": {
+      "bytes": 121380,
+      "sha256": "5c2005352d0bb70d81ca01007149a4fcd39197b19ed745e084b9dda0e65829cb",
+      "path": "/screenshots/uk-T05-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 121380,
+      "sha256": "5c2005352d0bb70d81ca01007149a4fcd39197b19ed745e084b9dda0e65829cb",
+      "path": "/screenshots/uk-T05-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "uk-T06": {
+    "url": "https://www.salesforce.com/uk/sales/pricing/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:01:33.393Z",
+    "sideA": {
+      "bytes": 83350,
+      "sha256": "2cd996f88ade027394a9885abbebefa196ff63156c27f73a9bed753c7075a28f",
+      "path": "/screenshots/uk-T06-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 83350,
+      "sha256": "2cd996f88ade027394a9885abbebefa196ff63156c27f73a9bed753c7075a28f",
+      "path": "/screenshots/uk-T06-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "uk-T07": {
+    "url": "https://www.salesforce.com/uk/service/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:01:36.179Z",
+    "sideA": {
+      "bytes": 93139,
+      "sha256": "e8fb336ee7f1c2b059d4ab7e39226339476820f53140c8486759719310a603f9",
+      "path": "/screenshots/uk-T07-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 93139,
+      "sha256": "e8fb336ee7f1c2b059d4ab7e39226339476820f53140c8486759719310a603f9",
+      "path": "/screenshots/uk-T07-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "uk-T08": {
+    "url": "https://www.salesforce.com/uk/company/our-story/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:01:38.466Z",
+    "sideA": {
+      "bytes": 101971,
+      "sha256": "8cf88e5b837adf1ae93890d2a07854bb0e57f02f89b27af84f5b65de1cfe44a1",
+      "path": "/screenshots/uk-T08-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 101971,
+      "sha256": "8cf88e5b837adf1ae93890d2a07854bb0e57f02f89b27af84f5b65de1cfe44a1",
+      "path": "/screenshots/uk-T08-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "germany-T01": {
+    "url": "https://www.salesforce.com/de/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:01:42.356Z",
+    "sideA": {
+      "bytes": 97935,
+      "sha256": "dec330d2136ffcd916ae44576b25a284d5cfa3fd147114a6c8fa2ab0cf46a2c0",
+      "path": "/screenshots/germany-T01-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 97935,
+      "sha256": "dec330d2136ffcd916ae44576b25a284d5cfa3fd147114a6c8fa2ab0cf46a2c0",
+      "path": "/screenshots/germany-T01-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "germany-T02": {
+    "url": "https://www.salesforce.com/de/sales/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:01:44.647Z",
+    "sideA": {
+      "bytes": 146861,
+      "sha256": "9b357321fb8e412f3820ea567062d69192d5cf5e94831861f79eefc354c4ccfb",
+      "path": "/screenshots/germany-T02-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 146861,
+      "sha256": "9b357321fb8e412f3820ea567062d69192d5cf5e94831861f79eefc354c4ccfb",
+      "path": "/screenshots/germany-T02-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "germany-T03": {
+    "url": "https://www.salesforce.com/de/artificial-intelligence/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:01:48.444Z",
+    "sideA": {
+      "bytes": 81662,
+      "sha256": "48da1c8a8496bb2023b55b764a80573641abcd7a36f0514afed12068c079c42c",
+      "path": "/screenshots/germany-T03-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 83155,
+      "sha256": "7bc728c19d20b90a7bb5b52e9ceb9a374aecc75dea403122bf21152bb17db8ab",
+      "path": "/screenshots/germany-T03-sideB.jpg"
+    },
+    "pixelDiffPercent": 12.99,
+    "changedPixels": 7897,
+    "totalPixels": 60800,
+    "changedBox": {
+      "x": 0,
+      "y": 12.6,
+      "w": 100,
+      "h": 87.4
+    },
+    "zones": {
+      "headerPct": 7.69,
+      "heroCenterPct": 14.23,
+      "rightPanelPct": 4.61,
+      "lowerBodyPct": 22.29,
+      "footerPct": 16.71,
+      "headerEdgeContrastA": 14.87,
+      "headerEdgeContrastB": 14.89,
+      "rightEdgeContrastA": 4.38,
+      "rightEdgeContrastB": 4.58,
+      "meanLumDiff": 3.93
+    }
+  },
+  "germany-T04": {
+    "url": "https://www.salesforce.com/de/customer-stories/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:01:50.895Z",
+    "sideA": {
+      "bytes": 78529,
+      "sha256": "aa3d74d2134434bd856dd9599c3b0a41d703b4f7701091efd5ced3a98e7a2d83",
+      "path": "/screenshots/germany-T04-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 78529,
+      "sha256": "aa3d74d2134434bd856dd9599c3b0a41d703b4f7701091efd5ced3a98e7a2d83",
+      "path": "/screenshots/germany-T04-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "germany-T05": {
+    "url": "https://www.salesforce.com/de/crm/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:01:53.462Z",
+    "sideA": {
+      "bytes": 136820,
+      "sha256": "a72fa975ec2ef334ec97984f032cbe69e8ae24d785ad937faddcc9853c0e1faa",
+      "path": "/screenshots/germany-T05-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 136820,
+      "sha256": "a72fa975ec2ef334ec97984f032cbe69e8ae24d785ad937faddcc9853c0e1faa",
+      "path": "/screenshots/germany-T05-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "germany-T06": {
+    "url": "https://www.salesforce.com/de/sales/pricing/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:01:55.926Z",
+    "sideA": {
+      "bytes": 94782,
+      "sha256": "ebef696034260f099e7fff7c6be2a9825550c92bf67c2d28d608de3b0bd0ef47",
+      "path": "/screenshots/germany-T06-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 94782,
+      "sha256": "ebef696034260f099e7fff7c6be2a9825550c92bf67c2d28d608de3b0bd0ef47",
+      "path": "/screenshots/germany-T06-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "germany-T07": {
+    "url": "https://www.salesforce.com/de/service/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:01:58.598Z",
+    "sideA": {
+      "bytes": 126474,
+      "sha256": "ae37adc696eaadac1984b0c3f9a89db1a46f9a7f59bbf6062dde9a65cd94418d",
+      "path": "/screenshots/germany-T07-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 126474,
+      "sha256": "ae37adc696eaadac1984b0c3f9a89db1a46f9a7f59bbf6062dde9a65cd94418d",
+      "path": "/screenshots/germany-T07-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  },
+  "germany-T08": {
+    "url": "https://www.salesforce.com/de/company/our-story/",
+    "status": 200,
+    "capturedAt": "2026-11-13T05:02:00.988Z",
+    "sideA": {
+      "bytes": 110121,
+      "sha256": "a374145eccca280b8463e5febbed74f2b00661fa7db77a36f06ee1e1c24fbd5e",
+      "path": "/screenshots/germany-T08-sideA.jpg"
+    },
+    "sideB": {
+      "bytes": 110121,
+      "sha256": "a374145eccca280b8463e5febbed74f2b00661fa7db77a36f06ee1e1c24fbd5e",
+      "path": "/screenshots/germany-T08-sideB.jpg"
+    },
+    "pixelDiffPercent": 0,
+    "changedPixels": 0,
+    "totalPixels": 60800,
+    "changedBox": null,
+    "zones": {
+      "headerPct": 0,
+      "heroCenterPct": 0,
+      "rightPanelPct": 0,
+      "lowerBodyPct": 0,
+      "footerPct": 0,
+      "meanLumDiff": 0
+    }
+  }
+}

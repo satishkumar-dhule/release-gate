@@ -1,11 +1,26 @@
-<div align="center">
+# Akamai Synthetic Release Gate & MCP Control Plane
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+Enterprise release-gating portal, 3-dimension diff engine (**Functional HTTP Headers**, **Cookies**, **Amazon Bedrock Nova Lite `amazon.nova-lite-v1:0` Visual AI**), **OpenAPI 3.1 / Swagger UI** server, **Model Context Protocol (MCP)** endpoint, and clone-and-apply **AWS Terraform + CloudWatch Synthetics** infrastructure bundle.
 
-  <h1>Built with AI Studio</h2>
+For full system design, data flow diagrams, domain rules, and AWS deployment architecture, see **[`ARCHITECTURE.md`](./ARCHITECTURE.md)**.
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+## Quick Start
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+```bash
+# 1. Install dependencies & run unit tests
+pnpm install
+pnpm exec tsx --test src/engine/rules.test.ts
 
-</div>
+# 2. Start full-stack server (React Portal + Express OpenAPI 3.1 + MCP Server on port 3000)
+pnpm run dev
+```
+
+## Deploy to AWS (`terraform apply`)
+
+```bash
+# Provision S3, Packaged Canary ZIP, DynamoDB, IAM, CloudWatch Synthetics Canaries & ECR:
+./scripts/deploy-aws.sh
+
+# Or build & push the Control Plane Docker image to ECR and deploy AWS App Runner:
+./scripts/deploy-aws.sh --with-apprunner
+```

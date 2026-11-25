@@ -1,0 +1,3927 @@
+{
+  "users": {
+    "user-enaopopztofm@salesforce.com": {
+      "userId": "usr-01-principal",
+      "email": "user-enaopopztofm@salesforce.com",
+      "name": "Principal Edge Architect",
+      "role": "Lead Edge Release Engineer",
+      "account": "SFDC-EDGE-373211957869 (AWS 373211957869 · Akamai Prod + Staging)",
+      "status": "active",
+      "passwordHash": "d1dbf533dfc565d09f462c0990955c72db48414dc871c70720537db662cb598c",
+      "passwordSalt": "f7152351490a11da633f1aa70cf1af79",
+      "mustChangePassword": false,
+      "createdAt": "2026-10-01T08:00:00.000Z",
+      "updatedAt": "2026-11-10T01:19:06.056Z",
+      "passwordUpdatedAt": "2026-10-15T10:00:00.000Z",
+      "stats": {
+        "runsTriggered": 18,
+        "comparisonsEvaluated": 24,
+        "visualJudgeInvocations": 10,
+        "mcpToolCalls": 14,
+        "cliCommandsRun": 11,
+        "loginCount": 32,
+        "failedLoginCount": 0,
+        "passwordResetCount": 1,
+        "lastActiveAt": "2026-11-10T01:19:06.056Z",
+        "lastLoginAt": "2026-11-08T04:00:00.000Z",
+        "lastTargetEvaluated": "T01:www.uat.staging"
+      }
+    },
+    "sre-oncall@salesforce.com": {
+      "userId": "usr-02-sre-oncall",
+      "email": "sre-oncall@salesforce.com",
+      "name": "Salesforce Edge SRE On-Call",
+      "role": "Staff Edge Reliability Engineer",
+      "account": "SFDC-EDGE-373211957869 (AWS 373211957869 · Akamai Prod + Staging)",
+      "status": "active",
+      "passwordHash": "f234928c12672911dd4014d4061a82058f9f4cb280b0a2c458f922d759acf282",
+      "passwordSalt": "e6cabd295e0dadbb29243b30897d2978",
+      "mustChangePassword": false,
+      "createdAt": "2026-10-05T09:30:00.000Z",
+      "updatedAt": "2026-11-08T04:00:00.000Z",
+      "passwordUpdatedAt": "2026-10-05T09:30:00.000Z",
+      "stats": {
+        "runsTriggered": 12,
+        "comparisonsEvaluated": 15,
+        "visualJudgeInvocations": 4,
+        "mcpToolCalls": 6,
+        "cliCommandsRun": 19,
+        "loginCount": 14,
+        "failedLoginCount": 1,
+        "passwordResetCount": 0,
+        "lastActiveAt": "2026-11-08T03:45:00.000Z",
+        "lastLoginAt": "2026-11-08T02:10:00.000Z",
+        "lastTargetEvaluated": "login.prod.staging"
+      }
+    },
+    "release-bot@salesforce.com": {
+      "userId": "usr-03-cicd-bot",
+      "email": "release-bot@salesforce.com",
+      "name": "GitHub Actions / Terraform Release Bot",
+      "role": "Automated CI/CD Service Account",
+      "account": "SFDC-EDGE-373211957869 (AWS 373211957869 · Akamai Prod + Staging)",
+      "status": "active",
+      "passwordHash": "dcb96f676f17a1c5bbf01f406057b52da30fd3bd5e40e5b01b16de6bc66df7c4",
+      "passwordSalt": "e9e383ab896e608800c487e976b9c5ca",
+      "mustChangePassword": false,
+      "createdAt": "2026-10-10T12:00:00.000Z",
+      "updatedAt": "2026-11-08T04:00:00.000Z",
+      "passwordUpdatedAt": "2026-10-10T12:00:00.000Z",
+      "stats": {
+        "runsTriggered": 42,
+        "comparisonsEvaluated": 42,
+        "visualJudgeInvocations": 12,
+        "mcpToolCalls": 30,
+        "cliCommandsRun": 42,
+        "loginCount": 42,
+        "failedLoginCount": 0,
+        "passwordResetCount": 0,
+        "lastActiveAt": "2026-11-08T04:15:00.000Z",
+        "lastLoginAt": "2026-11-08T04:15:00.000Z",
+        "lastTargetEvaluated": "developer.prod.staging"
+      }
+    },
+    "user-wbbmbfobdqdu@salesforce.com": {
+      "userId": "usr-8d8b6732",
+      "email": "user-wbbmbfobdqdu@salesforce.com",
+      "name": "user-wbbmbfobdqdu",
+      "role": "Ad-Hoc CLI / API Operator",
+      "account": "SFDC-EDGE-030771555103 (AWS 030771555103 · Akamai Prod + Staging)",
+      "status": "active",
+      "passwordHash": "4a4b8a7d85639349afc949eca886d52c0217363c60e3a263d500869fd9fc0102",
+      "passwordSalt": "3b6754f8036c01dd6240f893534a2c05",
+      "mustChangePassword": true,
+      "createdAt": "2026-11-10T06:55:47.583Z",
+      "updatedAt": "2026-11-10T06:56:02.439Z",
+      "passwordUpdatedAt": "2026-11-10T06:55:47.583Z",
+      "stats": {
+        "runsTriggered": 1,
+        "comparisonsEvaluated": 1,
+        "visualJudgeInvocations": 3,
+        "mcpToolCalls": 0,
+        "cliCommandsRun": 0,
+        "loginCount": 0,
+        "failedLoginCount": 0,
+        "passwordResetCount": 0,
+        "lastActiveAt": "2026-11-10T06:56:02.439Z",
+        "lastLoginAt": null,
+        "lastTargetEvaluated": "T03:www.prod.staging"
+      }
+    },
+    "user-pqtpsgwbthke@salesforce.com": {
+      "userId": "usr-d3b3e66e",
+      "email": "user-pqtpsgwbthke@salesforce.com",
+      "name": "user-pqtpsgwbthke",
+      "role": "Ad-Hoc CLI / API Operator",
+      "account": "SFDC-EDGE-373211957869 (AWS 373211957869 · Akamai Prod + Staging)",
+      "status": "active",
+      "passwordHash": "c07a45fefef67c54e913426922834233e3c5127def3fd72e9d0613d8eae180dd",
+      "passwordSalt": "280203f550c5f3f7b5d58defc2c0a169",
+      "mustChangePassword": true,
+      "createdAt": "2026-11-10T08:22:38.959Z",
+      "updatedAt": "2026-11-10T08:48:39.053Z",
+      "passwordUpdatedAt": "2026-11-10T08:22:38.959Z",
+      "stats": {
+        "runsTriggered": 7,
+        "comparisonsEvaluated": 3,
+        "visualJudgeInvocations": 11,
+        "mcpToolCalls": 0,
+        "cliCommandsRun": 0,
+        "loginCount": 0,
+        "failedLoginCount": 0,
+        "passwordResetCount": 0,
+        "lastActiveAt": "2026-11-10T08:48:39.053Z",
+        "lastLoginAt": null,
+        "lastTargetEvaluated": "T03:www.prod.staging"
+      }
+    },
+    "user-eqavcdxohbpj@salesforce.com": {
+      "userId": "usr-1c564a0c",
+      "email": "user-eqavcdxohbpj@salesforce.com",
+      "name": "user-eqavcdxohbpj",
+      "role": "Ad-Hoc CLI / API Operator",
+      "account": "SFDC-EDGE-344883437139 (AWS 344883437139 · Akamai Prod + Staging)",
+      "status": "active",
+      "passwordHash": "90fdf87496afda8f135ba13e3d4985b02a63b1478c0b6b0868a6f59350eac4e3",
+      "passwordSalt": "3fca24ee31f1ceb1f97a1087a3664f72",
+      "mustChangePassword": true,
+      "createdAt": "2026-11-10T10:20:11.469Z",
+      "updatedAt": "2026-11-11T02:24:05.878Z",
+      "passwordUpdatedAt": "2026-11-10T10:20:11.469Z",
+      "stats": {
+        "runsTriggered": 3,
+        "comparisonsEvaluated": 1,
+        "visualJudgeInvocations": 8,
+        "mcpToolCalls": 0,
+        "cliCommandsRun": 0,
+        "loginCount": 0,
+        "failedLoginCount": 0,
+        "passwordResetCount": 0,
+        "lastActiveAt": "2026-11-11T02:24:05.878Z",
+        "lastLoginAt": null,
+        "lastTargetEvaluated": "T03:www.prod.staging"
+      }
+    },
+    "user-wmgspcbttqts@salesforce.com": {
+      "userId": "usr-5ae1f13a",
+      "email": "user-wmgspcbttqts@salesforce.com",
+      "name": "user-wmgspcbttqts",
+      "role": "Ad-Hoc CLI / API Operator",
+      "account": "SFDC-EDGE-344883437139 (AWS 344883437139 · Akamai Prod + Staging)",
+      "status": "active",
+      "passwordHash": "f767503edebe298d226ad1a1b724e1472791bdef543dbb7aa07876f36ff6bde9",
+      "passwordSalt": "d1e46ce20f9cfa7d0f0e77b1ee89bf67",
+      "mustChangePassword": true,
+      "createdAt": "2026-11-11T02:23:52.828Z",
+      "updatedAt": "2026-11-11T02:39:51.580Z",
+      "passwordUpdatedAt": "2026-11-11T02:23:52.828Z",
+      "stats": {
+        "runsTriggered": 6,
+        "comparisonsEvaluated": 2,
+        "visualJudgeInvocations": 4,
+        "mcpToolCalls": 0,
+        "cliCommandsRun": 0,
+        "loginCount": 0,
+        "failedLoginCount": 0,
+        "passwordResetCount": 0,
+        "lastActiveAt": "2026-11-11T02:39:51.580Z",
+        "lastLoginAt": null,
+        "lastTargetEvaluated": "T03:www.prod.staging"
+      }
+    },
+    "user-isheomaepxoe@salesforce.com": {
+      "userId": "usr-1f47d8d2",
+      "email": "user-isheomaepxoe@salesforce.com",
+      "name": "user-isheomaepxoe",
+      "role": "Ad-Hoc CLI / API Operator",
+      "account": "SFDC-EDGE-373211957869 (AWS 373211957869 · Akamai Prod + Staging)",
+      "status": "active",
+      "passwordHash": "38ae5b415aa9662df6d023de4650b13613951ea764724be6874e960e78700328",
+      "passwordSalt": "f90c113dea46415eff3396f4caaf9599",
+      "mustChangePassword": true,
+      "createdAt": "2026-11-11T09:42:35.496Z",
+      "updatedAt": "2026-11-11T09:52:03.978Z",
+      "passwordUpdatedAt": "2026-11-11T09:42:35.496Z",
+      "stats": {
+        "runsTriggered": 9,
+        "comparisonsEvaluated": 1,
+        "visualJudgeInvocations": 4,
+        "mcpToolCalls": 0,
+        "cliCommandsRun": 0,
+        "loginCount": 0,
+        "failedLoginCount": 0,
+        "passwordResetCount": 0,
+        "lastActiveAt": "2026-11-11T09:52:03.978Z",
+        "lastLoginAt": null,
+        "lastTargetEvaluated": "T03:www.prod.staging"
+      }
+    },
+    "user-baluuezlosgz@salesforce.com": {
+      "userId": "usr-efbcf1c9",
+      "email": "user-baluuezlosgz@salesforce.com",
+      "name": "user-baluuezlosgz",
+      "role": "Ad-Hoc CLI / API Operator",
+      "account": "SFDC-EDGE-373211957869 (AWS 373211957869 · Akamai Prod + Staging)",
+      "status": "active",
+      "passwordHash": "fecac5217b0d59873d56461c665c846d374046bacee26fa799f0679f65ab6e94",
+      "passwordSalt": "e4cbd5f17a3b33e665a69d50a3a0b8d6",
+      "mustChangePassword": true,
+      "createdAt": "2026-11-12T10:39:40.388Z",
+      "updatedAt": "2026-11-12T10:39:40.409Z",
+      "passwordUpdatedAt": "2026-11-12T10:39:40.388Z",
+      "stats": {
+        "runsTriggered": 2,
+        "comparisonsEvaluated": 0,
+        "visualJudgeInvocations": 0,
+        "mcpToolCalls": 0,
+        "cliCommandsRun": 0,
+        "loginCount": 0,
+        "failedLoginCount": 0,
+        "passwordResetCount": 0,
+        "lastActiveAt": "2026-11-12T10:39:40.409Z",
+        "lastLoginAt": null,
+        "lastTargetEvaluated": "japan.prod.prod"
+      }
+    },
+    "user-vxojjezqqyug@salesforce.com": {
+      "userId": "usr-8228fb98",
+      "email": "user-vxojjezqqyug@salesforce.com",
+      "name": "user-vxojjezqqyug",
+      "role": "Ad-Hoc CLI / API Operator",
+      "account": "SFDC-EDGE-373211957869 (AWS 373211957869 · Akamai Prod + Staging)",
+      "status": "active",
+      "passwordHash": "2a57aba7fe1b866a8dcf8d86b5021287839b87146cec848a5f3579774359c350",
+      "passwordSalt": "57e17be51e6e6aa09db7c336e0a6bbad",
+      "mustChangePassword": true,
+      "createdAt": "2026-11-12T10:46:27.686Z",
+      "updatedAt": "2026-11-12T16:48:33.478Z",
+      "passwordUpdatedAt": "2026-11-12T10:46:27.686Z",
+      "stats": {
+        "runsTriggered": 6,
+        "comparisonsEvaluated": 2,
+        "visualJudgeInvocations": 13,
+        "mcpToolCalls": 0,
+        "cliCommandsRun": 0,
+        "loginCount": 0,
+        "failedLoginCount": 0,
+        "passwordResetCount": 0,
+        "lastActiveAt": "2026-11-12T16:48:33.478Z",
+        "lastLoginAt": null,
+        "lastTargetEvaluated": "T03:www.prod.staging"
+      }
+    },
+    "user-tcchhlxprfng@salesforce.com": {
+      "userId": "usr-4458c78e",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "name": "user-tcchhlxprfng",
+      "role": "Ad-Hoc CLI / API Operator",
+      "account": "SFDC-EDGE-030771555103 (AWS 030771555103 · Akamai Prod + Staging)",
+      "status": "active",
+      "passwordHash": "bdd649a87e40db3664ead03297a5c37a354f7fcdfedf2d7980bbe2e17de818ea",
+      "passwordSalt": "007ced578551e6384b8f34deb86975dd",
+      "mustChangePassword": true,
+      "createdAt": "2026-11-12T16:48:20.487Z",
+      "updatedAt": "2026-11-25T08:32:55.592Z",
+      "passwordUpdatedAt": "2026-11-12T16:48:20.487Z",
+      "stats": {
+        "runsTriggered": 49,
+        "comparisonsEvaluated": 25,
+        "visualJudgeInvocations": 1123,
+        "mcpToolCalls": 195,
+        "cliCommandsRun": 0,
+        "loginCount": 0,
+        "failedLoginCount": 0,
+        "passwordResetCount": 0,
+        "lastActiveAt": "2026-11-25T08:32:55.592Z",
+        "lastLoginAt": null,
+        "lastTargetEvaluated": "T08:www.prod.staging"
+      }
+    },
+    "user-kegjxbsiljud@salesforce.com": {
+      "userId": "usr-c11d5eba",
+      "email": "user-kegjxbsiljud@salesforce.com",
+      "name": "user-kegjxbsiljud",
+      "role": "Ad-Hoc CLI / API Operator",
+      "account": "SFDC-EDGE-735234585484 (AWS 735234585484 · Akamai Prod + Staging)",
+      "status": "active",
+      "passwordHash": "55b84a062b282d0e731fa57549741d2dc8a8d47d72dd46495bf8747b0d67ec7b",
+      "passwordSalt": "ef2566c0a630baea2dbb9ff60cdcea91",
+      "mustChangePassword": true,
+      "createdAt": "2026-11-13T07:32:25.199Z",
+      "updatedAt": "2026-11-13T07:32:38.175Z",
+      "passwordUpdatedAt": "2026-11-13T07:32:25.199Z",
+      "stats": {
+        "runsTriggered": 1,
+        "comparisonsEvaluated": 1,
+        "visualJudgeInvocations": 4,
+        "mcpToolCalls": 0,
+        "cliCommandsRun": 0,
+        "loginCount": 0,
+        "failedLoginCount": 0,
+        "passwordResetCount": 0,
+        "lastActiveAt": "2026-11-13T07:32:38.175Z",
+        "lastLoginAt": null,
+        "lastTargetEvaluated": "T03:www.prod.staging"
+      }
+    },
+    "user-gnmfyrkffnla@salesforce.com": {
+      "userId": "usr-278cb487",
+      "email": "user-gnmfyrkffnla@salesforce.com",
+      "name": "user-gnmfyrkffnla",
+      "role": "Ad-Hoc CLI / API Operator",
+      "account": "SFDC-EDGE-147935447701 (AWS 147935447701 · Akamai Prod + Staging)",
+      "status": "active",
+      "passwordHash": "2e697961599dfa1ff28eec24029b462792b2e1128bdaf703b8b1882a70a6f391",
+      "passwordSalt": "18878afd026d57cae5d36186bd84981b",
+      "mustChangePassword": true,
+      "createdAt": "2026-11-13T09:37:42.044Z",
+      "updatedAt": "2026-11-13T10:34:32.576Z",
+      "passwordUpdatedAt": "2026-11-13T09:37:42.044Z",
+      "stats": {
+        "runsTriggered": 1,
+        "comparisonsEvaluated": 1,
+        "visualJudgeInvocations": 8,
+        "mcpToolCalls": 0,
+        "cliCommandsRun": 0,
+        "loginCount": 0,
+        "failedLoginCount": 0,
+        "passwordResetCount": 0,
+        "lastActiveAt": "2026-11-13T10:34:32.576Z",
+        "lastLoginAt": null,
+        "lastTargetEvaluated": "T03:www.prod.staging"
+      }
+    },
+    "user-uozovieriigx@salesforce.com": {
+      "userId": "usr-8a7d7c3f",
+      "email": "user-uozovieriigx@salesforce.com",
+      "name": "user-uozovieriigx",
+      "role": "Ad-Hoc CLI / API Operator",
+      "account": "SFDC-EDGE-735234585484 (AWS 735234585484 · Akamai Prod + Staging)",
+      "status": "active",
+      "passwordHash": "e59befd4412ff287a13dc0efb9520b7e749c8f94861307fa703e78c49e0d7113",
+      "passwordSalt": "3d4ed52a6a9d95c11aa0101bb9864db9",
+      "mustChangePassword": true,
+      "createdAt": "2026-11-14T02:03:27.113Z",
+      "updatedAt": "2026-11-14T02:11:34.276Z",
+      "passwordUpdatedAt": "2026-11-14T02:03:27.113Z",
+      "stats": {
+        "runsTriggered": 3,
+        "comparisonsEvaluated": 0,
+        "visualJudgeInvocations": 0,
+        "mcpToolCalls": 0,
+        "cliCommandsRun": 0,
+        "loginCount": 0,
+        "failedLoginCount": 0,
+        "passwordResetCount": 0,
+        "lastActiveAt": "2026-11-14T02:11:34.276Z",
+        "lastLoginAt": null,
+        "lastTargetEvaluated": "www.prod.staging"
+      }
+    },
+    "user-ymctifyqefns@salesforce.com": {
+      "userId": "usr-782d43a2",
+      "email": "user-ymctifyqefns@salesforce.com",
+      "name": "user-ymctifyqefns",
+      "role": "Ad-Hoc CLI / API Operator",
+      "account": "SFDC-EDGE-735234585484 (AWS 735234585484 · Akamai Prod + Staging)",
+      "status": "active",
+      "passwordHash": "51cf0a02643db2ce4989c4289cf83d1ca55316a6010249f5005a5e19e7d82fd9",
+      "passwordSalt": "e1108377493231d95304486b92605b05",
+      "mustChangePassword": true,
+      "createdAt": "2026-11-14T03:44:32.617Z",
+      "updatedAt": "2026-11-14T05:22:41.283Z",
+      "passwordUpdatedAt": "2026-11-14T03:44:32.617Z",
+      "stats": {
+        "runsTriggered": 1,
+        "comparisonsEvaluated": 1,
+        "visualJudgeInvocations": 1,
+        "mcpToolCalls": 0,
+        "cliCommandsRun": 0,
+        "loginCount": 0,
+        "failedLoginCount": 0,
+        "passwordResetCount": 0,
+        "lastActiveAt": "2026-11-14T05:22:41.283Z",
+        "lastLoginAt": null,
+        "lastTargetEvaluated": "T08:apac.prod.staging"
+      }
+    },
+    "user-nvaupcuppghi@salesforce.com": {
+      "userId": "usr-aec94c40",
+      "email": "user-nvaupcuppghi@salesforce.com",
+      "name": "user-nvaupcuppghi",
+      "role": "Ad-Hoc CLI / API Operator",
+      "account": "SFDC-EDGE-030771555103 (AWS 030771555103 · Akamai Prod + Staging)",
+      "status": "active",
+      "passwordHash": "61751fda16d666066fd8ed7c0da65d71e72a1ea489e92e4d8c88c8c17adce6b3",
+      "passwordSalt": "eea4e37a8b8ef9be23d40e6ec91a6236",
+      "mustChangePassword": true,
+      "createdAt": "2026-11-14T05:25:01.358Z",
+      "updatedAt": "2026-11-14T05:28:42.775Z",
+      "passwordUpdatedAt": "2026-11-14T05:25:01.358Z",
+      "stats": {
+        "runsTriggered": 0,
+        "comparisonsEvaluated": 0,
+        "visualJudgeInvocations": 2,
+        "mcpToolCalls": 0,
+        "cliCommandsRun": 0,
+        "loginCount": 0,
+        "failedLoginCount": 0,
+        "passwordResetCount": 0,
+        "lastActiveAt": "2026-11-14T05:28:42.775Z",
+        "lastLoginAt": null,
+        "lastTargetEvaluated": "T03:apac.prod.staging"
+      }
+    },
+    "user-xxszulgrknve@salesforce.com": {
+      "userId": "usr-ea6de21b",
+      "email": "user-xxszulgrknve@salesforce.com",
+      "name": "user-xxszulgrknve",
+      "role": "Ad-Hoc CLI / API Operator",
+      "account": "SFDC-EDGE-030771555103 (AWS 030771555103 · Akamai Prod + Staging)",
+      "status": "active",
+      "passwordHash": "01c2ac1a5862dbd1b370fbe6cdf978a34c42da6aa6ea772962e373135e5010f2",
+      "passwordSalt": "1b579dd91b4726251e375689c822e4c7",
+      "mustChangePassword": true,
+      "createdAt": "2026-11-14T17:50:51.665Z",
+      "updatedAt": "2026-11-15T02:35:21.708Z",
+      "passwordUpdatedAt": "2026-11-14T17:50:51.665Z",
+      "stats": {
+        "runsTriggered": 8,
+        "comparisonsEvaluated": 0,
+        "visualJudgeInvocations": 66,
+        "mcpToolCalls": 0,
+        "cliCommandsRun": 0,
+        "loginCount": 0,
+        "failedLoginCount": 0,
+        "passwordResetCount": 0,
+        "lastActiveAt": "2026-11-15T02:35:21.708Z",
+        "lastLoginAt": null,
+        "lastTargetEvaluated": "T05:www.prod.staging"
+      }
+    },
+    "user-itpwkezqeltl@salesforce.com": {
+      "userId": "usr-46596dc8",
+      "email": "user-itpwkezqeltl@salesforce.com",
+      "name": "user-itpwkezqeltl",
+      "role": "Ad-Hoc CLI / API Operator",
+      "account": "SFDC-EDGE-147935447701 (AWS 147935447701 · Akamai Prod + Staging)",
+      "status": "active",
+      "passwordHash": "3d2f22c1e0bb1d86815f33c9815635d2b8d97a15a11d8eaa84b862708208b089",
+      "passwordSalt": "bd2abd696a17908714ac9c3bf58b0b3b",
+      "mustChangePassword": true,
+      "createdAt": "2026-11-14T18:29:48.668Z",
+      "updatedAt": "2026-11-14T18:29:48.668Z",
+      "passwordUpdatedAt": "2026-11-14T18:29:48.668Z",
+      "stats": {
+        "runsTriggered": 0,
+        "comparisonsEvaluated": 0,
+        "visualJudgeInvocations": 1,
+        "mcpToolCalls": 0,
+        "cliCommandsRun": 0,
+        "loginCount": 0,
+        "failedLoginCount": 0,
+        "passwordResetCount": 0,
+        "lastActiveAt": "2026-11-14T18:29:48.668Z",
+        "lastLoginAt": null,
+        "lastTargetEvaluated": "T01:www.prod.staging"
+      }
+    },
+    "user-qcrafqstnptb@salesforce.com": {
+      "userId": "usr-ecd79ab0",
+      "email": "user-qcrafqstnptb@salesforce.com",
+      "name": "user-qcrafqstnptb",
+      "role": "Ad-Hoc CLI / API Operator",
+      "account": "SFDC-EDGE-373211957869 (AWS 373211957869 · Akamai Prod + Staging)",
+      "status": "active",
+      "passwordHash": "683322cef0cf5731e2b4466bc180119cd678839ace42b1c8f6d75326d123e1fd",
+      "passwordSalt": "3bbca9874e8292f40e5ecaed13f6440a",
+      "mustChangePassword": true,
+      "createdAt": "2026-11-15T05:17:09.591Z",
+      "updatedAt": "2026-11-15T05:20:02.152Z",
+      "passwordUpdatedAt": "2026-11-15T05:17:09.591Z",
+      "stats": {
+        "runsTriggered": 0,
+        "comparisonsEvaluated": 0,
+        "visualJudgeInvocations": 50,
+        "mcpToolCalls": 0,
+        "cliCommandsRun": 0,
+        "loginCount": 0,
+        "failedLoginCount": 0,
+        "passwordResetCount": 0,
+        "lastActiveAt": "2026-11-15T05:20:02.152Z",
+        "lastLoginAt": null,
+        "lastTargetEvaluated": "T07:www.prod.prod"
+      }
+    },
+    "user-vjhczatdhmgd@salesforce.com": {
+      "userId": "usr-9c85613f",
+      "email": "user-vjhczatdhmgd@salesforce.com",
+      "name": "user-vjhczatdhmgd",
+      "role": "Ad-Hoc CLI / API Operator",
+      "account": "SFDC-EDGE-030771555103 (AWS 030771555103 · Akamai Prod + Staging)",
+      "status": "active",
+      "passwordHash": "74128ecbdfba74ea51e45cb53a7085bc3ce82a3be5bd300b0adb883deb0aceed",
+      "passwordSalt": "55d77336a01ef56dc0e311cab26561e5",
+      "mustChangePassword": true,
+      "createdAt": "2026-11-16T03:52:19.150Z",
+      "updatedAt": "2026-11-16T10:15:51.790Z",
+      "passwordUpdatedAt": "2026-11-16T03:52:19.150Z",
+      "stats": {
+        "runsTriggered": 0,
+        "comparisonsEvaluated": 0,
+        "visualJudgeInvocations": 41,
+        "mcpToolCalls": 3,
+        "cliCommandsRun": 0,
+        "loginCount": 0,
+        "failedLoginCount": 0,
+        "passwordResetCount": 0,
+        "lastActiveAt": "2026-11-16T10:15:51.790Z",
+        "lastLoginAt": null,
+        "lastTargetEvaluated": "T03:www.prod.staging"
+      }
+    },
+    "user-fclnvdrrylhl@salesforce.com": {
+      "userId": "usr-44ebcc11",
+      "email": "user-fclnvdrrylhl@salesforce.com",
+      "name": "user-fclnvdrrylhl",
+      "role": "Ad-Hoc CLI / API Operator",
+      "account": "SFDC-EDGE-373211957869 (AWS 373211957869 · Akamai Prod + Staging)",
+      "status": "active",
+      "passwordHash": "88fa9bcbf4995d974c98816c5d0ad5ef87b7f793860c38cbe0d84adf81df1dac",
+      "passwordSalt": "177ba0df2d6a01a55176e46566a98779",
+      "mustChangePassword": true,
+      "createdAt": "2026-11-16T09:24:55.876Z",
+      "updatedAt": "2026-11-16T09:51:00.087Z",
+      "passwordUpdatedAt": "2026-11-16T09:24:55.876Z",
+      "stats": {
+        "runsTriggered": 0,
+        "comparisonsEvaluated": 0,
+        "visualJudgeInvocations": 116,
+        "mcpToolCalls": 18,
+        "cliCommandsRun": 0,
+        "loginCount": 0,
+        "failedLoginCount": 0,
+        "passwordResetCount": 0,
+        "lastActiveAt": "2026-11-16T09:51:00.087Z",
+        "lastLoginAt": null,
+        "lastTargetEvaluated": "T08:www.prod.staging"
+      }
+    },
+    "user-ujhaeuktkgif@salesforce.com": {
+      "userId": "usr-aca1c073",
+      "email": "user-ujhaeuktkgif@salesforce.com",
+      "name": "user-ujhaeuktkgif",
+      "role": "Ad-Hoc CLI / API Operator",
+      "account": "SFDC-EDGE-735234585484 (AWS 735234585484 · Akamai Prod + Staging)",
+      "status": "active",
+      "passwordHash": "89021f23b00cf9de5abe672abc550ae63456e2c8eb4c64750ef95459b1854ac8",
+      "passwordSalt": "ee1e4e38ac549133c0c1a15ac5d86d90",
+      "mustChangePassword": true,
+      "createdAt": "2026-11-19T17:59:51.719Z",
+      "updatedAt": "2026-11-19T18:03:12.348Z",
+      "passwordUpdatedAt": "2026-11-19T17:59:51.719Z",
+      "stats": {
+        "runsTriggered": 0,
+        "comparisonsEvaluated": 0,
+        "visualJudgeInvocations": 30,
+        "mcpToolCalls": 6,
+        "cliCommandsRun": 0,
+        "loginCount": 0,
+        "failedLoginCount": 0,
+        "passwordResetCount": 0,
+        "lastActiveAt": "2026-11-19T18:03:12.348Z",
+        "lastLoginAt": null,
+        "lastTargetEvaluated": "T08:www.prod.staging"
+      }
+    },
+    "user-mxcehxwrkmzj@salesforce.com": {
+      "userId": "usr-3a9e4ccd",
+      "email": "user-mxcehxwrkmzj@salesforce.com",
+      "name": "user-mxcehxwrkmzj",
+      "role": "Ad-Hoc CLI / API Operator",
+      "account": "SFDC-EDGE-735234585484 (AWS 735234585484 · Akamai Prod + Staging)",
+      "status": "active",
+      "passwordHash": "6bead64a79b29413c2da3ad241a0ed75f172f57382b51af8adae83b752b937e8",
+      "passwordSalt": "cd348ad7dc5a2d580984b914c777269a",
+      "mustChangePassword": true,
+      "createdAt": "2026-11-20T01:39:00.118Z",
+      "updatedAt": "2026-11-20T01:39:08.568Z",
+      "passwordUpdatedAt": "2026-11-20T01:39:00.118Z",
+      "stats": {
+        "runsTriggered": 0,
+        "comparisonsEvaluated": 0,
+        "visualJudgeInvocations": 2,
+        "mcpToolCalls": 3,
+        "cliCommandsRun": 0,
+        "loginCount": 0,
+        "failedLoginCount": 0,
+        "passwordResetCount": 0,
+        "lastActiveAt": "2026-11-20T01:39:08.568Z",
+        "lastLoginAt": null,
+        "lastTargetEvaluated": "ping"
+      }
+    },
+    "user-yvplfzbfbakm@salesforce.com": {
+      "userId": "usr-eb3afa9a",
+      "email": "user-yvplfzbfbakm@salesforce.com",
+      "name": "user-yvplfzbfbakm",
+      "role": "Ad-Hoc CLI / API Operator",
+      "account": "SFDC-EDGE-735234585484 (AWS 735234585484 · Akamai Prod + Staging)",
+      "status": "active",
+      "passwordHash": "7d72f4a35a0ee5f9cbb8b1d62f1c29e3e4d9d2ea5b3a91dc6875e0e82ac792a5",
+      "passwordSalt": "53c9504ea9c670da6b007c6978629be5",
+      "mustChangePassword": true,
+      "createdAt": "2026-11-21T03:48:36.367Z",
+      "updatedAt": "2026-11-21T03:56:12.915Z",
+      "passwordUpdatedAt": "2026-11-21T03:48:36.367Z",
+      "stats": {
+        "runsTriggered": 0,
+        "comparisonsEvaluated": 0,
+        "visualJudgeInvocations": 24,
+        "mcpToolCalls": 6,
+        "cliCommandsRun": 0,
+        "loginCount": 0,
+        "failedLoginCount": 0,
+        "passwordResetCount": 0,
+        "lastActiveAt": "2026-11-21T03:56:12.915Z",
+        "lastLoginAt": null,
+        "lastTargetEvaluated": "T08:www.prod.staging"
+      }
+    }
+  },
+  "auditEvents": [
+    {
+      "eventId": "evt-1795595575592-73ca",
+      "timestamp": "2026-11-25T08:32:55.592Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T08:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T08",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795595575493-32a8",
+      "timestamp": "2026-11-25T08:32:55.493Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T07:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T07",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795595575390-2afa",
+      "timestamp": "2026-11-25T08:32:55.390Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T06:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T06",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795595575291-e768",
+      "timestamp": "2026-11-25T08:32:55.291Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T05:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T05",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795595575145-2b45",
+      "timestamp": "2026-11-25T08:32:55.145Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T04:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T04",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795595574993-7126",
+      "timestamp": "2026-11-25T08:32:54.993Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T03:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T03",
+        "pixelDiffPercent": 0.09
+      }
+    },
+    {
+      "eventId": "evt-1795595574895-65e7",
+      "timestamp": "2026-11-25T08:32:54.896Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T02:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T02",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795595571174-8a76",
+      "timestamp": "2026-11-25T08:32:51.174Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795595571143-7ed4",
+      "timestamp": "2026-11-25T08:32:51.143Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795579460423-ce07",
+      "timestamp": "2026-11-25T04:04:20.424Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T08:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T08",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795579458608-59e0",
+      "timestamp": "2026-11-25T04:04:18.609Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T07:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T07",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795579458467-9736",
+      "timestamp": "2026-11-25T04:04:18.467Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T06:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T06",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795579458316-083d",
+      "timestamp": "2026-11-25T04:04:18.316Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T05:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T05",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795579458083-27c4",
+      "timestamp": "2026-11-25T04:04:18.083Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T04:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T04",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795579457838-6a07",
+      "timestamp": "2026-11-25T04:04:17.839Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T03:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T03",
+        "pixelDiffPercent": 0.09
+      }
+    },
+    {
+      "eventId": "evt-1795579457582-fe51",
+      "timestamp": "2026-11-25T04:04:17.582Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T02:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T02",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795579456953-bfcd",
+      "timestamp": "2026-11-25T04:04:16.953Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795579456926-9707",
+      "timestamp": "2026-11-25T04:04:16.926Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795579364577-ba4c",
+      "timestamp": "2026-11-25T04:02:44.577Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T06:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T06",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795579364368-98af",
+      "timestamp": "2026-11-25T04:02:44.368Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T05:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T05",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795579364061-5202",
+      "timestamp": "2026-11-25T04:02:44.061Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T04:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T04",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795579363755-81f0",
+      "timestamp": "2026-11-25T04:02:43.756Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T03:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T03",
+        "pixelDiffPercent": 0.09
+      }
+    },
+    {
+      "eventId": "evt-1795579363458-e3f3",
+      "timestamp": "2026-11-25T04:02:43.458Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T02:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T02",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795579362794-eb15",
+      "timestamp": "2026-11-25T04:02:42.794Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795579362770-ab8b",
+      "timestamp": "2026-11-25T04:02:42.770Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795579221200-5165",
+      "timestamp": "2026-11-25T04:00:21.200Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T07:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T07",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795579221000-a49f",
+      "timestamp": "2026-11-25T04:00:21.000Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T06:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T06",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795579220820-4eb0",
+      "timestamp": "2026-11-25T04:00:20.820Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T05:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T05",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795579220621-5b81",
+      "timestamp": "2026-11-25T04:00:20.621Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T04:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T04",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795579220409-d11a",
+      "timestamp": "2026-11-25T04:00:20.409Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T03:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T03",
+        "pixelDiffPercent": 0.09
+      }
+    },
+    {
+      "eventId": "evt-1795579220157-030f",
+      "timestamp": "2026-11-25T04:00:20.157Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T02:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T02",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795579219842-990c",
+      "timestamp": "2026-11-25T04:00:19.842Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795579219833-20d1",
+      "timestamp": "2026-11-25T04:00:19.833Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795579131945-b768",
+      "timestamp": "2026-11-25T03:58:51.945Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T08:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T08",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795579131797-32ff",
+      "timestamp": "2026-11-25T03:58:51.797Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T07:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T07",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795579131654-761f",
+      "timestamp": "2026-11-25T03:58:51.654Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T06:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T06",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795579131516-1d83",
+      "timestamp": "2026-11-25T03:58:51.516Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T05:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T05",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795579131296-ce8e",
+      "timestamp": "2026-11-25T03:58:51.296Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T04:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T04",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795579131009-1748",
+      "timestamp": "2026-11-25T03:58:51.009Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T03:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T03",
+        "pixelDiffPercent": 0.09
+      }
+    },
+    {
+      "eventId": "evt-1795579130743-4e1c",
+      "timestamp": "2026-11-25T03:58:50.743Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T02:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T02",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795579130170-d5ab",
+      "timestamp": "2026-11-25T03:58:50.170Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795579130158-33ee",
+      "timestamp": "2026-11-25T03:58:50.158Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795579046305-f810",
+      "timestamp": "2026-11-25T03:57:26.305Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T08:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T08",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795579046156-8949",
+      "timestamp": "2026-11-25T03:57:26.157Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T07:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T07",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795579045982-ffe6",
+      "timestamp": "2026-11-25T03:57:25.982Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T06:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T06",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795579045878-66aa",
+      "timestamp": "2026-11-25T03:57:25.878Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T05:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T05",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795579045648-9536",
+      "timestamp": "2026-11-25T03:57:25.648Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T04:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T04",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795579045361-e4a1",
+      "timestamp": "2026-11-25T03:57:25.361Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T03:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T03",
+        "pixelDiffPercent": 0.09
+      }
+    },
+    {
+      "eventId": "evt-1795579045145-60d5",
+      "timestamp": "2026-11-25T03:57:25.146Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T02:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T02",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795579044552-f4e0",
+      "timestamp": "2026-11-25T03:57:24.552Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795579044541-f6a8",
+      "timestamp": "2026-11-25T03:57:24.541Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795579014876-5f3e",
+      "timestamp": "2026-11-25T03:56:54.876Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T08:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T08",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795579014715-d572",
+      "timestamp": "2026-11-25T03:56:54.715Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T07:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T07",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795579014528-35c4",
+      "timestamp": "2026-11-25T03:56:54.528Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T06:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T06",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795579014372-6db1",
+      "timestamp": "2026-11-25T03:56:54.372Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T05:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T05",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795579014116-8345",
+      "timestamp": "2026-11-25T03:56:54.116Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T04:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T04",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795579013813-a2d1",
+      "timestamp": "2026-11-25T03:56:53.813Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T03:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T03",
+        "pixelDiffPercent": 0.09
+      }
+    },
+    {
+      "eventId": "evt-1795579013685-b9da",
+      "timestamp": "2026-11-25T03:56:53.685Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T02:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T02",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795579012655-9574",
+      "timestamp": "2026-11-25T03:56:52.655Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795579012623-f4be",
+      "timestamp": "2026-11-25T03:56:52.624Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795578301392-6668",
+      "timestamp": "2026-11-25T03:45:01.392Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "ping",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "ping",
+        "target": "ping",
+        "authMode": "same-origin-studio"
+      }
+    },
+    {
+      "eventId": "evt-1795578301283-880f",
+      "timestamp": "2026-11-25T03:45:01.283Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "initialize",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "initialize",
+        "target": "initialize",
+        "authMode": "same-origin-studio"
+      }
+    },
+    {
+      "eventId": "evt-1795578301280-b674",
+      "timestamp": "2026-11-25T03:45:01.280Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "manage_environment",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "manage_environment",
+        "authMode": "same-origin-studio"
+      }
+    },
+    {
+      "eventId": "evt-1795578298361-e67c",
+      "timestamp": "2026-11-25T03:44:58.361Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "ping",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "ping",
+        "target": "ping",
+        "authMode": "same-origin-studio"
+      }
+    },
+    {
+      "eventId": "evt-1795578298214-1e57",
+      "timestamp": "2026-11-25T03:44:58.214Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "initialize",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "initialize",
+        "target": "initialize",
+        "authMode": "same-origin-studio"
+      }
+    },
+    {
+      "eventId": "evt-1795578298208-1d29",
+      "timestamp": "2026-11-25T03:44:58.208Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "manage_environment",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "manage_environment",
+        "authMode": "same-origin-studio"
+      }
+    },
+    {
+      "eventId": "evt-1795578292713-0ac6",
+      "timestamp": "2026-11-25T03:44:52.714Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T08:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T08",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795578292590-eb10",
+      "timestamp": "2026-11-25T03:44:52.590Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T07:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T07",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795578292463-e69b",
+      "timestamp": "2026-11-25T03:44:52.463Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T06:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T06",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795578292328-4579",
+      "timestamp": "2026-11-25T03:44:52.328Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T05:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T05",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795578292201-e2c0",
+      "timestamp": "2026-11-25T03:44:52.201Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T04:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T04",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795578292073-038c",
+      "timestamp": "2026-11-25T03:44:52.073Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T03:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T03",
+        "pixelDiffPercent": 0.08
+      }
+    },
+    {
+      "eventId": "evt-1795578291944-d92c",
+      "timestamp": "2026-11-25T03:44:51.944Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T02:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T02",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795578291720-66b4",
+      "timestamp": "2026-11-25T03:44:51.720Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.99
+      }
+    },
+    {
+      "eventId": "evt-1795578291460-0859",
+      "timestamp": "2026-11-25T03:44:51.460Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.99
+      }
+    },
+    {
+      "eventId": "evt-1795574776581-e4a4",
+      "timestamp": "2026-11-25T02:46:16.581Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T08:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T08",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795574774551-465a",
+      "timestamp": "2026-11-25T02:46:14.551Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T07:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T07",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795574774419-e890",
+      "timestamp": "2026-11-25T02:46:14.419Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T06:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T06",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795574774256-3c14",
+      "timestamp": "2026-11-25T02:46:14.256Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T05:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T05",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795574774037-245a",
+      "timestamp": "2026-11-25T02:46:14.037Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T04:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T04",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795574773835-2ab8",
+      "timestamp": "2026-11-25T02:46:13.835Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T03:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T03",
+        "pixelDiffPercent": 0.09
+      }
+    },
+    {
+      "eventId": "evt-1795574773583-4ce3",
+      "timestamp": "2026-11-25T02:46:13.583Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T02:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T02",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795574773101-e169",
+      "timestamp": "2026-11-25T02:46:13.101Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795574773088-840e",
+      "timestamp": "2026-11-25T02:46:13.088Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795574712208-7c1e",
+      "timestamp": "2026-11-25T02:45:12.208Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T08:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T08",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795574712110-b5c9",
+      "timestamp": "2026-11-25T02:45:12.110Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T07:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T07",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795574712024-d892",
+      "timestamp": "2026-11-25T02:45:12.024Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T06:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T06",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795574711929-1d57",
+      "timestamp": "2026-11-25T02:45:11.929Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T05:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T05",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795574711854-d133",
+      "timestamp": "2026-11-25T02:45:11.854Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T04:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T04",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795574711761-d893",
+      "timestamp": "2026-11-25T02:45:11.761Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T03:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T03",
+        "pixelDiffPercent": 0.09
+      }
+    },
+    {
+      "eventId": "evt-1795574711284-2bd4",
+      "timestamp": "2026-11-25T02:45:11.284Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T02:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T02",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795574708641-84bf",
+      "timestamp": "2026-11-25T02:45:08.641Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795574705814-11aa",
+      "timestamp": "2026-11-25T02:45:05.814Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795574705802-fc70",
+      "timestamp": "2026-11-25T02:45:05.802Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795574664018-25bc",
+      "timestamp": "2026-11-25T02:44:24.018Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "ping",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "ping",
+        "target": "ping",
+        "authMode": "same-origin-studio"
+      }
+    },
+    {
+      "eventId": "evt-1795574663886-c6c7",
+      "timestamp": "2026-11-25T02:44:23.886Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "manage_environment",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "manage_environment",
+        "authMode": "same-origin-studio"
+      }
+    },
+    {
+      "eventId": "evt-1795574663883-fa78",
+      "timestamp": "2026-11-25T02:44:23.883Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "initialize",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "initialize",
+        "target": "initialize",
+        "authMode": "same-origin-studio"
+      }
+    },
+    {
+      "eventId": "evt-1795574593100-3948",
+      "timestamp": "2026-11-25T02:43:13.101Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T08:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T08",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795574592981-62e3",
+      "timestamp": "2026-11-25T02:43:12.981Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T07:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T07",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795574592843-5531",
+      "timestamp": "2026-11-25T02:43:12.843Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T06:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T06",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795574592722-9c92",
+      "timestamp": "2026-11-25T02:43:12.722Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T05:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T05",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795574592542-3274",
+      "timestamp": "2026-11-25T02:43:12.543Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T04:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T04",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795574592287-7f69",
+      "timestamp": "2026-11-25T02:43:12.287Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T03:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T03",
+        "pixelDiffPercent": 0.09
+      }
+    },
+    {
+      "eventId": "evt-1795574592100-8c07",
+      "timestamp": "2026-11-25T02:43:12.100Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T02:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T02",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795574577584-d82e",
+      "timestamp": "2026-11-25T02:42:57.584Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795574577556-26cd",
+      "timestamp": "2026-11-25T02:42:57.556Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795574575268-15d8",
+      "timestamp": "2026-11-25T02:42:55.268Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "ping",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "ping",
+        "target": "ping",
+        "authMode": "same-origin-studio"
+      }
+    },
+    {
+      "eventId": "evt-1795574575123-db08",
+      "timestamp": "2026-11-25T02:42:55.123Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "initialize",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "initialize",
+        "target": "initialize",
+        "authMode": "same-origin-studio"
+      }
+    },
+    {
+      "eventId": "evt-1795574575119-095d",
+      "timestamp": "2026-11-25T02:42:55.119Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "manage_environment",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "manage_environment",
+        "authMode": "same-origin-studio"
+      }
+    },
+    {
+      "eventId": "evt-1795574573720-71d6",
+      "timestamp": "2026-11-25T02:42:53.720Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "ping",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "ping",
+        "target": "ping",
+        "authMode": "same-origin-studio"
+      }
+    },
+    {
+      "eventId": "evt-1795574573469-be14",
+      "timestamp": "2026-11-25T02:42:53.469Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "manage_environment",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "manage_environment",
+        "authMode": "same-origin-studio"
+      }
+    },
+    {
+      "eventId": "evt-1795574573398-875c",
+      "timestamp": "2026-11-25T02:42:53.398Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "initialize",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "initialize",
+        "target": "initialize",
+        "authMode": "same-origin-studio"
+      }
+    },
+    {
+      "eventId": "evt-1795574570540-0254",
+      "timestamp": "2026-11-25T02:42:50.540Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "ping",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "ping",
+        "target": "ping",
+        "authMode": "same-origin-studio"
+      }
+    },
+    {
+      "eventId": "evt-1795574570450-4ec3",
+      "timestamp": "2026-11-25T02:42:50.450Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "manage_environment",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "manage_environment",
+        "authMode": "same-origin-studio"
+      }
+    },
+    {
+      "eventId": "evt-1795574570439-3cda",
+      "timestamp": "2026-11-25T02:42:50.440Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "initialize",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "initialize",
+        "target": "initialize",
+        "authMode": "same-origin-studio"
+      }
+    },
+    {
+      "eventId": "evt-1795574559084-13f0",
+      "timestamp": "2026-11-25T02:42:39.084Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "manage_environment",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "manage_environment",
+        "authMode": "same-origin-studio"
+      }
+    },
+    {
+      "eventId": "evt-1795574559079-c771",
+      "timestamp": "2026-11-25T02:42:39.079Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "initialize",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "initialize",
+        "target": "initialize",
+        "authMode": "same-origin-studio"
+      }
+    },
+    {
+      "eventId": "evt-1795574554933-df29",
+      "timestamp": "2026-11-25T02:42:34.933Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795574554767-3147",
+      "timestamp": "2026-11-25T02:42:34.767Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "ping",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "ping",
+        "target": "ping",
+        "authMode": "same-origin-studio"
+      }
+    },
+    {
+      "eventId": "evt-1795574554674-04d5",
+      "timestamp": "2026-11-25T02:42:34.674Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "manage_environment",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "manage_environment",
+        "authMode": "same-origin-studio"
+      }
+    },
+    {
+      "eventId": "evt-1795574554670-e626",
+      "timestamp": "2026-11-25T02:42:34.670Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "initialize",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "initialize",
+        "target": "initialize",
+        "authMode": "same-origin-studio"
+      }
+    },
+    {
+      "eventId": "evt-1795574543654-550c",
+      "timestamp": "2026-11-25T02:42:23.654Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795574543609-e203",
+      "timestamp": "2026-11-25T02:42:23.609Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795574543424-133f",
+      "timestamp": "2026-11-25T02:42:23.424Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T02:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T02",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795574369514-77f7",
+      "timestamp": "2026-11-25T02:39:29.514Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T08:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T08",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795574369390-858d",
+      "timestamp": "2026-11-25T02:39:29.390Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T07:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T07",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795574369265-3c88",
+      "timestamp": "2026-11-25T02:39:29.265Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T06:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T06",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795574369049-b89b",
+      "timestamp": "2026-11-25T02:39:29.049Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T05:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T05",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795574368934-572d",
+      "timestamp": "2026-11-25T02:39:28.934Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T04:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T04",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795574368806-2112",
+      "timestamp": "2026-11-25T02:39:28.806Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T03:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T03",
+        "pixelDiffPercent": 0.08
+      }
+    },
+    {
+      "eventId": "evt-1795574368642-9e08",
+      "timestamp": "2026-11-25T02:39:28.642Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T02:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T02",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795574354532-e9b5",
+      "timestamp": "2026-11-25T02:39:14.532Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.9
+      }
+    },
+    {
+      "eventId": "evt-1795574354350-7089",
+      "timestamp": "2026-11-25T02:39:14.350Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.9
+      }
+    },
+    {
+      "eventId": "evt-1795494761865-5756",
+      "timestamp": "2026-11-24T04:32:41.865Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "manage_test_suite",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "manage_test_suite"
+      }
+    },
+    {
+      "eventId": "evt-1795494759252-047c",
+      "timestamp": "2026-11-24T04:32:39.252Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "ping",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "ping",
+        "target": "ping"
+      }
+    },
+    {
+      "eventId": "evt-1795494759133-e03c",
+      "timestamp": "2026-11-24T04:32:39.133Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "manage_environment",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "manage_environment"
+      }
+    },
+    {
+      "eventId": "evt-1795494759129-4423",
+      "timestamp": "2026-11-24T04:32:39.129Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "initialize",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "initialize",
+        "target": "initialize"
+      }
+    },
+    {
+      "eventId": "evt-1795494756191-622b",
+      "timestamp": "2026-11-24T04:32:36.191Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T08:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T08",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795494756085-857b",
+      "timestamp": "2026-11-24T04:32:36.085Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T07:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T07",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795494755972-4cb7",
+      "timestamp": "2026-11-24T04:32:35.972Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T06:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T06",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795494755849-dda0",
+      "timestamp": "2026-11-24T04:32:35.850Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T05:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T05",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795494755687-45c2",
+      "timestamp": "2026-11-24T04:32:35.687Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T04:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T04",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795494755417-203d",
+      "timestamp": "2026-11-24T04:32:35.417Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T03:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T03",
+        "pixelDiffPercent": 0.09
+      }
+    },
+    {
+      "eventId": "evt-1795494755219-a685",
+      "timestamp": "2026-11-24T04:32:35.219Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T02:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T02",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795494754617-5f87",
+      "timestamp": "2026-11-24T04:32:34.617Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795494754593-66da",
+      "timestamp": "2026-11-24T04:32:34.593Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795494476479-0cb5",
+      "timestamp": "2026-11-24T04:27:56.479Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "manage_test_suite",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "manage_test_suite"
+      }
+    },
+    {
+      "eventId": "evt-1795494475381-35f8",
+      "timestamp": "2026-11-24T04:27:55.381Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T08:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T08",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795494475308-29b5",
+      "timestamp": "2026-11-24T04:27:55.308Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T07:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T07",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795494475034-261d",
+      "timestamp": "2026-11-24T04:27:55.034Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T06:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T06",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795494474832-9da0",
+      "timestamp": "2026-11-24T04:27:54.832Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T05:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T05",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795494474610-a244",
+      "timestamp": "2026-11-24T04:27:54.610Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T04:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T04",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795494474536-54b5",
+      "timestamp": "2026-11-24T04:27:54.536Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T03:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T03",
+        "pixelDiffPercent": 0.09
+      }
+    },
+    {
+      "eventId": "evt-1795494474465-a866",
+      "timestamp": "2026-11-24T04:27:54.465Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T02:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T02",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795494473577-b870",
+      "timestamp": "2026-11-24T04:27:53.577Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795494472752-4212",
+      "timestamp": "2026-11-24T04:27:52.752Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "ping",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "ping",
+        "target": "ping"
+      }
+    },
+    {
+      "eventId": "evt-1795494472616-33d6",
+      "timestamp": "2026-11-24T04:27:52.616Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "manage_environment",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "manage_environment"
+      }
+    },
+    {
+      "eventId": "evt-1795494472614-a4e2",
+      "timestamp": "2026-11-24T04:27:52.614Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "initialize",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "initialize",
+        "target": "initialize"
+      }
+    },
+    {
+      "eventId": "evt-1795494471588-b6a3",
+      "timestamp": "2026-11-24T04:27:51.588Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795494471560-9e52",
+      "timestamp": "2026-11-24T04:27:51.560Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795494436805-522e",
+      "timestamp": "2026-11-24T04:27:16.805Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "resources/read",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "resources/read",
+        "target": "resources/read"
+      }
+    },
+    {
+      "eventId": "evt-1795494436801-fa25",
+      "timestamp": "2026-11-24T04:27:16.801Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "manage_gate_policies",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "manage_gate_policies"
+      }
+    },
+    {
+      "eventId": "evt-1795494436795-ca70",
+      "timestamp": "2026-11-24T04:27:16.795Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "manage_gate_policies",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "manage_gate_policies"
+      }
+    },
+    {
+      "eventId": "evt-1795494436789-0959",
+      "timestamp": "2026-11-24T04:27:16.789Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "manage_test_folders",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "manage_test_folders"
+      }
+    },
+    {
+      "eventId": "evt-1795494436782-cce2",
+      "timestamp": "2026-11-24T04:27:16.782Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "manage_test_folders",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "manage_test_folders"
+      }
+    },
+    {
+      "eventId": "evt-1795494436769-02ad",
+      "timestamp": "2026-11-24T04:27:16.769Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "manage_test_suite",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "manage_test_suite"
+      }
+    },
+    {
+      "eventId": "evt-1795494436757-66c1",
+      "timestamp": "2026-11-24T04:27:16.757Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "manage_test_suite",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "manage_test_suite"
+      }
+    },
+    {
+      "eventId": "evt-1795494436742-a80a",
+      "timestamp": "2026-11-24T04:27:16.742Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "manage_test_suite",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "manage_test_suite"
+      }
+    },
+    {
+      "eventId": "evt-1795494436733-7223",
+      "timestamp": "2026-11-24T04:27:16.733Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "manage_test_suite",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "manage_test_suite"
+      }
+    },
+    {
+      "eventId": "evt-1795494436727-5041",
+      "timestamp": "2026-11-24T04:27:16.727Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "manage_environment",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "manage_environment"
+      }
+    },
+    {
+      "eventId": "evt-1795494436720-fe17",
+      "timestamp": "2026-11-24T04:27:16.720Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "manage_environment",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "manage_environment"
+      }
+    },
+    {
+      "eventId": "evt-1795494436712-ba74",
+      "timestamp": "2026-11-24T04:27:16.712Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "manage_environment",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "manage_environment"
+      }
+    },
+    {
+      "eventId": "evt-1795494436703-adb3",
+      "timestamp": "2026-11-24T04:27:16.703Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "manage_environment",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "manage_environment"
+      }
+    },
+    {
+      "eventId": "evt-1795494436690-5b68",
+      "timestamp": "2026-11-24T04:27:16.690Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "tools/list",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/list",
+        "target": "tools/list"
+      }
+    },
+    {
+      "eventId": "evt-1795493717040-829e",
+      "timestamp": "2026-11-24T04:15:17.040Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "ping",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "ping",
+        "target": "ping"
+      }
+    },
+    {
+      "eventId": "evt-1795493716940-bd37",
+      "timestamp": "2026-11-24T04:15:16.940Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "initialize",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "initialize",
+        "target": "initialize"
+      }
+    },
+    {
+      "eventId": "evt-1795493716935-22cc",
+      "timestamp": "2026-11-24T04:15:16.935Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "get_property_gate",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "get_property_gate"
+      }
+    },
+    {
+      "eventId": "evt-1795492697764-4afd",
+      "timestamp": "2026-11-24T03:58:17.764Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "get_property_gate",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "get_property_gate"
+      }
+    },
+    {
+      "eventId": "evt-1795492696505-a109",
+      "timestamp": "2026-11-24T03:58:16.505Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "ping",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "ping",
+        "target": "ping"
+      }
+    },
+    {
+      "eventId": "evt-1795492696405-b298",
+      "timestamp": "2026-11-24T03:58:16.405Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "initialize",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "initialize",
+        "target": "initialize"
+      }
+    },
+    {
+      "eventId": "evt-1795491746936-73f3",
+      "timestamp": "2026-11-24T03:42:26.936Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T08:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T08",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795491746792-f80e",
+      "timestamp": "2026-11-24T03:42:26.792Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T07:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T07",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795491746645-9a35",
+      "timestamp": "2026-11-24T03:42:26.645Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T06:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T06",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795491746485-b8c1",
+      "timestamp": "2026-11-24T03:42:26.485Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T05:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T05",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795491746317-e307",
+      "timestamp": "2026-11-24T03:42:26.317Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T04:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T04",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795491746129-8069",
+      "timestamp": "2026-11-24T03:42:26.129Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T03:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T03",
+        "pixelDiffPercent": 0.08
+      }
+    },
+    {
+      "eventId": "evt-1795491745969-8d82",
+      "timestamp": "2026-11-24T03:42:25.969Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T02:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T02",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795491731755-9f34",
+      "timestamp": "2026-11-24T03:42:11.755Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795491731433-3ebc",
+      "timestamp": "2026-11-24T03:42:11.433Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795429507879-d3b2",
+      "timestamp": "2026-11-23T10:25:07.879Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795429507748-d01a",
+      "timestamp": "2026-11-23T10:25:07.748Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795429507267-f452",
+      "timestamp": "2026-11-23T10:25:07.267Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "ping",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "ping",
+        "target": "ping"
+      }
+    },
+    {
+      "eventId": "evt-1795429506965-3cd4",
+      "timestamp": "2026-11-23T10:25:06.965Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "get_property_gate",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "get_property_gate"
+      }
+    },
+    {
+      "eventId": "evt-1795429506961-a8b8",
+      "timestamp": "2026-11-23T10:25:06.961Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "initialize",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "initialize",
+        "target": "initialize"
+      }
+    },
+    {
+      "eventId": "evt-1795429502363-5d6c",
+      "timestamp": "2026-11-23T10:25:02.363Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "ping",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "ping",
+        "target": "ping"
+      }
+    },
+    {
+      "eventId": "evt-1795429502112-5f48",
+      "timestamp": "2026-11-23T10:25:02.112Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "get_property_gate",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "get_property_gate"
+      }
+    },
+    {
+      "eventId": "evt-1795429502109-37be",
+      "timestamp": "2026-11-23T10:25:02.109Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "initialize",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "initialize",
+        "target": "initialize"
+      }
+    },
+    {
+      "eventId": "evt-1795429500334-e294",
+      "timestamp": "2026-11-23T10:25:00.334Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "ping",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "ping",
+        "target": "ping"
+      }
+    },
+    {
+      "eventId": "evt-1795429500088-e5f3",
+      "timestamp": "2026-11-23T10:25:00.088Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "get_property_gate",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "get_property_gate"
+      }
+    },
+    {
+      "eventId": "evt-1795429500084-c4f6",
+      "timestamp": "2026-11-23T10:25:00.084Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "initialize",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "initialize",
+        "target": "initialize"
+      }
+    },
+    {
+      "eventId": "evt-1795429497734-28a1",
+      "timestamp": "2026-11-23T10:24:57.734Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "ping",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "ping",
+        "target": "ping"
+      }
+    },
+    {
+      "eventId": "evt-1795429497497-b0bb",
+      "timestamp": "2026-11-23T10:24:57.497Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "initialize",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "initialize",
+        "target": "initialize"
+      }
+    },
+    {
+      "eventId": "evt-1795429497490-b0d4",
+      "timestamp": "2026-11-23T10:24:57.490Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "get_property_gate",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "get_property_gate"
+      }
+    },
+    {
+      "eventId": "evt-1795429495863-3b29",
+      "timestamp": "2026-11-23T10:24:55.863Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795429495834-9a80",
+      "timestamp": "2026-11-23T10:24:55.834Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795429244138-d6ab",
+      "timestamp": "2026-11-23T10:20:44.138Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "ping",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "ping",
+        "target": "ping"
+      }
+    },
+    {
+      "eventId": "evt-1795429243975-2c7f",
+      "timestamp": "2026-11-23T10:20:43.975Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "get_property_gate",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "get_property_gate"
+      }
+    },
+    {
+      "eventId": "evt-1795429243971-2c68",
+      "timestamp": "2026-11-23T10:20:43.971Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "initialize",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "initialize",
+        "target": "initialize"
+      }
+    },
+    {
+      "eventId": "evt-1795429243275-0ad6",
+      "timestamp": "2026-11-23T10:20:43.275Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795429243247-8824",
+      "timestamp": "2026-11-23T10:20:43.248Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795428384247-25f4",
+      "timestamp": "2026-11-23T10:06:24.247Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T03:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T03",
+        "pixelDiffPercent": 2.4
+      }
+    },
+    {
+      "eventId": "evt-1795428384224-15e8",
+      "timestamp": "2026-11-23T10:06:24.224Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795428384210-db78",
+      "timestamp": "2026-11-23T10:06:24.210Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "COMPARISON_EVALUATED",
+      "target": "www.prod.staging vs www.prod.prod",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "comparisonId": "www.prod.staging-vs-www.prod.prod",
+        "headlineVerdict": "NO-GO"
+      }
+    },
+    {
+      "eventId": "evt-1795428383572-89df",
+      "timestamp": "2026-11-23T10:06:23.572Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "SYNTHETIC_RUN_TRIGGERED",
+      "target": "www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "runKey": "run-www-prod-staging-2-3540",
+        "verdict": "NO-GO"
+      }
+    },
+    {
+      "eventId": "evt-1795428325468-dd67",
+      "timestamp": "2026-11-23T10:05:25.468Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "ping",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "ping",
+        "target": "ping"
+      }
+    },
+    {
+      "eventId": "evt-1795428325423-1d4a",
+      "timestamp": "2026-11-23T10:05:25.423Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "get_property_gate",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "get_property_gate"
+      }
+    },
+    {
+      "eventId": "evt-1795428325366-7475",
+      "timestamp": "2026-11-23T10:05:25.366Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "initialize",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "initialize",
+        "target": "initialize"
+      }
+    },
+    {
+      "eventId": "evt-1795428305143-4559",
+      "timestamp": "2026-11-23T10:05:05.143Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "ping",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "ping",
+        "target": "ping"
+      }
+    },
+    {
+      "eventId": "evt-1795428305102-d963",
+      "timestamp": "2026-11-23T10:05:05.102Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "get_property_gate",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "get_property_gate"
+      }
+    },
+    {
+      "eventId": "evt-1795428305041-3e5f",
+      "timestamp": "2026-11-23T10:05:05.041Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "initialize",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "initialize",
+        "target": "initialize"
+      }
+    },
+    {
+      "eventId": "evt-1795428295964-2737",
+      "timestamp": "2026-11-23T10:04:55.964Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "ping",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "ping",
+        "target": "ping"
+      }
+    },
+    {
+      "eventId": "evt-1795428295864-67b9",
+      "timestamp": "2026-11-23T10:04:55.864Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "initialize",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "initialize",
+        "target": "initialize"
+      }
+    },
+    {
+      "eventId": "evt-1795428295856-f36a",
+      "timestamp": "2026-11-23T10:04:55.856Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "get_property_gate",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "get_property_gate"
+      }
+    },
+    {
+      "eventId": "evt-1795428249368-e268",
+      "timestamp": "2026-11-23T10:04:09.370Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "ping",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "ping",
+        "target": "ping"
+      }
+    },
+    {
+      "eventId": "evt-1795428249267-b468",
+      "timestamp": "2026-11-23T10:04:09.270Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "get_property_gate",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "get_property_gate"
+      }
+    },
+    {
+      "eventId": "evt-1795428249236-d963",
+      "timestamp": "2026-11-23T10:04:09.237Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "initialize",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "initialize",
+        "target": "initialize"
+      }
+    },
+    {
+      "eventId": "evt-1795426602463-12f5",
+      "timestamp": "2026-11-23T09:36:42.464Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "ping",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "ping",
+        "target": "ping"
+      }
+    },
+    {
+      "eventId": "evt-1795426602260-6c3a",
+      "timestamp": "2026-11-23T09:36:42.260Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "get_property_gate",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "get_property_gate"
+      }
+    },
+    {
+      "eventId": "evt-1795426602256-cc20",
+      "timestamp": "2026-11-23T09:36:42.256Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "initialize",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "initialize",
+        "target": "initialize"
+      }
+    },
+    {
+      "eventId": "evt-1795426600170-c27d",
+      "timestamp": "2026-11-23T09:36:40.170Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795426600136-a192",
+      "timestamp": "2026-11-23T09:36:40.136Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795352044622-f55d",
+      "timestamp": "2026-11-22T12:54:04.623Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "ping",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "ping",
+        "target": "ping"
+      }
+    },
+    {
+      "eventId": "evt-1795352044447-ffe2",
+      "timestamp": "2026-11-22T12:54:04.447Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "get_property_gate",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "get_property_gate"
+      }
+    },
+    {
+      "eventId": "evt-1795352044439-25a2",
+      "timestamp": "2026-11-22T12:54:04.439Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "initialize",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "initialize",
+        "target": "initialize"
+      }
+    },
+    {
+      "eventId": "evt-1795352040828-460c",
+      "timestamp": "2026-11-22T12:54:00.828Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T08:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T08",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795352040725-0ed1",
+      "timestamp": "2026-11-22T12:54:00.725Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T07:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T07",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795352040634-7e17",
+      "timestamp": "2026-11-22T12:54:00.634Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T06:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T06",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795352040550-2cd7",
+      "timestamp": "2026-11-22T12:54:00.550Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T05:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T05",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795352040483-3df6",
+      "timestamp": "2026-11-22T12:54:00.483Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T04:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T04",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795352040413-6d9d",
+      "timestamp": "2026-11-22T12:54:00.413Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T03:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T03",
+        "pixelDiffPercent": 0.09
+      }
+    },
+    {
+      "eventId": "evt-1795352040297-5e60",
+      "timestamp": "2026-11-22T12:54:00.297Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T02:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T02",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795352036102-11c6",
+      "timestamp": "2026-11-22T12:53:56.102Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795352036069-e850",
+      "timestamp": "2026-11-22T12:53:56.069Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T01:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T01",
+        "pixelDiffPercent": 63.89
+      }
+    },
+    {
+      "eventId": "evt-1795350780929-4874",
+      "timestamp": "2026-11-22T12:33:00.929Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "ping",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "ping",
+        "target": "ping"
+      }
+    },
+    {
+      "eventId": "evt-1795350780765-8b54",
+      "timestamp": "2026-11-22T12:33:00.765Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "get_property_gate",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "tools/call",
+        "target": "get_property_gate"
+      }
+    },
+    {
+      "eventId": "evt-1795350780762-9f31",
+      "timestamp": "2026-11-22T12:33:00.762Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "MCP_TOOL_INVOKED",
+      "target": "initialize",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "mcp",
+      "metadata": {
+        "method": "initialize",
+        "target": "initialize"
+      }
+    },
+    {
+      "eventId": "evt-1795350778112-769a",
+      "timestamp": "2026-11-22T12:32:58.112Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T08:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T08",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795350777888-c948",
+      "timestamp": "2026-11-22T12:32:57.889Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T07:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T07",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795350777746-1e6a",
+      "timestamp": "2026-11-22T12:32:57.746Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T06:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T06",
+        "pixelDiffPercent": 0
+      }
+    },
+    {
+      "eventId": "evt-1795350777633-5272",
+      "timestamp": "2026-11-22T12:32:57.633Z",
+      "email": "user-tcchhlxprfng@salesforce.com",
+      "action": "VISUAL_JUDGE_INVOKED",
+      "target": "T05:www.prod.staging",
+      "actor": "user-tcchhlxprfng@salesforce.com",
+      "source": "rest-api",
+      "metadata": {
+        "testId": "T05",
+        "pixelDiffPercent": 0
+      }
+    }
+  ]
+}
