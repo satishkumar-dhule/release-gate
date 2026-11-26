@@ -706,19 +706,23 @@ export function executeManageProperty(
     if (state.properties.length <= 1) {
       throw new Error('Cannot delete the last remaining property');
     }
-    const nextSuites = { ...state.suitesByAppId };
-    delete nextSuites[existing.id];
-    const nextState: McpStateStore = {
-      ...state,
-      properties: state.properties.filter((p) => p.id !== existing.id),
-      suitesByAppId: nextSuites,
-    };
+    const {
+      nextState,
+      purgedRuns,
+      purgedPolicyRules,
+      purgedVisualParamKeys,
+      hadSuite,
+    } = cascadeDeletePropertyFromState(state, existing.id);
     return {
       state: nextState,
       mutated: true,
       result: {
         action: 'delete',
         deletedAppId: existing.id,
+        deletedSuite: hadSuite,
+        purgedRuns,
+        purgedPolicyRules,
+        purgedVisualParamKeys,
         totalProperties: nextState.properties.length,
       },
     };
@@ -727,6 +731,86 @@ export function executeManageProperty(
   throw new Error(
     `Unsupported manage_property action "${action}". Allowed: list, get, create, update, patch, delete, clone`
   );
+}
+
+/**
+ * Pure cascading property deletion across properties, suitesByAppId, runs, and scoped gate policies.
+ */
+export function cascadeDeletePropertyFromState(
+  state: McpStateStore,
+  appIdRaw: string
+): {
+  nextState: McpStateStore;
+  deletedAppId: string;
+  hadSuite: boolean;
+  purgedRuns: number;
+  purgedPolicyRules: number;
+  purgedVisualParamKeys: number;
+} {
+  const cleanId = String(appIdRaw || '').trim().toLowerCase();
+  const nextSuites = { ...state.suitesByAppId };
+  let hadSuite = false;
+  for (const key of Object.keys(nextSuites)) {
+    if (key.toLowerCase() === cleanId) {
+      delete nextSuites[key];
+      hadSuite = true;
+    }
+  }
+
+  const nextRuns = state.runs.filter((r) => {
+    const rApp = (r.appId || '').toLowerCase();
+    const rSuiteApp = (r.suiteAppId || '').toLowerCase();
+    const rTarget = (r.target || '').toLowerCase();
+    return (
+      rApp !== cleanId &&
+      rSuiteApp !== cleanId &&
+      !rTarget.startsWith(`${cleanId}.`)
+    );
+  });
+  const purgedRuns = state.runs.length - nextRuns.length;
+
+  const prevRules = state.policies?.acceptedRules || [];
+  const nextAcceptedRules = prevRules.filter((rule) => {
+    const ruleApp = (
+      rule.appId ||
+      (rule as unknown as { scope?: string }).scope ||
+      ''
+    ).toLowerCase();
+    return ruleApp !== cleanId;
+  });
+  const purgedPolicyRules = prevRules.length - nextAcceptedRules.length;
+
+  const prevVisualParams = state.policies?.acceptedVisualParams || {};
+  const nextVisualParams: Record<string, string[]> = {};
+  let purgedVisualParamKeys = 0;
+  for (const [key, val] of Object.entries(prevVisualParams)) {
+    if (key.toLowerCase().startsWith(`${cleanId}:`)) {
+      purgedVisualParamKeys += 1;
+    } else {
+      nextVisualParams[key] = val;
+    }
+  }
+
+  const nextState: McpStateStore = {
+    ...state,
+    properties: state.properties.filter((p) => p.id.toLowerCase() !== cleanId),
+    suitesByAppId: nextSuites,
+    runs: nextRuns,
+    policies: {
+      ...state.policies,
+      acceptedRules: nextAcceptedRules,
+      acceptedVisualParams: nextVisualParams,
+    },
+  };
+
+  return {
+    nextState,
+    deletedAppId: cleanId,
+    hadSuite,
+    purgedRuns,
+    purgedPolicyRules,
+    purgedVisualParamKeys,
+  };
 }
 
 /**

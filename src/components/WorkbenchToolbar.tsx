@@ -74,10 +74,10 @@ export interface WorkbenchToolbarProps {
   onCopyMarkdown: () => void;
   onRerunAllDiffs: () => void;
   onRunSingleTarget: (targetId: string) => void;
-  onTogglePropScale: () => void;
-  propCount: number;
-  onToggleSuiteScale: () => void;
-  suiteCount: number;
+  onTogglePropScale?: () => void;
+  propCount?: number;
+  onToggleSuiteScale?: () => void;
+  suiteCount?: number;
   theme: 'light' | 'dark';
   onToggleTheme: () => void;
   onOpenCommandPalette: () => void;
@@ -883,32 +883,6 @@ export const WorkbenchToolbar: React.FC<WorkbenchToolbarProps> = ({
                   <span>Keyboard Shortcuts</span>
                 </span>
                 <kbd className="font-mono text-[11px] text-muted-foreground">?</kbd>
-              </button>
-
-              <div className="my-1 border-t border-border" />
-
-              <button
-                type="button"
-                onClick={() => {
-                  onTogglePropScale();
-                  setOpenMenu(null);
-                }}
-                className="flex w-full items-center justify-between rounded px-2.5 py-2 text-left hover:bg-muted cursor-pointer"
-              >
-                <span>{propCount >= 50 ? 'Restore 14 Properties' : 'Simulate 50 Properties'}</span>
-                <span className="font-mono text-[11px] text-muted-foreground tabular-nums">{propCount}</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  onToggleSuiteScale();
-                  setOpenMenu(null);
-                }}
-                className="flex w-full items-center justify-between rounded px-2.5 py-2 text-left hover:bg-muted cursor-pointer"
-              >
-                <span>{suiteCount >= 64 ? 'Restore Core Checks' : 'Scale to 64 Checks'}</span>
-                <span className="font-mono text-[11px] text-muted-foreground tabular-nums">{suiteCount}</span>
               </button>
 
               {backgroundJobs.length > 0 && (

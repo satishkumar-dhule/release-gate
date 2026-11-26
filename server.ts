@@ -30,6 +30,7 @@ import {
   dispatchMcpJsonRpc,
 } from './src/engine/mcpProtocol';
 import {
+  cascadeDeletePropertyFromState,
   executeManageEnvironment,
   executeManageGatePolicies,
   executeManageProperty,
@@ -286,6 +287,8 @@ async function startServer() {
     string,
     { sideA: TargetEndpointProfile; sideB: TargetEndpointProfile }
   > = {};
+  const runtimeSchedulePolicies: Record<string, SchedulePolicyConfig> = {};
+  const runtimeScheduledLiveTicks: Record<string, ScheduledRunPoint[]> = {};
 
   try {
     if (fs.existsSync(runtimeConfigFile)) {
@@ -392,38 +395,14 @@ async function startServer() {
     normalizeSuiteWithCatchpointDefaults(getPropertyTestSuite(appId, getRuntimeConfigSnapshot()));
 
   const seedLiveFleetOnServer = async () => {
-    const fleetTargets = [
-      'www.prod.staging',
-      'www.prod.prod',
-      'www.uat.staging',
-      'www.uat.prod',
-      'login.prod.staging',
-      'login.prod.prod',
-      'developer.prod.staging',
-      'developer.prod.prod',
-      'help.prod.staging',
-      'help.prod.prod',
-      'trailhead.prod.staging',
-      'trailhead.prod.prod',
-      'status.prod.staging',
-      'status.prod.prod',
-      'appexchange.prod.staging',
-      'appexchange.prod.prod',
-      'partners.prod.staging',
-      'partners.prod.prod',
-      'apac.prod.staging',
-      'apac.prod.prod',
-      'emea.prod.staging',
-      'emea.prod.prod',
-      'americas.prod.staging',
-      'americas.prod.prod',
-      'japan.prod.staging',
-      'japan.prod.prod',
-      'uk.prod.staging',
-      'uk.prod.prod',
-      'germany.prod.staging',
-      'germany.prod.prod',
-    ];
+    const fleetTargets: string[] = [];
+    for (const prop of runtimeProperties) {
+      for (const env of prop.envs) {
+        for (const net of env.networks || ['staging', 'prod']) {
+          fleetTargets.push(`${prop.id}.${env.id}.${net}`);
+        }
+      }
+    }
     const opEmail = awsEnv.operatorUsername
       ? `${awsEnv.operatorUsername}@salesforce.com`
       : DEFAULT_TEMPLATE_CONFIG.branding.defaultOperator.email;
@@ -668,17 +647,26 @@ async function startServer() {
     });
   });
 
-  app.put('/api/v1/properties', (req, res) => {
+  app.put('/api/v1/properties', async (req, res) => {
     if (!Array.isArray(req.body?.properties) || req.body.properties.length === 0) {
       res.status(400).json({ error: 'Body must contain non-empty "properties" array' });
       return;
     }
-    runtimeProperties = req.body.properties;
+    const nextProps = req.body.properties as AppConfig[];
+    const nextIds = new Set(nextProps.map((p) => String(p.id || '').trim().toLowerCase()));
+    const removedIds = runtimeProperties
+      .map((p) => p.id.toLowerCase())
+      .filter((id) => !nextIds.has(id));
+    for (const removedId of removedIds) {
+      await cascadeDeletePropertyOnServer(removedId);
+    }
+    runtimeProperties = nextProps;
     persistRuntimeCatchpointConfig();
     res.json({
       saved: true,
       total: runtimeProperties.length,
       properties: runtimeProperties,
+      removedPropertyIds: removedIds,
     });
   });
 
@@ -857,30 +845,107 @@ async function startServer() {
     });
   });
 
+  const cascadeDeletePropertyOnServer = async (appIdRaw: string) => {
+    const cleanId = String(appIdRaw || '').trim().toLowerCase();
+    const existingProp = runtimeProperties.find(
+      (p) => p.id.toLowerCase() === cleanId
+    );
+    const creds = resolveRuntimeAwsCredentials();
+    const deletedCanariesSet = new Set<string>();
+
+    if (existingProp) {
+      for (const env of existingProp.envs) {
+        for (const net of env.networks || ['staging', 'prod']) {
+          const canaryName = deriveAwsCanaryName(`${cleanId}.${env.id}.${net}`);
+          await deleteAwsSyntheticsCanary({ canaryName, creds }).catch(() => null);
+          delete canarySyncState[canaryName];
+          deletedCanariesSet.add(canaryName);
+        }
+      }
+    }
+
+    // Also purge any canarySyncState entry belonging to this property
+    for (const [canaryKey, syncRec] of Object.entries(canarySyncState)) {
+      const targetMatch = (syncRec.targetId || '').toLowerCase().startsWith(`${cleanId}.`);
+      const nameMatch = canaryKey.toLowerCase().startsWith(`ak-${cleanId}-`);
+      if (targetMatch || nameMatch) {
+        await deleteAwsSyntheticsCanary({ canaryName: canaryKey, creds }).catch(() => null);
+        delete canarySyncState[canaryKey];
+        deletedCanariesSet.add(canaryKey);
+      }
+    }
+
+    // Cascade delete across properties, suitesByAppId, runs, and scoped gate policies
+    const cascade = cascadeDeletePropertyFromState(getMcpStateSnapshot(), cleanId);
+    commitMcpState(cascade.nextState, false);
+
+    // Purge custom topology profiles for this property
+    for (const key of Object.keys(runtimeTopologyByAppId)) {
+      if (key.toLowerCase() === cleanId) {
+        delete runtimeTopologyByAppId[key];
+      }
+    }
+
+    // Purge scheduled policies & live ticks for this property
+    for (const key of Object.keys(runtimeSchedulePolicies)) {
+      if (key.toLowerCase() === cleanId) {
+        delete runtimeSchedulePolicies[key];
+      }
+    }
+    for (const key of Object.keys(runtimeScheduledLiveTicks)) {
+      if (key.toLowerCase() === cleanId) {
+        delete runtimeScheduledLiveTicks[key];
+      }
+    }
+
+    // Prune fanOutBatches so deleted property does not linger in recent batch history
+    fanOutBatches = fanOutBatches
+      .map((batch) => {
+        const nextAffected = (batch.affectedAppIds || []).filter(
+          (id) => id.toLowerCase() !== cleanId
+        );
+        const nextResults = (batch.results || []).filter(
+          (r) =>
+            (r.appId || '').toLowerCase() !== cleanId &&
+            !(r.targetId || '').toLowerCase().startsWith(`${cleanId}.`)
+        );
+        const nextVerdicts = (batch.propertyVerdicts || []).filter(
+          (pv) => (pv.appId || '').toLowerCase() !== cleanId
+        );
+        return {
+          ...batch,
+          affectedAppIds: nextAffected,
+          results: nextResults,
+          propertyVerdicts: nextVerdicts,
+          totalCanaries: nextResults.length,
+          completedCanaries: nextResults.length,
+        };
+      })
+      .filter((b) => b.totalCanaries > 0 || b.affectedAppIds.length > 0);
+
+    persistRuntimeCatchpointConfig();
+    persistSyntheticsState();
+
+    return {
+      deleted: true,
+      appId: cleanId,
+      deletedCanaries: Array.from(deletedCanariesSet),
+      deletedSuite: cascade.hadSuite,
+      purgedRuns: cascade.purgedRuns,
+      purgedPolicyRules: cascade.purgedPolicyRules,
+      purgedVisualParamKeys: cascade.purgedVisualParamKeys,
+      properties: runtimeProperties,
+    };
+  };
+
   app.delete('/api/v1/properties/:appId', async (req, res) => {
     if (runtimeProperties.length <= 1) {
       res.status(400).json({ error: 'Cannot delete the last remaining property' });
       return;
     }
     const appId = String(req.params.appId || '').trim().toLowerCase();
-    const existingProp = runtimeProperties.find((p) => p.id === appId);
-    const creds = resolveRuntimeAwsCredentials();
-    const deletedCanaries: string[] = [];
-    if (existingProp) {
-      for (const env of existingProp.envs) {
-        for (const net of env.networks || ['staging', 'prod']) {
-          const canaryName = deriveAwsCanaryName(`${appId}.${env.id}.${net}`);
-          await deleteAwsSyntheticsCanary({ canaryName, creds }).catch(() => null);
-          delete canarySyncState[canaryName];
-          deletedCanaries.push(canaryName);
-        }
-      }
-      persistSyntheticsState();
-    }
-    runtimeProperties = runtimeProperties.filter((p) => p.id !== appId);
-    delete runtimeSuitesByAppId[appId];
-    persistRuntimeCatchpointConfig();
-    res.json({ deleted: true, appId, deletedCanaries, properties: runtimeProperties });
+    const result = await cascadeDeletePropertyOnServer(appId);
+    res.json(result);
   });
 
   // 4b. Query & Mutate Per-Property Test Suites (Auto-Creates/Updates AWS CloudWatch Synthetics Canaries)
@@ -3370,9 +3435,41 @@ async function startServer() {
         }
 
         if (toolName === 'manage_property') {
+          const action = String(args.action || 'list').trim().toLowerCase();
+          if (action === 'delete') {
+            const outcome = executeManageProperty(getMcpStateSnapshot(), args);
+            const deletedId = String(
+              (outcome.result as Record<string, unknown>).deletedAppId || args.appId || ''
+            )
+              .trim()
+              .toLowerCase();
+            const cascadeRes = await cascadeDeletePropertyOnServer(deletedId);
+            return {
+              ...(outcome.result as Record<string, unknown>),
+              deletedCanaries: cascadeRes.deletedCanaries,
+              purgedRuns: cascadeRes.purgedRuns,
+              purgedPolicyRules: cascadeRes.purgedPolicyRules,
+              purgedVisualParamKeys: cascadeRes.purgedVisualParamKeys,
+              totalProperties: runtimeProperties.length,
+            };
+          }
           const outcome = executeManageProperty(getMcpStateSnapshot(), args);
           if (outcome.mutated) {
             commitMcpState(outcome.state, true);
+            if (action === 'create' || action === 'update' || action === 'patch' || action === 'clone') {
+              const targetAppId = String(
+                (outcome.result as Record<string, unknown>)?.created
+                  ? ((outcome.result as Record<string, unknown>).created as { id?: string })?.id
+                  : (outcome.result as Record<string, unknown>)?.cloned
+                  ? ((outcome.result as Record<string, unknown>).cloned as { id?: string })?.id
+                  : args.appId || ''
+              )
+                .trim()
+                .toLowerCase();
+              if (targetAppId) {
+                await syncPropertyCanariesToAws(targetAppId).catch(() => undefined);
+              }
+            }
           }
           return outcome.result;
         }
@@ -4297,8 +4394,6 @@ async function startServer() {
   });
 
   // 9b. Scheduled Runs & SLA Telemetry REST Endpoint (/api/v1/schedules)
-  const runtimeSchedulePolicies: Record<string, SchedulePolicyConfig> = {};
-  const runtimeScheduledLiveTicks: Record<string, ScheduledRunPoint[]> = {};
 
   app.get('/api/v1/schedules', (req, res) => {
     const appId = String(req.query.appId || 'www').toLowerCase();

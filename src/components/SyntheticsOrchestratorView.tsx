@@ -19,6 +19,7 @@ import {
   ShieldAlert,
   ShieldCheck,
   Terminal,
+  Trash2,
   UploadCloud,
   X,
   Zap,
@@ -61,6 +62,7 @@ export interface SyntheticsOrchestratorViewProps {
   onOpenSetupForProperty: (appId: string) => void;
   onIngestRunsFromSynthetics?: (newRuns: RunRecord[]) => void;
   onRunPropertyGate?: (appId: string) => void;
+  onDeleteProperty?: (appId: string) => void;
 }
 
 function verdictTextClass(verdict: OverallVerdict): string {
@@ -126,6 +128,7 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
   onOpenSetupForProperty,
   onIngestRunsFromSynthetics,
   onRunPropertyGate,
+  onDeleteProperty,
 }) => {
   const [serverRawInventory, setServerRawInventory] = useState<Record<string, unknown> | null>(null);
   const [syncingScope, setSyncingScope] = useState<string | null>(null);
@@ -1248,6 +1251,25 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
                           <span>Inspect</span>
                           <ArrowRight className="h-3 w-3" />
                         </button>
+
+                        {onDeleteProperty && apps.length > 1 && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (deepDiveCanaryName?.toLowerCase().startsWith(`ak-${grp.appId.toLowerCase()}-`)) {
+                                setDeepDiveCanaryName(null);
+                                setDeepDiveReport(null);
+                              }
+                              onDeleteProperty(grp.appId);
+                            }}
+                            data-testid={`delete-prop-row-${grp.appId}`}
+                            title={`Delete ${grp.appId} and all associated runs, suites, canaries, and policies`}
+                            aria-label={`Delete property ${grp.appId}`}
+                            className="inline-flex h-6.5 w-6.5 items-center justify-center rounded border border-border bg-background text-muted-foreground hover:border-rose-500/40 hover:bg-rose-500/10 hover:text-rose-600 dark:hover:text-rose-400 transition-colors cursor-pointer"
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </button>
+                        )}
                       </div>
                     </td>
                   </tr>

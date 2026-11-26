@@ -87,8 +87,14 @@ export function normalizeCanariesApiResponse(params: {
         : '735234585484',
   });
 
+  const activeAppIdSet =
+    apps.length > 0 ? new Set(apps.map((a) => a.id.toLowerCase())) : null;
   const rawCanaries = Array.isArray(raw?.canaries) ? raw.canaries : [];
-  const validManagedFromServer = rawCanaries.filter(isManagedCanaryShape);
+  const validManagedFromServer = rawCanaries
+    .filter(isManagedCanaryShape)
+    .filter((sc) =>
+      activeAppIdSet ? activeAppIdSet.has(sc.appId.toLowerCase()) : true
+    );
 
   // Also check if server returned raw AWS SDK DescribeCanaries objects ({ Name, Status })
   const rawAwsLiveByName = new Map<string, { state?: string; runtime?: string }>();
@@ -141,9 +147,23 @@ export function normalizeCanariesApiResponse(params: {
 
   const totalChecksManaged = finalCanaries.reduce((sum, c) => sum + (c.checkCount || 0), 0);
   const recentBatches = Array.isArray(raw?.recentBatches)
-    ? (raw.recentBatches as FanOutBatchRecord[]).filter(
-        (b) => b && typeof b.batchId === 'string' && typeof b.completedCanaries === 'number'
-      )
+    ? (raw.recentBatches as FanOutBatchRecord[])
+        .filter(
+          (b) => b && typeof b.batchId === 'string' && typeof b.completedCanaries === 'number'
+        )
+        .map((b) =>
+          activeAppIdSet
+            ? {
+                ...b,
+                affectedAppIds: (b.affectedAppIds || []).filter((id) =>
+                  activeAppIdSet.has(id.toLowerCase())
+                ),
+                propertyVerdicts: (b.propertyVerdicts || []).filter((pv) =>
+                  activeAppIdSet.has(pv.appId.toLowerCase())
+                ),
+              }
+            : b
+        )
     : [];
 
   return {

@@ -25,7 +25,6 @@ import {
 } from './data/mockStore';
 import {
   clearPersistedPortalState,
-  generateEnterpriseScaleTopology,
   getInitialPortalState,
   isDummySeededRun,
   loadPersistedPortalState,
@@ -62,7 +61,6 @@ import {
 } from './engine/shortcuts';
 import {
   DiffDimensionFilter,
-  buildScaledTestSuite,
   filterAndPaginateDiffItems,
 } from './engine/scalableViewEngine';
 import {
@@ -1698,38 +1696,6 @@ export default function App() {
     ]
   );
 
-  const handleTogglePropScale = () => {
-    if (apps.length >= 50) {
-      const fresh = getInitialPortalState();
-      setApps(fresh.apps);
-      setRuns(fresh.runs);
-      setCustomTopologyEdited(false);
-      setActiveAppId('www');
-      setCandidateTarget('www.prod.staging');
-      setBaselineTarget('www.prod.prod');
-      toast.info('Restored 14 core properties');
-    } else {
-      const scaled = generateEnterpriseScaleTopology(50, DEFAULT_TEMPLATE_CONFIG);
-      setApps(scaled.apps);
-      setRuns((prev) => [...prev, ...scaled.runs.filter((r) => !prev.some((p) => p.key === r.key))]);
-      toast.success(`Loaded ${scaled.apps.length} global properties`);
-    }
-  };
-
-  const handleToggleSuiteScale = () => {
-    const baseSuite = normalizeSuiteWithCatchpointDefaults(
-      getPropertyTestSuite(activeAppId)
-    );
-    const nextSuite =
-      activeSuite.length >= 64
-        ? baseSuite
-        : normalizeSuiteWithCatchpointDefaults(
-            buildScaledTestSuite(activeSuite, 64)
-          );
-    handleSaveSuiteForApp(activeAppId, nextSuite);
-    setCheckPage(1);
-  };
-
   const handleSaveSuiteForApp = (appId: string, nextSuiteRaw: TestCaseDefinition[]) => {
     const normalized = normalizeSuiteWithCatchpointDefaults(nextSuiteRaw);
     setSuitesByAppId((prev) => ({ ...prev, [appId]: normalized }));
@@ -1922,17 +1888,114 @@ export default function App() {
 
   const handleDeleteProperty = (appId: string) => {
     if (apps.length <= 1) return;
-    const remaining = apps.filter((a) => a.id !== appId);
+    const cleanId = String(appId || '').trim().toLowerCase();
+    const remaining = apps.filter((a) => a.id.toLowerCase() !== cleanId);
+    if (remaining.length === apps.length) return;
+
+    const remainingRuns = runs.filter((r) => {
+      const rApp = (r.appId || '').toLowerCase();
+      const rSuiteApp = (r.suiteAppId || '').toLowerCase();
+      const rTarget = (r.target || '').toLowerCase();
+      return (
+        rApp !== cleanId &&
+        rSuiteApp !== cleanId &&
+        !rTarget.startsWith(`${cleanId}.`)
+      );
+    });
+
     setApps(remaining);
     setCustomTopologyEdited(true);
-    setRuns((prev) => prev.filter((r) => r.appId !== appId));
-    if (activeAppId === appId && remaining[0]) {
-      handleSelectProperty(remaining[0].id);
+
+    // 1. Delete per-property test suite
+    setSuitesByAppId((prev) => {
+      const next = { ...prev };
+      for (const k of Object.keys(next)) {
+        if (k.toLowerCase() === cleanId) {
+          delete next[k];
+        }
+      }
+      return next;
+    });
+
+    // 2. Delete all run records belonging to this property
+    setRuns(remainingRuns);
+
+    // 3. Delete selected run pointers for targets of this property
+    setSelectedRunByTarget((prev) => {
+      const next = { ...prev };
+      for (const targetKey of Object.keys(next)) {
+        if (targetKey.toLowerCase().startsWith(`${cleanId}.`)) {
+          delete next[targetKey];
+        }
+      }
+      return next;
+    });
+
+    // 4. Delete accepted header rules scoped to this property
+    setAcceptedRules((prev) =>
+      prev.filter((r) => (r.appId || '').toLowerCase() !== cleanId)
+    );
+
+    // 5. Delete accepted visual parameter waivers for this property
+    setAcceptedVisualParams((prev) => {
+      const next = { ...prev };
+      for (const k of Object.keys(next)) {
+        if (k.toLowerCase().startsWith(`${cleanId}:`)) {
+          delete next[k];
+        }
+      }
+      return next;
+    });
+
+    // 6. Delete custom topology endpoint profiles for this property
+    setCustomProfilesByApp((prev) => {
+      const next = { ...prev };
+      for (const k of Object.keys(next)) {
+        if (k.toLowerCase() === cleanId) {
+          delete next[k];
+        }
+      }
+      return next;
+    });
+
+    // 7. Delete AI visual judge overrides for this property
+    setAiJudgeOverrides((prev) => {
+      const next = { ...prev };
+      for (const k of Object.keys(next)) {
+        const lower = k.toLowerCase();
+        if (lower.startsWith(`${cleanId}-`) || lower.startsWith(`${cleanId}:`)) {
+          delete next[k];
+        }
+      }
+      return next;
+    });
+
+    // 8. If active property or compared targets belonged to deleted property, switch to first remaining property
+    const wasActive =
+      activeAppId.toLowerCase() === cleanId ||
+      candidateTarget.toLowerCase().startsWith(`${cleanId}.`) ||
+      baselineTarget.toLowerCase().startsWith(`${cleanId}.`);
+
+    if (wasActive && remaining[0]) {
+      const fallbackProp = remaining[0];
+      const envId = fallbackProp.envs[0]?.id || 'prod';
+      const nextCand = `${fallbackProp.id}.${envId}.staging`;
+      const nextBase = `${fallbackProp.id}.${envId}.prod`;
+      const candRun = remainingRuns.find((r) => r.target === nextCand);
+      const baseRun = remainingRuns.find((r) => r.target === nextBase);
+      setActiveAppId(fallbackProp.id);
+      setCandidateTarget(nextCand);
+      setBaselineTarget(nextBase);
+      setCandidateRunKey(candRun?.key || '');
+      setBaselineRunKey(baseRun?.key || '');
+      setLastProbedByTestId({});
+      setCheckPage(1);
     }
-    fetch(`/api/v1/properties/${encodeURIComponent(appId)}`, {
+
+    fetch(`/api/v1/properties/${encodeURIComponent(cleanId)}`, {
       method: 'DELETE',
     }).catch(() => undefined);
-    toast.info(`Deleted property ${appId}`);
+    toast.info(`Deleted property ${cleanId} and all associated runs, suites, canaries, and policies`);
   };
 
   const commandPaletteItems = useMemo<CommandPaletteItem[]>(() => {
@@ -2236,6 +2299,7 @@ export default function App() {
             }}
             onIngestRunsFromSynthetics={handleIngestSyntheticsRuns}
             onRunPropertyGate={(appId) => handleRunLiveGate(appId)}
+            onDeleteProperty={handleDeleteProperty}
           />
         </main>
       )}
@@ -2291,10 +2355,6 @@ export default function App() {
               }}
               onRerunAllDiffs={handleRerunAllDiffs}
               onRunSingleTarget={() => handleRunLiveGate(activeAppId)}
-              onTogglePropScale={handleTogglePropScale}
-              propCount={apps.length}
-              onToggleSuiteScale={handleToggleSuiteScale}
-              suiteCount={activeSuite.length}
               theme={theme}
               onToggleTheme={toggleTheme}
               onOpenCommandPalette={() => setPaletteOpen(true)}

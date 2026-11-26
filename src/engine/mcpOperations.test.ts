@@ -227,12 +227,92 @@ test('manage_property supports list, get, create, update, patch, clone, delete, 
     state.suitesByAppId.www.length
   );
 
+  // Seed runs, scoped policy rules, and visual params for www-canary before deleting it
+  state = {
+    ...state,
+    runs: [
+      ...state.runs,
+      {
+        key: 'run-www-canary-staging-1',
+        target: 'www-canary.prod.staging',
+        appId: 'www-canary',
+        suiteAppId: 'www-canary',
+        envId: 'prod',
+        network: 'staging',
+        suiteKey: 'www-canary-suite',
+        suiteSha256: 'def456',
+        suiteRowCount: 4,
+        startTime: '2026-06-01T10:02:00Z',
+        totalTests: 4,
+        passedTests: 4,
+        failedTests: 0,
+        by: 'test-runner',
+        results: [],
+      },
+      {
+        key: 'run-www-canary-prod-1',
+        target: 'www-canary.prod.prod',
+        appId: 'www-canary',
+        suiteAppId: 'www-canary',
+        envId: 'prod',
+        network: 'prod',
+        suiteKey: 'www-canary-suite',
+        suiteSha256: 'def456',
+        suiteRowCount: 4,
+        startTime: '2026-06-01T10:03:00Z',
+        totalTests: 4,
+        passedTests: 4,
+        failedTests: 0,
+        by: 'test-runner',
+        results: [],
+      },
+    ],
+    policies: {
+      ...state.policies,
+      acceptedRules: [
+        ...state.policies.acceptedRules,
+        {
+          id: 'rule-canary-scoped',
+          appId: 'www-canary',
+          comparisonId: 'all',
+          kind: 'cache-control',
+          enabled: true,
+          by: 'test@salesforce.com',
+          at: '2026-06-01T10:04:00Z',
+        },
+      ],
+      acceptedVisualParams: {
+        ...state.policies.acceptedVisualParams,
+        'www-canary:T01': ['hero_banner'],
+        'www:T01': ['nav_cta'],
+      },
+    },
+  };
+
   const deleted = executeManageProperty(state, {
     action: 'delete',
     appId: 'www-canary',
   });
   state = deleted.state;
   assert.ok(!state.properties.some((p) => p.id === 'www-canary'));
+  assert.equal(state.suitesByAppId['www-canary'], undefined);
+  assert.ok(
+    !state.runs.some(
+      (r) =>
+        r.appId === 'www-canary' ||
+        r.suiteAppId === 'www-canary' ||
+        r.target.startsWith('www-canary.')
+    )
+  );
+  assert.ok(
+    !state.policies.acceptedRules.some((r) => r.appId === 'www-canary')
+  );
+  assert.equal(state.policies.acceptedVisualParams['www-canary:T01'], undefined);
+  assert.deepEqual(state.policies.acceptedVisualParams['www:T01'], ['nav_cta']);
+  assert.equal(deleted.result.purgedRuns, 2);
+  assert.equal(deleted.result.purgedPolicyRules, 1);
+  assert.equal(deleted.result.purgedVisualParamKeys, 1);
+  assert.equal(deleted.result.deletedSuite, true);
 
   const singleState: McpStateStore = {
     ...state,
