@@ -1998,6 +1998,57 @@ export default function App() {
     toast.info(`Deleted property ${cleanId} and all associated runs, suites, canaries, and policies`);
   };
 
+  const handleRestoreDefaultProperties = () => {
+    const existingIds = new Set(apps.map((a) => a.id.toLowerCase()));
+    const missingDefaults = DEFAULT_TEMPLATE_CONFIG.properties.filter(
+      (p) => !existingIds.has(p.id.toLowerCase())
+    );
+    if (missingDefaults.length === 0) {
+      toast.info('All default properties are already present');
+      return;
+    }
+
+    const nextApps = [
+      ...DEFAULT_TEMPLATE_CONFIG.properties.map((defProp) => {
+        const existing = apps.find((a) => a.id.toLowerCase() === defProp.id.toLowerCase());
+        return existing || defProp;
+      }),
+      ...apps.filter(
+        (a) =>
+          !DEFAULT_TEMPLATE_CONFIG.properties.some(
+            (defProp) => defProp.id.toLowerCase() === a.id.toLowerCase()
+          )
+      ),
+    ];
+
+    const restoredSuites: Record<string, TestCaseDefinition[]> = {};
+    for (const prop of missingDefaults) {
+      restoredSuites[prop.id] = normalizeSuiteWithCatchpointDefaults(
+        getPropertyTestSuite(prop.id)
+      );
+    }
+
+    const seededRuns = seedRunsFromConfig({
+      ...liveTemplateConfig,
+      properties: missingDefaults,
+    });
+
+    setApps(nextApps);
+    setCustomTopologyEdited(true);
+    setSuitesByAppId((prev) => ({ ...prev, ...restoredSuites }));
+    setRuns((prev) => [...seededRuns, ...prev]);
+
+    fetch('/api/v1/properties/restore-defaults', {
+      method: 'POST',
+    }).catch(() => undefined);
+
+    toast.success(
+      `Restored ${missingDefaults.length} default ${
+        missingDefaults.length === 1 ? 'site' : 'sites'
+      } (${nextApps.length} total)`
+    );
+  };
+
   const commandPaletteItems = useMemo<CommandPaletteItem[]>(() => {
     const items: CommandPaletteItem[] = [
       {
@@ -2300,6 +2351,7 @@ export default function App() {
             onIngestRunsFromSynthetics={handleIngestSyntheticsRuns}
             onRunPropertyGate={(appId) => handleRunLiveGate(appId)}
             onDeleteProperty={handleDeleteProperty}
+            onRestoreDefaultProperties={handleRestoreDefaultProperties}
           />
         </main>
       )}
@@ -2483,6 +2535,7 @@ export default function App() {
             onCreateProperty={handleCreateProperty}
             onSaveProperty={handleSaveProperty}
             onDeleteProperty={handleDeleteProperty}
+            onRestoreDefaultProperties={handleRestoreDefaultProperties}
             onSaveSuite={handleSaveSuiteForApp}
             onOpenSynthetics={() => setViewMode('synthetics')}
             acceptedRules={acceptedRules}

@@ -101,6 +101,7 @@ export const TopBar: React.FC<TopBarProps> = ({
 }) => {
   const [internalOpen, setInternalOpen] = useState(false);
   const [query, setQuery] = useState('');
+  const [suppressedTooltipId, setSuppressedTooltipId] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
@@ -342,11 +343,24 @@ export const TopBar: React.FC<TopBarProps> = ({
             const Icon = item.icon;
             const active =
               viewMode === item.id || (item.id === 'studio' && viewMode === 'vscode');
+            const isTooltipSuppressed = suppressedTooltipId === item.id;
             return (
-              <div key={item.id} className="relative group">
+              <div
+                key={item.id}
+                className="relative group"
+                onMouseLeave={() => {
+                  if (suppressedTooltipId === item.id) {
+                    setSuppressedTooltipId(null);
+                  }
+                }}
+              >
                 <button
                   type="button"
-                  onClick={() => onSelectView(item.id)}
+                  onClick={(e) => {
+                    setSuppressedTooltipId(item.id);
+                    e.currentTarget.blur();
+                    onSelectView(item.id);
+                  }}
                   data-testid={`nav-${item.id}`}
                   aria-label={item.label}
                   aria-current={active ? 'page' : undefined}
@@ -371,12 +385,14 @@ export const TopBar: React.FC<TopBarProps> = ({
                     />
                   )}
                 </button>
-                <span
-                  role="tooltip"
-                  className="pointer-events-none hidden md:block absolute left-full top-1/2 -translate-y-1/2 ml-2.5 rounded-md border border-border bg-popover px-2.5 py-1 text-xs font-medium text-popover-foreground shadow-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50"
-                >
-                  {item.tooltip}
-                </span>
+                {!isTooltipSuppressed && (
+                  <span
+                    role="tooltip"
+                    className="pointer-events-none hidden md:block absolute left-full top-1/2 -translate-y-1/2 ml-2.5 rounded-md border border-border bg-popover px-2.5 py-1 text-xs font-medium text-popover-foreground shadow-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50"
+                  >
+                    {item.tooltip}
+                  </span>
+                )}
               </div>
             );
           })}

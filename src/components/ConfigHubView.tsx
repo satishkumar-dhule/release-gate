@@ -18,6 +18,7 @@ export interface ConfigHubViewProps {
   onCreateProperty: (app: AppConfig) => void;
   onSaveProperty: (app: AppConfig) => void;
   onDeleteProperty: (appId: string) => void;
+  onRestoreDefaultProperties?: () => void;
   onSaveSuite: (appId: string, suite: TestCaseDefinition[]) => void;
   onOpenSynthetics: () => void;
   // Policies props
@@ -47,6 +48,7 @@ export const ConfigHubView: React.FC<ConfigHubViewProps> = ({
   onCreateProperty,
   onSaveProperty,
   onDeleteProperty,
+  onRestoreDefaultProperties,
   onSaveSuite,
   onOpenSynthetics,
   acceptedRules,
@@ -220,6 +222,7 @@ export const ConfigHubView: React.FC<ConfigHubViewProps> = ({
           onCreateProperty={onCreateProperty}
           onSaveProperty={onSaveProperty}
           onDeleteProperty={onDeleteProperty}
+          onRestoreDefaultProperties={onRestoreDefaultProperties}
           onSaveSuite={onSaveSuite}
           onOpenSynthetics={onOpenSynthetics}
         />

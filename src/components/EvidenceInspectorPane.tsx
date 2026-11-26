@@ -1563,47 +1563,9 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
                   {effectivePixelDiff.toFixed(1)}% drift
                 </span>
 
-                {/* Compact Hoverable Diff Region Pills */}
-                <div className="flex flex-wrap items-center gap-1 min-w-0">
-                  {itemizedFindings.map((finding, idx) => {
-                    const isDrifting = finding.severity !== 'match';
-                    if (!isDrifting && effectivePixelDiff > 0.1) return null;
-                    if (!isDrifting && idx > 1) return null;
-                    const isParamAccepted = isDrifting && acceptedParamSet.has(finding.id);
-                    const isHighlighted = highlightedZoneIndex === idx;
-                    return (
-                      <button
-                        key={finding.id || idx}
-                        type="button"
-                        data-testid={`diff-region-pill-${idx + 1}`}
-                        onMouseEnter={() => setHighlightedZoneIndex(idx)}
-                        onMouseLeave={() => setHighlightedZoneIndex(null)}
-                        onClick={() => setHighlightedZoneIndex(idx)}
-                        title={`${finding.region}: ${finding.description}`}
-                        className={`inline-flex h-6 items-center gap-1 rounded border px-1.5 font-mono text-[11px] transition-colors cursor-pointer ${
-                          isHighlighted
-                            ? 'border-primary bg-primary/15 text-primary font-semibold'
-                            : isParamAccepted
-                            ? 'border-emerald-500/35 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300'
-                            : finding.severity === 'major'
-                            ? 'border-rose-500/40 bg-rose-500/10 text-rose-700 dark:text-rose-300'
-                            : finding.severity === 'minor'
-                            ? 'border-amber-500/40 bg-amber-500/10 text-amber-700 dark:text-amber-300'
-                            : 'border-border bg-muted/40 text-muted-foreground'
-                        }`}
-                      >
-                        <span>#{idx + 1}</span>
-                        <span className="font-sans truncate max-w-[130px]">{finding.region}</span>
-                        {finding.zoneDeltaPct > 0 && (
-                          <span className="tabular-nums">({finding.zoneDeltaPct.toFixed(1)}%)</span>
-                        )}
-                      </button>
-                    );
-                  })}
-                  <span className="hidden lg:inline text-[11px] text-muted-foreground ml-1">
-                    · Hover any diff box on image for caption
-                  </span>
-                </div>
+                <span className="text-[11px] text-muted-foreground truncate">
+                  · Hover any highlighted diff box on the screenshot to view caption &amp; accept
+                </span>
               </div>
 
               <div className="flex items-center gap-1.5 shrink-0">
@@ -1669,9 +1631,9 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
                     const boxColor = isParamAccepted
                       ? 'border-emerald-500/80 bg-emerald-500/10 hover:bg-emerald-500/20'
                       : finding.severity === 'major'
-                      ? 'border-rose-500 bg-rose-500/15 hover:bg-rose-500/25'
+                      ? 'border-rose-500 bg-rose-500/10 hover:bg-rose-500/20'
                       : finding.severity === 'minor'
-                      ? 'border-amber-500 bg-amber-500/15 hover:bg-amber-500/25'
+                      ? 'border-amber-500 bg-amber-500/10 hover:bg-amber-500/20'
                       : 'border-emerald-500/70 bg-emerald-500/10';
                     const badgeLabel = isParamAccepted
                       ? 'ACCEPTED'
@@ -1705,9 +1667,11 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
                           height: `${b.h}%`,
                         }}
                       >
-                        <span className="inline-flex items-center gap-1 bg-background/95 px-1.5 py-0.5 font-mono text-[10px] font-semibold text-foreground shadow-sm border-b border-r border-border/70">
+                        <span className="inline-flex items-center gap-1 bg-background/95 px-1 py-0.5 font-mono text-[9px] font-bold text-foreground shadow-xs border-b border-r border-border/70 opacity-85 group-hover/box:opacity-100">
                           <span>#{idx + 1}</span>
-                          <span className="font-sans truncate max-w-[140px]">{finding.region}</span>
+                          <span className="hidden group-hover/box:inline font-sans font-semibold truncate max-w-[140px]">
+                            {finding.region}
+                          </span>
                           <span className="tabular-nums text-muted-foreground">
                             {finding.zoneDeltaPct.toFixed(1)}%
                           </span>

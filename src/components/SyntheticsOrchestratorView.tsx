@@ -25,7 +25,11 @@ import {
   Zap,
 } from 'lucide-react';
 import { toast } from 'sonner';
-import { TemplateConfig, TestCaseDefinition } from '../config/template.config';
+import {
+  DEFAULT_TEMPLATE_CONFIG,
+  TemplateConfig,
+  TestCaseDefinition,
+} from '../config/template.config';
 import { AppConfig, OverallVerdict, RunRecord } from '../engine/types';
 import { RegionCode, VerdictFilter } from '../engine/scalableViewEngine';
 import {
@@ -63,6 +67,7 @@ export interface SyntheticsOrchestratorViewProps {
   onIngestRunsFromSynthetics?: (newRuns: RunRecord[]) => void;
   onRunPropertyGate?: (appId: string) => void;
   onDeleteProperty?: (appId: string) => void;
+  onRestoreDefaultProperties?: () => void;
 }
 
 function verdictTextClass(verdict: OverallVerdict): string {
@@ -129,6 +134,7 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
   onIngestRunsFromSynthetics,
   onRunPropertyGate,
   onDeleteProperty,
+  onRestoreDefaultProperties,
 }) => {
   const [serverRawInventory, setServerRawInventory] = useState<Record<string, unknown> | null>(null);
   const [syncingScope, setSyncingScope] = useState<string | null>(null);
@@ -136,6 +142,7 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
   const [startingCanary, setStartingCanary] = useState<string | null>(null);
   const [activeBatch, setActiveBatch] = useState<FanOutBatchRecord | null>(null);
   const [moreMenuOpen, setMoreMenuOpen] = useState(false);
+  const [confirmDeleteAppId, setConfirmDeleteAppId] = useState<string | null>(null);
   const moreMenuRef = useRef<HTMLDivElement>(null);
 
   // Organization & Filter State
@@ -666,6 +673,19 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
 
         {/* Actions */}
         <div className="flex items-center gap-1.5 shrink-0" ref={moreMenuRef}>
+          {onRestoreDefaultProperties &&
+            apps.length < DEFAULT_TEMPLATE_CONFIG.properties.length && (
+              <button
+                type="button"
+                onClick={onRestoreDefaultProperties}
+                data-testid="btn-restore-default-sites"
+                title={`Restore all ${DEFAULT_TEMPLATE_CONFIG.properties.length} default sites`}
+                className="inline-flex h-7.5 items-center gap-1.5 rounded-md border border-border bg-background px-2.5 text-xs font-medium text-foreground hover:bg-muted cursor-pointer whitespace-nowrap"
+              >
+                <RotateCcw className="h-3.5 w-3.5 text-primary" />
+                <span>Restore {DEFAULT_TEMPLATE_CONFIG.properties.length} Default Sites</span>
+              </button>
+            )}
           <button
             type="button"
             disabled={fanningOutScope !== null}
@@ -1252,24 +1272,50 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
                           <ArrowRight className="h-3 w-3" />
                         </button>
 
-                        {onDeleteProperty && apps.length > 1 && (
-                          <button
-                            type="button"
-                            onClick={() => {
-                              if (deepDiveCanaryName?.toLowerCase().startsWith(`ak-${grp.appId.toLowerCase()}-`)) {
-                                setDeepDiveCanaryName(null);
-                                setDeepDiveReport(null);
-                              }
-                              onDeleteProperty(grp.appId);
-                            }}
-                            data-testid={`delete-prop-row-${grp.appId}`}
-                            title={`Delete ${grp.appId} and all associated runs, suites, canaries, and policies`}
-                            aria-label={`Delete property ${grp.appId}`}
-                            className="inline-flex h-6.5 w-6.5 items-center justify-center rounded border border-border bg-background text-muted-foreground hover:border-rose-500/40 hover:bg-rose-500/10 hover:text-rose-600 dark:hover:text-rose-400 transition-colors cursor-pointer"
-                          >
-                            <Trash2 className="h-3 w-3" />
-                          </button>
-                        )}
+                        {onDeleteProperty &&
+                          apps.length > 1 &&
+                          (confirmDeleteAppId === grp.appId ? (
+                            <div className="inline-flex items-center gap-1">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setConfirmDeleteAppId(null);
+                                  if (
+                                    deepDiveCanaryName
+                                      ?.toLowerCase()
+                                      .startsWith(`ak-${grp.appId.toLowerCase()}-`)
+                                  ) {
+                                    setDeepDiveCanaryName(null);
+                                    setDeepDiveReport(null);
+                                  }
+                                  onDeleteProperty(grp.appId);
+                                }}
+                                data-testid={`confirm-delete-prop-row-${grp.appId}`}
+                                className="inline-flex h-6.5 items-center rounded bg-rose-600 px-2 text-[10px] font-semibold text-white hover:bg-rose-700 cursor-pointer"
+                              >
+                                Delete?
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => setConfirmDeleteAppId(null)}
+                                aria-label="Cancel delete"
+                                className="inline-flex h-6.5 w-6.5 items-center justify-center rounded border border-border bg-background text-muted-foreground hover:bg-muted cursor-pointer"
+                              >
+                                <X className="h-3 w-3" />
+                              </button>
+                            </div>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() => setConfirmDeleteAppId(grp.appId)}
+                              data-testid={`delete-prop-row-${grp.appId}`}
+                              title={`Delete ${grp.appId} and all associated runs, suites, canaries, and policies`}
+                              aria-label={`Delete property ${grp.appId}`}
+                              className="inline-flex h-6.5 w-6.5 items-center justify-center rounded border border-border bg-background text-muted-foreground hover:border-rose-500/40 hover:bg-rose-500/10 hover:text-rose-600 dark:hover:text-rose-400 transition-colors cursor-pointer"
+                            >
+                              <Trash2 className="h-3 w-3" />
+                            </button>
+                          ))}
                       </div>
                     </td>
                   </tr>

@@ -1502,8 +1502,8 @@ export const McpStudioView: React.FC<McpStudioViewProps> = ({
                     data-testid={`mcp-tool-item-${tool.name}`}
                     className={`w-full px-3 py-2 text-left transition-colors cursor-pointer ${
                       active
-                        ? 'bg-accent/70 text-foreground border-l-2 border-l-primary'
-                        : 'hover:bg-muted/40 text-foreground border-l-2 border-l-transparent'
+                        ? 'bg-primary/10 text-foreground'
+                        : 'hover:bg-muted/40 text-foreground'
                     }`}
                   >
                     <div className="flex items-center justify-between gap-2">

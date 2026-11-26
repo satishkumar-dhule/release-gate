@@ -948,6 +948,44 @@ async function startServer() {
     res.json(result);
   });
 
+  app.post('/api/v1/properties/restore-defaults', async (_req, res) => {
+    const existingIds = new Set(runtimeProperties.map((p) => p.id.toLowerCase()));
+    const missingDefaults = DEFAULT_TEMPLATE_CONFIG.properties.filter(
+      (p) => !existingIds.has(p.id.toLowerCase())
+    );
+    runtimeProperties = [
+      ...DEFAULT_TEMPLATE_CONFIG.properties.map((defProp) => {
+        const existing = runtimeProperties.find(
+          (p) => p.id.toLowerCase() === defProp.id.toLowerCase()
+        );
+        return existing || defProp;
+      }),
+      ...runtimeProperties.filter(
+        (p) =>
+          !DEFAULT_TEMPLATE_CONFIG.properties.some(
+            (defProp) => defProp.id.toLowerCase() === p.id.toLowerCase()
+          )
+      ),
+    ];
+
+    for (const prop of missingDefaults) {
+      runtimeSuitesByAppId[prop.id] = normalizeSuiteWithCatchpointDefaults(
+        getPropertyTestSuite(prop.id)
+      );
+      await syncPropertyCanariesToAws(prop.id);
+    }
+
+    persistRuntimeCatchpointConfig();
+    persistSyntheticsState();
+
+    res.json({
+      restored: missingDefaults.length,
+      restoredAppIds: missingDefaults.map((p) => p.id),
+      total: runtimeProperties.length,
+      properties: runtimeProperties,
+    });
+  });
+
   // 4b. Query & Mutate Per-Property Test Suites (Auto-Creates/Updates AWS CloudWatch Synthetics Canaries)
   app.get('/api/v1/suites/:appId', (req, res) => {
     const appId = String(req.params.appId || 'www').trim().toLowerCase();

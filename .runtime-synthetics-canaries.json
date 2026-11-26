@@ -35,17 +35,478 @@
       "lastSyncedAt": "2026-11-19T17:57:20.164Z",
       "lastAwsMessage": "AWS Synthetics API HTTP 403: User: arn:aws:iam::735234585484:user/user-ujhaeuktkgif is not authorized to perform: synthetics:GetCanary on resource: arn:aws:synthetics:us-east-1:735234585484:canary:ak-www-uat-stg with an explicit deny in a service control policy: arn:aws:organizations::381134089987:policy/o-ddkcxdbdz1/service_control_policy/p-czkwmpoi; Canary spec staged for AWS deploy"
     },
+    "ak-login-prod-prd": {
+      "canaryName": "ak-login-prod-prd",
+      "targetId": "login.prod.prod",
+      "suiteHash": "ce72d04c",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.527Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-login-prod-stg": {
+      "canaryName": "ak-login-prod-stg",
+      "targetId": "login.prod.staging",
+      "suiteHash": "ce72d04c",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.527Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-login-uat-prd": {
+      "canaryName": "ak-login-uat-prd",
+      "targetId": "login.uat.prod",
+      "suiteHash": "ce72d04c",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.527Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-login-uat-stg": {
+      "canaryName": "ak-login-uat-stg",
+      "targetId": "login.uat.staging",
+      "suiteHash": "ce72d04c",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.527Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-developer-prod-prd": {
+      "canaryName": "ak-developer-prod-prd",
+      "targetId": "developer.prod.prod",
+      "suiteHash": "b588188d",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.528Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-developer-prod-stg": {
+      "canaryName": "ak-developer-prod-stg",
+      "targetId": "developer.prod.staging",
+      "suiteHash": "b588188d",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.528Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-developer-uat-prd": {
+      "canaryName": "ak-developer-uat-prd",
+      "targetId": "developer.uat.prod",
+      "suiteHash": "b588188d",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.528Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-developer-uat-stg": {
+      "canaryName": "ak-developer-uat-stg",
+      "targetId": "developer.uat.staging",
+      "suiteHash": "b588188d",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.528Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-help-prod-prd": {
+      "canaryName": "ak-help-prod-prd",
+      "targetId": "help.prod.prod",
+      "suiteHash": "f41a6258",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.529Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-help-prod-stg": {
+      "canaryName": "ak-help-prod-stg",
+      "targetId": "help.prod.staging",
+      "suiteHash": "f41a6258",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.529Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-help-uat-prd": {
+      "canaryName": "ak-help-uat-prd",
+      "targetId": "help.uat.prod",
+      "suiteHash": "f41a6258",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.529Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-help-uat-stg": {
+      "canaryName": "ak-help-uat-stg",
+      "targetId": "help.uat.staging",
+      "suiteHash": "f41a6258",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.529Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-trailhead-prod-prd": {
+      "canaryName": "ak-trailhead-prod-prd",
+      "targetId": "trailhead.prod.prod",
+      "suiteHash": "ac574735",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.530Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-trailhead-prod-stg": {
+      "canaryName": "ak-trailhead-prod-stg",
+      "targetId": "trailhead.prod.staging",
+      "suiteHash": "ac574735",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.530Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-trailhead-uat-prd": {
+      "canaryName": "ak-trailhead-uat-prd",
+      "targetId": "trailhead.uat.prod",
+      "suiteHash": "ac574735",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.530Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-trailhead-uat-stg": {
+      "canaryName": "ak-trailhead-uat-stg",
+      "targetId": "trailhead.uat.staging",
+      "suiteHash": "ac574735",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.530Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-status-prod-prd": {
+      "canaryName": "ak-status-prod-prd",
+      "targetId": "status.prod.prod",
+      "suiteHash": "2860a4ee",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.530Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-status-prod-stg": {
+      "canaryName": "ak-status-prod-stg",
+      "targetId": "status.prod.staging",
+      "suiteHash": "2860a4ee",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.531Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-appexchan-prod-prd": {
+      "canaryName": "ak-appexchan-prod-prd",
+      "targetId": "appexchange.prod.prod",
+      "suiteHash": "eceb3935",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.531Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-appexchan-prod-stg": {
+      "canaryName": "ak-appexchan-prod-stg",
+      "targetId": "appexchange.prod.staging",
+      "suiteHash": "eceb3935",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.531Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-appexchang-uat-prd": {
+      "canaryName": "ak-appexchang-uat-prd",
+      "targetId": "appexchange.uat.prod",
+      "suiteHash": "eceb3935",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.532Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-appexchang-uat-stg": {
+      "canaryName": "ak-appexchang-uat-stg",
+      "targetId": "appexchange.uat.staging",
+      "suiteHash": "eceb3935",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.532Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-partners-prod-prd": {
+      "canaryName": "ak-partners-prod-prd",
+      "targetId": "partners.prod.prod",
+      "suiteHash": "c27ca0bb",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.532Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-partners-prod-stg": {
+      "canaryName": "ak-partners-prod-stg",
+      "targetId": "partners.prod.staging",
+      "suiteHash": "c27ca0bb",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.533Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-partners-uat-prd": {
+      "canaryName": "ak-partners-uat-prd",
+      "targetId": "partners.uat.prod",
+      "suiteHash": "c27ca0bb",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.533Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-partners-uat-stg": {
+      "canaryName": "ak-partners-uat-stg",
+      "targetId": "partners.uat.staging",
+      "suiteHash": "c27ca0bb",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.533Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-apac-prod-prd": {
+      "canaryName": "ak-apac-prod-prd",
+      "targetId": "apac.prod.prod",
+      "suiteHash": "de9ea342",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.533Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-apac-prod-stg": {
+      "canaryName": "ak-apac-prod-stg",
+      "targetId": "apac.prod.staging",
+      "suiteHash": "de9ea342",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.534Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-emea-prod-prd": {
+      "canaryName": "ak-emea-prod-prd",
+      "targetId": "emea.prod.prod",
+      "suiteHash": "82416bf7",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.534Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-emea-prod-stg": {
+      "canaryName": "ak-emea-prod-stg",
+      "targetId": "emea.prod.staging",
+      "suiteHash": "82416bf7",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.534Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-americas-prod-prd": {
+      "canaryName": "ak-americas-prod-prd",
+      "targetId": "americas.prod.prod",
+      "suiteHash": "0614a079",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.535Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
     "ak-americas-prod-stg": {
       "canaryName": "ak-americas-prod-stg",
       "targetId": "americas.prod.staging",
       "suiteHash": "0614a079",
       "syncStatus": "AWS_SPEC_STAGED",
       "runtimeState": "READY",
-      "lastSyncedAt": "2026-11-22T02:35:49.687Z",
-      "lastAwsMessage": "AWS StartCanary(ak-americas-prod-stg) HTTP 0: getaddrinfo ENOTFOUND synthetics.dummy.amazonaws.com"
+      "lastSyncedAt": "2026-11-26T04:47:51.535Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-japan-prod-prd": {
+      "canaryName": "ak-japan-prod-prd",
+      "targetId": "japan.prod.prod",
+      "suiteHash": "8d8563f5",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.535Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-japan-prod-stg": {
+      "canaryName": "ak-japan-prod-stg",
+      "targetId": "japan.prod.staging",
+      "suiteHash": "8d8563f5",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.536Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-uk-prod-prd": {
+      "canaryName": "ak-uk-prod-prd",
+      "targetId": "uk.prod.prod",
+      "suiteHash": "6defd271",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.536Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-uk-prod-stg": {
+      "canaryName": "ak-uk-prod-stg",
+      "targetId": "uk.prod.staging",
+      "suiteHash": "6defd271",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.536Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-germany-prod-prd": {
+      "canaryName": "ak-germany-prod-prd",
+      "targetId": "germany.prod.prod",
+      "suiteHash": "01c04aa2",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.537Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
+    },
+    "ak-germany-prod-stg": {
+      "canaryName": "ak-germany-prod-stg",
+      "targetId": "germany.prod.staging",
+      "suiteHash": "01c04aa2",
+      "syncStatus": "AWS_SPEC_STAGED",
+      "runtimeState": "READY",
+      "lastSyncedAt": "2026-11-26T04:47:51.537Z",
+      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
     }
   },
   "fanOutBatches": [
+    {
+      "batchId": "fanout-1795667159847-34bcea",
+      "scope": "property-pair",
+      "triggeredBy": "user-tcchhlxprfng@salesforce.com",
+      "startedAt": "2026-11-26T04:25:59.847Z",
+      "completedAt": "2026-11-26T04:26:02.043Z",
+      "status": "COMPLETED",
+      "concurrency": 2,
+      "totalCanaries": 2,
+      "completedCanaries": 2,
+      "failedCanaries": 0,
+      "affectedAppIds": [
+        "www"
+      ],
+      "results": [
+        {
+          "canaryName": "ak-www-prod-prd",
+          "targetId": "www.prod.prod",
+          "appId": "www",
+          "envId": "prod",
+          "network": "prod",
+          "status": "COMPLETED",
+          "awsStartDispatched": false,
+          "awsMessage": "AWS credentials not configured; orchestrated via Control Plane Synthetics bridge",
+          "runKey": "run-www-prod-prod-4-1609",
+          "s3ManifestKey": "runs/www.prod.prod/run-www-prod-prod-4-1609/manifest.json",
+          "passedTests": 7,
+          "failedTests": 5,
+          "totalTests": 12,
+          "durationMs": 1762,
+          "startedAt": "2026-11-26T04:25:59.847Z",
+          "completedAt": "2026-11-26T04:26:01.609Z"
+        },
+        {
+          "canaryName": "ak-www-prod-stg",
+          "targetId": "www.prod.staging",
+          "appId": "www",
+          "envId": "prod",
+          "network": "staging",
+          "status": "COMPLETED",
+          "awsStartDispatched": false,
+          "awsMessage": "AWS credentials not configured; orchestrated via Control Plane Synthetics bridge",
+          "runKey": "run-www-prod-staging-4-2040",
+          "s3ManifestKey": "runs/www.prod.staging/run-www-prod-staging-4-2040/manifest.json",
+          "passedTests": 7,
+          "failedTests": 5,
+          "totalTests": 12,
+          "durationMs": 2193,
+          "startedAt": "2026-11-26T04:25:59.847Z",
+          "completedAt": "2026-11-26T04:26:02.040Z"
+        }
+      ],
+      "propertyVerdicts": [
+        {
+          "appId": "www",
+          "verdict": "NO-GO",
+          "headerDiffs": 1,
+          "cookieDiffs": 12,
+          "visualDiffs": 1,
+          "firstDiffTestId": "T01",
+          "firstDiffTab": "headers"
+        }
+      ]
+    },
+    {
+      "batchId": "fanout-1795667151856-1f6ec3",
+      "scope": "nogo-blockers",
+      "triggeredBy": "user-tcchhlxprfng@salesforce.com",
+      "startedAt": "2026-11-26T04:25:51.856Z",
+      "completedAt": "2026-11-26T04:25:54.861Z",
+      "status": "COMPLETED",
+      "concurrency": 2,
+      "totalCanaries": 2,
+      "completedCanaries": 2,
+      "failedCanaries": 0,
+      "affectedAppIds": [
+        "www"
+      ],
+      "results": [
+        {
+          "canaryName": "ak-www-prod-prd",
+          "targetId": "www.prod.prod",
+          "appId": "www",
+          "envId": "prod",
+          "network": "prod",
+          "status": "COMPLETED",
+          "awsStartDispatched": false,
+          "awsMessage": "AWS credentials not configured; orchestrated via Control Plane Synthetics bridge",
+          "runKey": "run-www-prod-prod-3-4613",
+          "s3ManifestKey": "runs/www.prod.prod/run-www-prod-prod-3-4613/manifest.json",
+          "passedTests": 7,
+          "failedTests": 5,
+          "totalTests": 12,
+          "durationMs": 2756,
+          "startedAt": "2026-11-26T04:25:51.857Z",
+          "completedAt": "2026-11-26T04:25:54.613Z"
+        },
+        {
+          "canaryName": "ak-www-prod-stg",
+          "targetId": "www.prod.staging",
+          "appId": "www",
+          "envId": "prod",
+          "network": "staging",
+          "status": "COMPLETED",
+          "awsStartDispatched": false,
+          "awsMessage": "AWS credentials not configured; orchestrated via Control Plane Synthetics bridge",
+          "runKey": "run-www-prod-staging-3-4858",
+          "s3ManifestKey": "runs/www.prod.staging/run-www-prod-staging-3-4858/manifest.json",
+          "passedTests": 7,
+          "failedTests": 5,
+          "totalTests": 12,
+          "durationMs": 3000,
+          "startedAt": "2026-11-26T04:25:51.858Z",
+          "completedAt": "2026-11-26T04:25:54.858Z"
+        }
+      ],
+      "propertyVerdicts": [
+        {
+          "appId": "www",
+          "verdict": "NO-GO",
+          "headerDiffs": 1,
+          "cookieDiffs": 12,
+          "visualDiffs": 1,
+          "firstDiffTestId": "T01",
+          "firstDiffTab": "headers"
+        }
+      ]
+    },
     {
       "batchId": "fanout-1795316370332-4608d1",
       "scope": "property-pair",
@@ -104,326 +565,6 @@
           "verdict": "NO-GO",
           "headerDiffs": 1,
           "cookieDiffs": 13,
-          "visualDiffs": 1,
-          "firstDiffTestId": "T01",
-          "firstDiffTab": "headers"
-        }
-      ]
-    },
-    {
-      "batchId": "fanout-1795316142751-5f6515",
-      "scope": "property-pair",
-      "triggeredBy": "user-tcchhlxprfng@salesforce.com",
-      "startedAt": "2026-11-22T02:55:42.751Z",
-      "completedAt": "2026-11-22T02:55:45.085Z",
-      "status": "COMPLETED",
-      "concurrency": 2,
-      "totalCanaries": 2,
-      "completedCanaries": 2,
-      "failedCanaries": 0,
-      "affectedAppIds": [
-        "help"
-      ],
-      "results": [
-        {
-          "canaryName": "ak-help-prod-prd",
-          "targetId": "help.prod.prod",
-          "appId": "help",
-          "envId": "prod",
-          "network": "prod",
-          "status": "COMPLETED",
-          "awsStartDispatched": false,
-          "awsMessage": "AWS StartCanary(ak-help-prod-prd) HTTP 0: getaddrinfo ENOTFOUND synthetics.dummy.amazonaws.com",
-          "runKey": "run-help-prod-prod-3-4998",
-          "s3ManifestKey": "runs/help.prod.prod/run-help-prod-prod-3-4998/manifest.json",
-          "passedTests": 3,
-          "failedTests": 5,
-          "totalTests": 8,
-          "durationMs": 2247,
-          "startedAt": "2026-11-22T02:55:42.751Z",
-          "completedAt": "2026-11-22T02:55:44.998Z"
-        },
-        {
-          "canaryName": "ak-help-prod-stg",
-          "targetId": "help.prod.staging",
-          "appId": "help",
-          "envId": "prod",
-          "network": "staging",
-          "status": "COMPLETED",
-          "awsStartDispatched": false,
-          "awsMessage": "AWS StartCanary(ak-help-prod-stg) HTTP 0: getaddrinfo ENOTFOUND synthetics.dummy.amazonaws.com",
-          "runKey": "run-help-prod-staging-3-5073",
-          "s3ManifestKey": "runs/help.prod.staging/run-help-prod-staging-3-5073/manifest.json",
-          "passedTests": 3,
-          "failedTests": 5,
-          "totalTests": 8,
-          "durationMs": 2321,
-          "startedAt": "2026-11-22T02:55:42.753Z",
-          "completedAt": "2026-11-22T02:55:45.074Z"
-        }
-      ],
-      "propertyVerdicts": [
-        {
-          "appId": "help",
-          "verdict": "NO-GO",
-          "headerDiffs": 0,
-          "cookieDiffs": 2,
-          "visualDiffs": 2,
-          "firstDiffTestId": "T01",
-          "firstDiffTab": "image"
-        }
-      ]
-    },
-    {
-      "batchId": "fanout-1795315833167-54259d",
-      "scope": "property-pair",
-      "triggeredBy": "user-tcchhlxprfng@salesforce.com",
-      "startedAt": "2026-11-22T02:50:33.167Z",
-      "completedAt": "2026-11-22T02:50:34.408Z",
-      "status": "COMPLETED",
-      "concurrency": 2,
-      "totalCanaries": 2,
-      "completedCanaries": 2,
-      "failedCanaries": 0,
-      "affectedAppIds": [
-        "americas"
-      ],
-      "results": [
-        {
-          "canaryName": "ak-americas-prod-prd",
-          "targetId": "americas.prod.prod",
-          "appId": "americas",
-          "envId": "prod",
-          "network": "prod",
-          "status": "COMPLETED",
-          "awsStartDispatched": false,
-          "awsMessage": "AWS StartCanary(ak-americas-prod-prd) HTTP 0: getaddrinfo ENOTFOUND synthetics.dummy.amazonaws.com",
-          "runKey": "run-americas-prod-prod-4-4280",
-          "s3ManifestKey": "runs/americas.prod.prod/run-americas-prod-prod-4-4280/manifest.json",
-          "passedTests": 8,
-          "failedTests": 0,
-          "totalTests": 8,
-          "durationMs": 1113,
-          "startedAt": "2026-11-22T02:50:33.167Z",
-          "completedAt": "2026-11-22T02:50:34.280Z"
-        },
-        {
-          "canaryName": "ak-americas-prod-stg",
-          "targetId": "americas.prod.staging",
-          "appId": "americas",
-          "envId": "prod",
-          "network": "staging",
-          "status": "COMPLETED",
-          "awsStartDispatched": false,
-          "awsMessage": "AWS StartCanary(ak-americas-prod-stg) HTTP 0: getaddrinfo ENOTFOUND synthetics.dummy.amazonaws.com",
-          "runKey": "run-americas-prod-staging-5-4398",
-          "s3ManifestKey": "runs/americas.prod.staging/run-americas-prod-staging-5-4398/manifest.json",
-          "passedTests": 8,
-          "failedTests": 0,
-          "totalTests": 8,
-          "durationMs": 1231,
-          "startedAt": "2026-11-22T02:50:33.168Z",
-          "completedAt": "2026-11-22T02:50:34.399Z"
-        }
-      ],
-      "propertyVerdicts": [
-        {
-          "appId": "americas",
-          "verdict": "NO-GO",
-          "headerDiffs": 1,
-          "cookieDiffs": 16,
-          "visualDiffs": 1,
-          "firstDiffTestId": "T01",
-          "firstDiffTab": "headers"
-        }
-      ]
-    },
-    {
-      "batchId": "fanout-1795315829533-c40524",
-      "scope": "property-pair",
-      "triggeredBy": "user-tcchhlxprfng@salesforce.com",
-      "startedAt": "2026-11-22T02:50:29.533Z",
-      "completedAt": "2026-11-22T02:50:31.709Z",
-      "status": "COMPLETED",
-      "concurrency": 2,
-      "totalCanaries": 2,
-      "completedCanaries": 2,
-      "failedCanaries": 0,
-      "affectedAppIds": [
-        "partners"
-      ],
-      "results": [
-        {
-          "canaryName": "ak-partners-prod-prd",
-          "targetId": "partners.prod.prod",
-          "appId": "partners",
-          "envId": "prod",
-          "network": "prod",
-          "status": "COMPLETED",
-          "awsStartDispatched": false,
-          "awsMessage": "AWS StartCanary(ak-partners-prod-prd) HTTP 0: getaddrinfo ENOTFOUND synthetics.dummy.amazonaws.com",
-          "runKey": "run-partners-prod-prod-4-1553",
-          "s3ManifestKey": "runs/partners.prod.prod/run-partners-prod-prod-4-1553/manifest.json",
-          "passedTests": 1,
-          "failedTests": 7,
-          "totalTests": 8,
-          "durationMs": 2020,
-          "startedAt": "2026-11-22T02:50:29.533Z",
-          "completedAt": "2026-11-22T02:50:31.553Z"
-        },
-        {
-          "canaryName": "ak-partners-prod-stg",
-          "targetId": "partners.prod.staging",
-          "appId": "partners",
-          "envId": "prod",
-          "network": "staging",
-          "status": "COMPLETED",
-          "awsStartDispatched": false,
-          "awsMessage": "AWS StartCanary(ak-partners-prod-stg) HTTP 0: getaddrinfo ENOTFOUND synthetics.dummy.amazonaws.com",
-          "runKey": "run-partners-prod-staging-4-1698",
-          "s3ManifestKey": "runs/partners.prod.staging/run-partners-prod-staging-4-1698/manifest.json",
-          "passedTests": 1,
-          "failedTests": 7,
-          "totalTests": 8,
-          "durationMs": 2163,
-          "startedAt": "2026-11-22T02:50:29.535Z",
-          "completedAt": "2026-11-22T02:50:31.698Z"
-        }
-      ],
-      "propertyVerdicts": [
-        {
-          "appId": "partners",
-          "verdict": "NO-GO",
-          "headerDiffs": 1,
-          "cookieDiffs": 2,
-          "visualDiffs": 1,
-          "firstDiffTestId": "T01",
-          "firstDiffTab": "headers"
-        }
-      ]
-    },
-    {
-      "batchId": "fanout-1795314236627-de67f4",
-      "scope": "property-pair",
-      "triggeredBy": "user-tcchhlxprfng@salesforce.com",
-      "startedAt": "2026-11-22T02:23:56.627Z",
-      "completedAt": "2026-11-22T02:23:58.344Z",
-      "status": "COMPLETED",
-      "concurrency": 2,
-      "totalCanaries": 2,
-      "completedCanaries": 2,
-      "failedCanaries": 0,
-      "affectedAppIds": [
-        "americas"
-      ],
-      "results": [
-        {
-          "canaryName": "ak-americas-prod-prd",
-          "targetId": "americas.prod.prod",
-          "appId": "americas",
-          "envId": "prod",
-          "network": "prod",
-          "status": "COMPLETED",
-          "awsStartDispatched": false,
-          "awsMessage": "AWS StartCanary(ak-americas-prod-prd) HTTP 0: getaddrinfo ENOTFOUND synthetics.dummy.amazonaws.com",
-          "runKey": "run-americas-prod-prod-3-8318",
-          "s3ManifestKey": "runs/americas.prod.prod/run-americas-prod-prod-3-8318/manifest.json",
-          "passedTests": 8,
-          "failedTests": 0,
-          "totalTests": 8,
-          "durationMs": 1691,
-          "startedAt": "2026-11-22T02:23:56.627Z",
-          "completedAt": "2026-11-22T02:23:58.318Z"
-        },
-        {
-          "canaryName": "ak-americas-prod-stg",
-          "targetId": "americas.prod.staging",
-          "appId": "americas",
-          "envId": "prod",
-          "network": "staging",
-          "status": "COMPLETED",
-          "awsStartDispatched": false,
-          "awsMessage": "AWS StartCanary(ak-americas-prod-stg) HTTP 0: getaddrinfo ENOTFOUND synthetics.dummy.amazonaws.com",
-          "runKey": "run-americas-prod-staging-3-8333",
-          "s3ManifestKey": "runs/americas.prod.staging/run-americas-prod-staging-3-8333/manifest.json",
-          "passedTests": 8,
-          "failedTests": 0,
-          "totalTests": 8,
-          "durationMs": 1704,
-          "startedAt": "2026-11-22T02:23:56.629Z",
-          "completedAt": "2026-11-22T02:23:58.333Z"
-        }
-      ],
-      "propertyVerdicts": [
-        {
-          "appId": "americas",
-          "verdict": "NO-GO",
-          "headerDiffs": 1,
-          "cookieDiffs": 12,
-          "visualDiffs": 1,
-          "firstDiffTestId": "T01",
-          "firstDiffTab": "headers"
-        }
-      ]
-    },
-    {
-      "batchId": "fanout-1795314013614-0cbeca",
-      "scope": "property-pair",
-      "triggeredBy": "user-tcchhlxprfng@salesforce.com",
-      "startedAt": "2026-11-22T02:20:13.614Z",
-      "completedAt": "2026-11-22T02:20:15.738Z",
-      "status": "COMPLETED",
-      "concurrency": 2,
-      "totalCanaries": 2,
-      "completedCanaries": 2,
-      "failedCanaries": 0,
-      "affectedAppIds": [
-        "partners"
-      ],
-      "results": [
-        {
-          "canaryName": "ak-partners-prod-prd",
-          "targetId": "partners.prod.prod",
-          "appId": "partners",
-          "envId": "prod",
-          "network": "prod",
-          "status": "COMPLETED",
-          "awsStartDispatched": false,
-          "awsMessage": "AWS StartCanary(ak-partners-prod-prd) HTTP 0: getaddrinfo ENOTFOUND synthetics.dummy.amazonaws.com",
-          "runKey": "run-partners-prod-prod-3-5576",
-          "s3ManifestKey": "runs/partners.prod.prod/run-partners-prod-prod-3-5576/manifest.json",
-          "passedTests": 1,
-          "failedTests": 7,
-          "totalTests": 8,
-          "durationMs": 1961,
-          "startedAt": "2026-11-22T02:20:13.615Z",
-          "completedAt": "2026-11-22T02:20:15.576Z"
-        },
-        {
-          "canaryName": "ak-partners-prod-stg",
-          "targetId": "partners.prod.staging",
-          "appId": "partners",
-          "envId": "prod",
-          "network": "staging",
-          "status": "COMPLETED",
-          "awsStartDispatched": false,
-          "awsMessage": "AWS StartCanary(ak-partners-prod-stg) HTTP 0: getaddrinfo ENOTFOUND synthetics.dummy.amazonaws.com",
-          "runKey": "run-partners-prod-staging-3-5726",
-          "s3ManifestKey": "runs/partners.prod.staging/run-partners-prod-staging-3-5726/manifest.json",
-          "passedTests": 1,
-          "failedTests": 7,
-          "totalTests": 8,
-          "durationMs": 2107,
-          "startedAt": "2026-11-22T02:20:13.619Z",
-          "completedAt": "2026-11-22T02:20:15.726Z"
-        }
-      ],
-      "propertyVerdicts": [
-        {
-          "appId": "partners",
-          "verdict": "NO-GO",
-          "headerDiffs": 1,
-          "cookieDiffs": 2,
           "visualDiffs": 1,
           "firstDiffTestId": "T01",
           "firstDiffTab": "headers"
@@ -559,5 +700,5 @@
       ]
     }
   ],
-  "updatedAt": "2026-11-25T16:28:25.607Z"
+  "updatedAt": "2026-11-26T04:47:51.537Z"
 }

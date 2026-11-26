@@ -17,7 +17,11 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { AppConfig, EnvironmentConfig } from '../engine/types';
-import { TestCaseDefinition, resolvePropertyHostname } from '../config/template.config';
+import {
+  DEFAULT_TEMPLATE_CONFIG,
+  TestCaseDefinition,
+  resolvePropertyHostname,
+} from '../config/template.config';
 import {
   DEFAULT_TEST_FOLDERS,
   cloneTestInSuite,
@@ -48,6 +52,7 @@ export interface SetupViewProps {
   onCreateProperty: (newProp: AppConfig) => void;
   onSaveProperty: (updatedProp: AppConfig) => void;
   onDeleteProperty: (appId: string) => void;
+  onRestoreDefaultProperties?: () => void;
   onSaveSuite: (appId: string, suite: TestCaseDefinition[]) => void;
   onOpenSynthetics?: () => void;
 }
@@ -63,6 +68,7 @@ export const SetupView: React.FC<SetupViewProps> = ({
   onCreateProperty,
   onSaveProperty,
   onDeleteProperty,
+  onRestoreDefaultProperties,
   onSaveSuite,
   onOpenSynthetics,
 }) => {
@@ -398,22 +404,38 @@ export const SetupView: React.FC<SetupViewProps> = ({
 
   const [showAddPropForm, setShowAddPropForm] = useState(false);
   const [showQuickAddRow, setShowQuickAddRow] = useState(false);
+  const [confirmDeleteAppId, setConfirmDeleteAppId] = useState<string | null>(null);
 
   return (
     <div className="w-full flex-1 min-h-0 flex flex-col lg:overflow-hidden">
       <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-[205px_1fr] lg:grid-rows-[minmax(0,1fr)] lg:overflow-hidden">
         <aside className="flex flex-col min-h-0 bg-card border-b lg:border-b-0 lg:border-r border-border lg:overflow-hidden">
-          <div className="shrink-0 flex items-center justify-between border-b border-border px-3 py-2 text-[11px] font-medium text-muted-foreground">
+          <div className="shrink-0 flex items-center justify-between gap-1 border-b border-border px-3 py-2 text-[11px] font-medium text-muted-foreground">
             <span>Sites ({apps.length})</span>
-            <button
-              type="button"
-              onClick={() => setShowAddPropForm((v) => !v)}
-              data-testid="btn-toggle-add-property"
-              className="inline-flex h-6.5 items-center gap-1 rounded border border-border bg-background px-2 font-sans text-[11px] font-medium text-foreground hover:bg-muted cursor-pointer"
-            >
-              <Plus className="h-3 w-3 text-primary" />
-              <span>Site</span>
-            </button>
+            <div className="flex items-center gap-1">
+              {onRestoreDefaultProperties &&
+                apps.length < DEFAULT_TEMPLATE_CONFIG.properties.length && (
+                  <button
+                    type="button"
+                    onClick={onRestoreDefaultProperties}
+                    data-testid="btn-restore-default-properties"
+                    title={`Restore all ${DEFAULT_TEMPLATE_CONFIG.properties.length} default sites`}
+                    className="inline-flex h-6.5 items-center gap-1 rounded border border-border bg-background px-1.5 font-sans text-[10px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted cursor-pointer"
+                  >
+                    <RotateCcw className="h-2.5 w-2.5 text-primary" />
+                    <span>Restore</span>
+                  </button>
+                )}
+              <button
+                type="button"
+                onClick={() => setShowAddPropForm((v) => !v)}
+                data-testid="btn-toggle-add-property"
+                className="inline-flex h-6.5 items-center gap-1 rounded border border-border bg-background px-2 font-sans text-[11px] font-medium text-foreground hover:bg-muted cursor-pointer"
+              >
+                <Plus className="h-3 w-3 text-primary" />
+                <span>Site</span>
+              </button>
+            </div>
           </div>
 
           {showAddPropForm && (
@@ -461,13 +483,12 @@ export const SetupView: React.FC<SetupViewProps> = ({
           <div className="flex-1 min-h-0 max-h-60 lg:max-h-none overflow-y-auto divide-y divide-border/60">
             {apps.map((app) => {
               const active = app.id === activeProp?.id;
+              const isConfirming = confirmDeleteAppId === app.id;
               return (
                 <div
                   key={app.id}
                   className={`flex items-center justify-between px-2.5 py-1.5 text-xs transition-colors ${
-                    active
-                      ? 'bg-accent/70 border-l-2 border-l-primary'
-                      : 'hover:bg-muted/45 border-l-2 border-l-transparent'
+                    active ? 'bg-primary/10 text-foreground' : 'hover:bg-muted/45 text-foreground'
                   }`}
                 >
                   <button
@@ -475,26 +496,55 @@ export const SetupView: React.FC<SetupViewProps> = ({
                     onClick={() => {
                       onSelectApp(app.id);
                       setEditingEnvId(null);
+                      setConfirmDeleteAppId(null);
                     }}
                     className="flex-1 text-left cursor-pointer min-w-0"
                   >
-                    <div className="font-mono text-xs font-semibold text-foreground leading-tight">
+                    <div
+                      className={`font-mono text-xs font-semibold leading-tight ${
+                        active ? 'text-primary' : 'text-foreground'
+                      }`}
+                    >
                       {app.id}
                     </div>
                     <div className="text-[11px] text-muted-foreground truncate leading-tight mt-0.5">
                       {app.name}
                     </div>
                   </button>
-                  {apps.length > 1 && (
-                    <button
-                      type="button"
-                      onClick={() => onDeleteProperty(app.id)}
-                      aria-label={`Delete property ${app.id}`}
-                      className="ml-1 inline-flex h-6 w-6 items-center justify-center rounded text-muted-foreground hover:bg-muted hover:text-rose-600 cursor-pointer"
-                    >
-                      <Trash2 className="h-3 w-3" />
-                    </button>
-                  )}
+                  {apps.length > 1 &&
+                    (isConfirming ? (
+                      <div className="ml-1 flex items-center gap-1 shrink-0">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setConfirmDeleteAppId(null);
+                            onDeleteProperty(app.id);
+                          }}
+                          data-testid={`confirm-delete-prop-${app.id}`}
+                          className="inline-flex h-6 items-center rounded bg-rose-600 px-1.5 text-[10px] font-semibold text-white hover:bg-rose-700 cursor-pointer"
+                        >
+                          Delete
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setConfirmDeleteAppId(null)}
+                          aria-label="Cancel delete"
+                          className="inline-flex h-6 w-6 items-center justify-center rounded text-muted-foreground hover:bg-muted cursor-pointer"
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => setConfirmDeleteAppId(app.id)}
+                        data-testid={`delete-prop-sidebar-${app.id}`}
+                        aria-label={`Delete property ${app.id}`}
+                        className="ml-1 inline-flex h-6 w-6 items-center justify-center rounded text-muted-foreground hover:bg-muted hover:text-rose-600 cursor-pointer"
+                      >
+                        <Trash2 className="h-3 w-3" />
+                      </button>
+                    ))}
                 </div>
               );
             })}
