@@ -5,13 +5,14 @@ import {
   ArrowLeft,
   ArrowLeftRight,
   Check,
-  ChevronDown,
   Command,
   Copy,
   Globe,
   Keyboard,
+  Loader2,
   Moon,
   MoreHorizontal,
+  Play,
   RotateCw,
   ShieldAlert,
   ShieldCheck,
@@ -19,8 +20,8 @@ import {
   Sun,
   X,
 } from 'lucide-react';
-import { OverallVerdict, RunRecord } from '../engine/types';
-import { GLOBAL_EXECUTION_POPS } from '../config/template.config';
+import { EnvironmentConfig, OverallVerdict, RunRecord } from '../engine/types';
+import { GLOBAL_EXECUTION_POPS, resolveExecutionPopOption } from '../config/template.config';
 import { SuiteSreTelemetry } from '../engine/sreIntelligence';
 import { ActiveRunStreamState } from '../engine/runStreamEngine';
 import { buildVerdictBreakdownText } from '../engine/workbenchModel';
@@ -28,10 +29,12 @@ import {
   CdnOrOriginProvider,
   ComparisonTopologyModeId,
   ComparisonTopologyPreset,
+  PropertyEnvironmentTarget,
   RoutingMechanism,
   TargetEndpointProfile,
   formatHeaderKeyValueLine,
   getComparisonTopologyPresets,
+  getPropertyEnvironmentTargets,
   normalizeBaseUrl,
   parseHeaderKeyValueLine,
 } from '../engine/targetRoutingModel';
@@ -48,6 +51,7 @@ export interface WorkbenchToolbarProps {
   activeAppName: string;
   canonicalHost: string;
   alternateStageHost?: string;
+  propertyEnvs?: EnvironmentConfig[];
   headlineVerdict: OverallVerdict;
   headerDiffs: number;
   cookieDiffs: number;
@@ -87,7 +91,6 @@ export interface WorkbenchToolbarProps {
   onOpenSetup?: (tab: 'suite' | 'envs') => void;
   onOpenVsCode?: () => void;
   onOpenSynthetics?: () => void;
-  // Universal Comparison Topology (Prod vs Stage / Prod vs Prod with URL, Header, or Edge DNS)
   topologyModeId?: ComparisonTopologyModeId;
   candidateProfile?: TargetEndpointProfile;
   baselineProfile?: TargetEndpointProfile;
@@ -134,6 +137,7 @@ export const WorkbenchToolbar: React.FC<WorkbenchToolbarProps> = ({
   activeAppName,
   canonicalHost,
   alternateStageHost,
+  propertyEnvs = [],
   headlineVerdict,
   headerDiffs,
   cookieDiffs,
@@ -160,10 +164,6 @@ export const WorkbenchToolbar: React.FC<WorkbenchToolbarProps> = ({
   onCopyMarkdown,
   onRerunAllDiffs,
   onRunSingleTarget,
-  onTogglePropScale,
-  propCount,
-  onToggleSuiteScale,
-  suiteCount,
   theme,
   onToggleTheme,
   onOpenCommandPalette,
@@ -189,11 +189,88 @@ export const WorkbenchToolbar: React.FC<WorkbenchToolbarProps> = ({
     [canonicalHost, alternateStageHost]
   );
 
+  const envTargets = useMemo(
+    () =>
+      getPropertyEnvironmentTargets(
+        activeAppId,
+        canonicalHost,
+        propertyEnvs,
+        alternateStageHost
+      ),
+    [activeAppId, canonicalHost, propertyEnvs, alternateStageHost]
+  );
+
   const activePreset =
     presets.find((p) => p.id === topologyModeId) || presets[0];
 
-  const resolvedCand = candidateProfile || activePreset.candidate;
-  const resolvedBase = baselineProfile || activePreset.baseline;
+  const resolvedCand =
+    candidateProfile || (envTargets[1] || envTargets[0])?.profile || activePreset.candidate;
+  const resolvedBase =
+    baselineProfile || envTargets[0]?.profile || activePreset.baseline;
+  const activePopOption = useMemo(
+    () => resolveExecutionPopOption(selectedExecutionPopId),
+    [selectedExecutionPopId]
+  );
+
+  // Match active Env A and Env B keys strictly from the property's configured environments (1:1 with 3. Configure -> 2. Environments)
+  const matchedEnvA = useMemo(() => {
+    const byLabel = envTargets.find((e) => e.profile.label === resolvedCand.label);
+    if (byLabel) return byLabel;
+    const candEnvId = candidateTarget.split('.')[1];
+    const byTargetEnv = envTargets.find((e) => e.envId === candEnvId && e.envId !== 'prod');
+    return byTargetEnv || envTargets[1] || envTargets[0];
+  }, [envTargets, resolvedCand.label, candidateTarget]);
+
+  const matchedEnvB = useMemo(() => {
+    const byLabel = envTargets.find((e) => e.profile.label === resolvedBase.label);
+    if (byLabel) return byLabel;
+    const baseEnvId = baselineTarget.split('.')[1];
+    const byTargetEnv = envTargets.find((e) => e.envId === baseEnvId);
+    return byTargetEnv || envTargets[0];
+  }, [envTargets, resolvedBase.label, baselineTarget]);
+
+  const handleSelectEnvA = (envKey: string) => {
+    const found = envTargets.find((e) => e.envKey === envKey);
+    if (!found) return;
+    onChangeCandidateTarget(found.targetId);
+    const nextCand: TargetEndpointProfile = {
+      ...found.profile,
+      role: 'candidate',
+    };
+    const nextBase: TargetEndpointProfile = {
+      ...resolvedBase,
+      role: 'baseline',
+    };
+    onUpdateCustomProfiles?.(nextCand, nextBase);
+  };
+
+  const handleSelectEnvB = (envKey: string) => {
+    const found = envTargets.find((e) => e.envKey === envKey);
+    if (!found) return;
+    onChangeBaselineTarget(found.targetId);
+    const nextCand: TargetEndpointProfile = {
+      ...resolvedCand,
+      role: 'candidate',
+    };
+    const nextBase: TargetEndpointProfile = {
+      ...found.profile,
+      role: 'baseline',
+    };
+    onUpdateCustomProfiles?.(nextCand, nextBase);
+  };
+
+  const handleSwapEnvs = () => {
+    onSwapSides();
+    const swappedCand: TargetEndpointProfile = {
+      ...resolvedBase,
+      role: 'candidate',
+    };
+    const swappedBase: TargetEndpointProfile = {
+      ...resolvedCand,
+      role: 'baseline',
+    };
+    onUpdateCustomProfiles?.(swappedCand, swappedBase);
+  };
 
   // Custom Routing Editor Draft State
   const [candTierDraft, setCandTierDraft] = useState<'STAGE' | 'PROD'>(resolvedCand.tier);
@@ -260,11 +337,13 @@ export const WorkbenchToolbar: React.FC<WorkbenchToolbarProps> = ({
     totalChecks,
   });
 
-  const activePopObj = GLOBAL_EXECUTION_POPS.find((p) => p.id === selectedExecutionPopId);
-  const popShort = activePopObj ? activePopObj.popCode : 'Auto';
-
   const candRuns = runs.filter((r) => r.target === candidateTarget);
   const baseRuns = runs.filter((r) => r.target === baselineTarget);
+  const activeCandRun =
+    candRuns.find((r) => r.key === candidateRunKey) || candRuns[0];
+  const singleRunPassed = activeCandRun?.passedTests ?? totalChecks;
+  const singleRunTotal = activeCandRun?.totalTests ?? totalChecks;
+  const singleRunAllPassed = singleRunPassed >= singleRunTotal;
   const topDiagnosis = sreSummary.blockerDiagnoses[0] || sreSummary.diagnoses[0];
 
   const shortTarget = (t: string) => {
@@ -283,7 +362,7 @@ export const WorkbenchToolbar: React.FC<WorkbenchToolbarProps> = ({
 
     const nextCandidate: TargetEndpointProfile = {
       role: 'candidate',
-      label: `Candidate (${candTierDraft} · ${candProviderDraft})`,
+      label: `Env A (${candProviderDraft})`,
       tier: candTierDraft,
       provider: candProviderDraft,
       routingMechanism: candMechanismDraft,
@@ -307,7 +386,7 @@ export const WorkbenchToolbar: React.FC<WorkbenchToolbarProps> = ({
 
     const nextBaseline: TargetEndpointProfile = {
       role: 'baseline',
-      label: `Baseline (${baseTierDraft} · ${baseProviderDraft})`,
+      label: `Env B (${baseProviderDraft})`,
       tier: baseTierDraft,
       provider: baseProviderDraft,
       routingMechanism: candMechanismDraft,
@@ -321,7 +400,7 @@ export const WorkbenchToolbar: React.FC<WorkbenchToolbarProps> = ({
           : bNorm.hostname,
       edgeIp: baseEdgeIpDraft.trim() || resolvedBase.edgeIp,
       customHeaders: bHeaders,
-      summaryNote: `Baseline ${baseTierDraft} (${bNorm.baseUrl}) via ${baseProviderDraft}`,
+      summaryNote: `Env B (${bNorm.baseUrl}) via ${baseProviderDraft}`,
     };
 
     onUpdateCustomProfiles?.(nextCandidate, nextBaseline);
@@ -333,9 +412,9 @@ export const WorkbenchToolbar: React.FC<WorkbenchToolbarProps> = ({
 
   return (
     <div className="relative border-b border-border bg-card min-w-0 shrink-0">
-      {/* Row 1: Unified 48px Primary Workspace Bar */}
+      {/* Row 1: Unified 48px Primary Workspace Bar — Compare 2 Envs | Single Run View */}
       <div className="px-4 py-1.5 min-h-12 flex flex-wrap items-center justify-between gap-2 min-w-0">
-        {/* Left: Back to Sites + Release Verdict + Site Name + Diff Summary */}
+        {/* Left: Back to Sites + Mode Toggle + Release Verdict / Single Run Status + Site Name + Summary */}
         <div className="flex items-center gap-2 min-w-0 flex-1">
           {onOpenSynthetics && (
             <button
@@ -350,63 +429,271 @@ export const WorkbenchToolbar: React.FC<WorkbenchToolbarProps> = ({
             </button>
           )}
 
-          <span
-            data-testid="headline-verdict"
-            className={`inline-flex h-7 items-center gap-1 rounded-md border px-2 font-mono text-xs font-bold tracking-tight tabular-nums whitespace-nowrap shrink-0 ${vApp.badgeClass}`}
+          {/* First-Class View Mode Switcher: Compare 2 Envs vs Single Run */}
+          <div
+            data-testid="workbench-mode-toggle"
+            className="inline-flex h-7 items-center rounded-md border border-border bg-background p-0.5 shrink-0"
           >
-            {vApp.icon}
-            <span>{headlineVerdict}</span>
-          </span>
+            <button
+              type="button"
+              onClick={() => onSetCompareMode('compare')}
+              data-testid="mode-btn-compare"
+              className={`h-6 rounded px-2 text-[11px] font-semibold transition-colors cursor-pointer whitespace-nowrap ${
+                compareMode === 'compare'
+                  ? 'bg-primary text-primary-foreground'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              Compare 2 Envs
+            </button>
+            <button
+              type="button"
+              onClick={() => onSetCompareMode('single')}
+              data-testid="mode-btn-single"
+              className={`h-6 rounded px-2 text-[11px] font-semibold transition-colors cursor-pointer whitespace-nowrap ${
+                compareMode === 'single'
+                  ? 'bg-primary text-primary-foreground'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              Single Run
+            </button>
+          </div>
 
-          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 min-w-0 flex-1">
-            <h1 className="font-display text-sm font-semibold text-foreground truncate max-w-[320px]">
+          {compareMode === 'single' ? (
+            <span
+              data-testid="headline-verdict"
+              className={`inline-flex h-7 items-center gap-1 rounded-md border px-2 font-mono text-xs font-bold tracking-tight tabular-nums whitespace-nowrap shrink-0 ${
+                singleRunAllPassed
+                  ? 'border-emerald-500/35 bg-emerald-500/12 text-emerald-700 dark:text-emerald-300'
+                  : 'border-rose-500/40 bg-rose-500/12 text-rose-700 dark:text-rose-300'
+              }`}
+            >
+              <Check className="h-3.5 w-3.5" />
+              <span>
+                SINGLE RUN · {singleRunPassed}/{singleRunTotal} PASS
+              </span>
+            </span>
+          ) : (
+            <span
+              data-testid="headline-verdict"
+              className={`inline-flex h-7 items-center gap-1 rounded-md border px-2 font-mono text-xs font-bold tracking-tight tabular-nums whitespace-nowrap shrink-0 ${vApp.badgeClass}`}
+            >
+              {vApp.icon}
+              <span>{headlineVerdict}</span>
+            </span>
+          )}
+
+          <div className="flex items-center gap-2 min-w-0 flex-1 overflow-hidden">
+            <h1 className="font-display text-sm font-semibold text-foreground truncate max-w-[200px]">
               {activeAppName}
             </h1>
-            <span className="hidden lg:inline text-border" aria-hidden="true">|</span>
-            <div className="flex items-center gap-1.5 text-[11px] font-mono text-muted-foreground tabular-nums whitespace-nowrap">
-              <span>{breakdown}</span>
-              <span aria-hidden="true">·</span>
-              <span>
-                {totalChecks} {totalChecks === 1 ? 'check' : 'checks'}
-              </span>
-            </div>
+            <span className="hidden 2xl:inline text-border shrink-0" aria-hidden="true">|</span>
+            {compareMode === 'single' ? (
+              <div className="hidden 2xl:flex items-center gap-1.5 text-[11px] font-mono text-muted-foreground tabular-nums whitespace-nowrap truncate">
+                <span className="text-foreground font-medium">
+                  {activeCandRun?.label || candidateRunKey}
+                </span>
+                <span aria-hidden="true">·</span>
+                <span>
+                  {totalChecks} {totalChecks === 1 ? 'check' : 'checks'}
+                </span>
+              </div>
+            ) : (
+              <div className="hidden xl:flex items-center gap-1.5 text-[11px] font-mono text-muted-foreground tabular-nums whitespace-nowrap truncate">
+                <span>{breakdown}</span>
+                <span aria-hidden="true">·</span>
+                <span>
+                  {totalChecks} {totalChecks === 1 ? 'check' : 'checks'}
+                </span>
+              </div>
+            )}
           </div>
         </div>
 
-        {/* Right: Quick Comparison Mode Switcher + URL/Header Editor + Hide Accepted + More */}
+        {/* Right: Single Run Controls OR Direct Env A ⇄ Env B Selectors + Run Diff + Envs Config + Hide Accepted + More */}
         <div
           ref={menuContainerRef}
           className="relative flex flex-wrap items-center gap-1.5 shrink-0"
         >
-          {/* Compact Comparison Mode Selector in Row 1 */}
-          <div className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-2 h-8">
-            <span className="text-[11px] font-medium text-muted-foreground hidden sm:inline">
-              Mode:
-            </span>
-            <select
-              value={topologyModeId}
-              aria-label="Comparison topology mode"
-              data-testid="select-topology-preset-bar"
-              onChange={(e) => {
-                const found = presets.find((p) => p.id === e.target.value);
-                if (found) onSelectTopologyPreset?.(found);
-              }}
-              className="bg-transparent text-xs font-semibold text-foreground focus:outline-none cursor-pointer"
-            >
-              {presets.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.shortLabel}
-                </option>
-              ))}
-            </select>
-          </div>
+          {compareMode === 'single' ? (
+            <>
+              {/* Single Environment Selector */}
+              <div className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-2 h-8">
+                <span className="font-mono text-[10px] font-bold uppercase text-primary shrink-0">
+                  Env
+                </span>
+                <select
+                  value={matchedEnvA?.envKey || 'stage-akamai'}
+                  aria-label="Select Single Run Environment"
+                  data-testid="select-single-env"
+                  onChange={(e) => handleSelectEnvA(e.target.value)}
+                  className="bg-transparent text-xs font-semibold text-foreground focus:outline-none cursor-pointer max-w-[175px] truncate"
+                >
+                  {envTargets.map((env) => (
+                    <option key={`single-env-${env.envKey}`} value={env.envKey}>
+                      {env.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-          {/* Customize URLs, Headers & Edge Button */}
+              {/* Single Run Snapshot Selector */}
+              {candRuns.length > 0 && (
+                <div className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-2 h-8">
+                  <span className="font-mono text-[10px] font-bold uppercase text-muted-foreground shrink-0">
+                    Run
+                  </span>
+                  <select
+                    value={activeCandRun?.key || candidateRunKey}
+                    aria-label="Select Single Run Snapshot"
+                    data-testid="select-single-run-key"
+                    onChange={(e) => onChangeCandidateRunKey(e.target.value)}
+                    className="bg-transparent font-mono text-xs font-semibold text-foreground focus:outline-none cursor-pointer max-w-[215px] truncate"
+                  >
+                    {candRuns.map((r) => (
+                      <option key={`single-run-${r.key}`} value={r.key}>
+                        {r.label} ({r.passedTests ?? totalChecks}/{r.totalTests ?? totalChecks} pass)
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+
+              {/* First-Class Execution PoP Selector */}
+              <div className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-2 h-8">
+                <Globe className="h-3.5 w-3.5 text-primary shrink-0" />
+                <span className="font-mono text-[10px] font-bold uppercase text-muted-foreground shrink-0">
+                  PoP
+                </span>
+                <select
+                  value={selectedExecutionPopId}
+                  onChange={(e) => onChangeExecutionPopId(e.target.value)}
+                  aria-label="Select Execution Edge PoP"
+                  data-testid="toolbar-select-execution-pop"
+                  className="bg-transparent font-mono text-xs font-semibold text-foreground focus:outline-none cursor-pointer max-w-[165px] truncate"
+                >
+                  <option value="auto">Auto (Default PoP)</option>
+                  {GLOBAL_EXECUTION_POPS.map((p) => (
+                    <option key={`toolbar-pop-${p.id}`} value={p.id}>
+                      {p.popCode} · {p.city} ({p.stagingEdgeIp})
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Run Single Environment */}
+              <button
+                type="button"
+                onClick={() => onRunSingleTarget(candidateTarget)}
+                data-testid="btn-run-single-env"
+                title={`Execute live run on ${matchedEnvA?.name || candidateTarget}${
+                  activePopOption ? ` from PoP ${activePopOption.popCode}` : ''
+                }`}
+                className="inline-flex h-8 items-center gap-1.5 rounded-md bg-primary px-2.5 text-xs font-semibold text-primary-foreground hover:opacity-90 whitespace-nowrap shrink-0 cursor-pointer transition-opacity"
+              >
+                <Play className="h-3 w-3 fill-current" />
+                <span>Run Single Env</span>
+              </button>
+            </>
+          ) : (
+            <>
+              {/* Env A Selector */}
+              <div className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-2 h-8">
+                <span className="font-mono text-[10px] font-bold uppercase text-primary shrink-0">
+                  Env A
+                </span>
+                <select
+                  value={matchedEnvA?.envKey || 'stage-akamai'}
+                  aria-label="Select Environment A"
+                  data-testid="select-env-a"
+                  onChange={(e) => handleSelectEnvA(e.target.value)}
+                  className="bg-transparent text-xs font-semibold text-foreground focus:outline-none cursor-pointer max-w-[165px] truncate"
+                >
+                  {envTargets.map((env) => (
+                    <option key={`env-a-${env.envKey}`} value={env.envKey}>
+                      {env.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Swap Env A ⇄ Env B */}
+              <button
+                type="button"
+                onClick={handleSwapEnvs}
+                data-testid="btn-swap-envs"
+                title="Swap Env A and Env B"
+                aria-label="Swap Env A and Env B"
+                className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted shrink-0 cursor-pointer transition-colors"
+              >
+                <ArrowLeftRight className="h-3.5 w-3.5" />
+              </button>
+
+              {/* Env B Selector */}
+              <div className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-2 h-8">
+                <span className="font-mono text-[10px] font-bold uppercase text-emerald-700 dark:text-emerald-400 shrink-0">
+                  Env B
+                </span>
+                <select
+                  value={matchedEnvB?.envKey || 'prod-akamai'}
+                  aria-label="Select Environment B"
+                  data-testid="select-env-b"
+                  onChange={(e) => handleSelectEnvB(e.target.value)}
+                  className="bg-transparent text-xs font-semibold text-foreground focus:outline-none cursor-pointer max-w-[165px] truncate"
+                >
+                  {envTargets.map((env) => (
+                    <option key={`env-b-${env.envKey}`} value={env.envKey}>
+                      {env.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* First-Class Execution PoP Selector */}
+              <div className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-2 h-8">
+                <Globe className="h-3.5 w-3.5 text-primary shrink-0" />
+                <span className="font-mono text-[10px] font-bold uppercase text-muted-foreground shrink-0">
+                  PoP
+                </span>
+                <select
+                  value={selectedExecutionPopId}
+                  onChange={(e) => onChangeExecutionPopId(e.target.value)}
+                  aria-label="Select Execution Edge PoP"
+                  data-testid="toolbar-select-execution-pop"
+                  className="bg-transparent font-mono text-xs font-semibold text-foreground focus:outline-none cursor-pointer max-w-[165px] truncate"
+                >
+                  <option value="auto">Auto (Default PoP)</option>
+                  {GLOBAL_EXECUTION_POPS.map((p) => (
+                    <option key={`toolbar-pop-${p.id}`} value={p.id}>
+                      {p.popCode} · {p.city} ({p.stagingEdgeIp})
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Run Diff across Env A and Env B */}
+              <button
+                type="button"
+                onClick={() => onRunSingleTarget(candidateTarget)}
+                data-testid="btn-run-env-diff"
+                title={`Run diff between ${matchedEnvA?.name || 'Env A'} and ${matchedEnvB?.name || 'Env B'}${
+                  activePopOption ? ` from PoP ${activePopOption.popCode}` : ''
+                }`}
+                className="inline-flex h-8 items-center gap-1.5 rounded-md bg-primary px-2.5 text-xs font-semibold text-primary-foreground hover:opacity-90 whitespace-nowrap shrink-0 cursor-pointer transition-opacity"
+              >
+                <Play className="h-3 w-3 fill-current" />
+                <span>Run Diff</span>
+              </button>
+            </>
+          )}
+
+          {/* Configure / Edit Environments Routing */}
           <button
             type="button"
             onClick={() => setRoutingEditorOpen((v) => !v)}
             data-testid="btn-customize-routing"
-            title="Configure Prod vs Stage or Prod vs Prod URLs, Headers, Akamai Edge, or AWS CloudFront routing"
+            title="Inspect or customize Env A and Env B URLs, Headers, and Edge routing"
             className={`inline-flex h-8 items-center gap-1.5 rounded-md border px-2.5 text-xs font-medium whitespace-nowrap shrink-0 cursor-pointer transition-colors ${
               routingEditorOpen
                 ? 'border-primary bg-accent text-accent-foreground'
@@ -414,58 +701,34 @@ export const WorkbenchToolbar: React.FC<WorkbenchToolbarProps> = ({
             }`}
           >
             <SlidersHorizontal className="h-3.5 w-3.5 text-primary" />
-            <span>URLs &amp; Headers</span>
+            <span className="hidden sm:inline">Envs</span>
           </button>
 
-          {/* Target Pair + Edge PoP Selector */}
-          <button
-            type="button"
-            onClick={() => setOpenMenu(openMenu === 'compare' ? null : 'compare')}
-            data-testid="btn-compare-popover"
-            title="Switch target environments, run snapshots, or edge region"
-            className={`inline-flex h-8 items-center gap-1.5 rounded-md border px-2.5 text-xs font-medium whitespace-nowrap shrink-0 cursor-pointer transition-colors ${
-              openMenu === 'compare'
-                ? 'border-primary bg-accent text-accent-foreground'
-                : 'border-border bg-background text-foreground hover:bg-muted'
-            }`}
-          >
-            <ArrowLeftRight className="h-3.5 w-3.5 text-muted-foreground" />
-            <span>
-              {compareMode === 'single'
-                ? shortTarget(candidateTarget)
-                : `${resolvedCand.tier} vs ${resolvedBase.tier}`}
-            </span>
-            {popShort !== 'Auto' && (
-              <span className="hidden sm:inline font-mono text-[11px] text-muted-foreground">
-                · {popShort}
-              </span>
-            )}
-            <ChevronDown className="h-3 w-3 text-muted-foreground" />
-          </button>
-
-          {/* Hide Accepted Toggle */}
-          <button
-            type="button"
-            role="switch"
-            aria-checked={ignoreAcceptedDiffs}
-            onClick={onToggleIgnoreAccepted}
-            data-testid="toggle-ignore-accepted"
-            title="Hide differences that have already been accepted"
-            className="inline-flex h-8 items-center gap-2 rounded-md border border-border bg-background px-2.5 text-xs font-medium text-foreground hover:bg-muted whitespace-nowrap shrink-0 cursor-pointer transition-colors"
-          >
-            <span
-              className={`inline-block h-3 w-5 rounded-full transition-colors relative ${
-                ignoreAcceptedDiffs ? 'bg-primary' : 'bg-muted-foreground/40'
-              }`}
+          {compareMode === 'compare' && (
+            /* Hide Accepted Toggle */
+            <button
+              type="button"
+              role="switch"
+              aria-checked={ignoreAcceptedDiffs}
+              onClick={onToggleIgnoreAccepted}
+              data-testid="toggle-ignore-accepted"
+              title="Hide differences that have already been accepted"
+              className="inline-flex h-8 items-center gap-2 rounded-md border border-border bg-background px-2.5 text-xs font-medium text-foreground hover:bg-muted whitespace-nowrap shrink-0 cursor-pointer transition-colors"
             >
               <span
-                className={`absolute top-0.5 h-2 w-2 rounded-full bg-white transition-transform ${
-                  ignoreAcceptedDiffs ? 'left-2.5' : 'left-0.5'
+                className={`inline-block h-3 w-5 rounded-full transition-colors relative ${
+                  ignoreAcceptedDiffs ? 'bg-primary' : 'bg-muted-foreground/40'
                 }`}
-              />
-            </span>
-            <span className="hidden md:inline">Hide Accepted</span>
-          </button>
+              >
+                <span
+                  className={`absolute top-0.5 h-2 w-2 rounded-full bg-white transition-transform ${
+                    ignoreAcceptedDiffs ? 'left-2.5' : 'left-0.5'
+                  }`}
+                />
+              </span>
+              <span className="hidden md:inline">Hide Accepted</span>
+            </button>
+          )}
 
           {/* Overflow Menu */}
           <button
@@ -474,7 +737,7 @@ export const WorkbenchToolbar: React.FC<WorkbenchToolbarProps> = ({
             data-testid="btn-more-popover"
             aria-label="More options"
             className={`inline-flex h-8 w-8 items-center justify-center rounded-md border transition-colors cursor-pointer ${
-              openMenu === 'more' || openMenu === 'sre'
+              openMenu === 'more' || openMenu === 'sre' || openMenu === 'compare'
                 ? 'border-primary bg-accent text-accent-foreground'
                 : 'border-border bg-background text-foreground hover:bg-muted'
             }`}
@@ -482,12 +745,12 @@ export const WorkbenchToolbar: React.FC<WorkbenchToolbarProps> = ({
             <MoreHorizontal className="h-4 w-4" />
           </button>
 
-          {/* Unified Targets & Edge PoP Popover */}
+          {/* Advanced Run Snapshots & Edge PoP Popover (accessible from More menu) */}
           {openMenu === 'compare' && (
             <div className="absolute right-0 top-9.5 z-40 w-84 rounded-md border border-border bg-popover p-3.5 shadow-lg">
               <div className="flex items-center justify-between border-b border-border pb-2.5">
                 <span className="text-xs font-semibold text-foreground">
-                  Targets &amp; Edge PoP ({activeAppId})
+                  Run Snapshots &amp; Edge PoP ({activeAppId})
                 </span>
                 <div className="inline-flex rounded border border-border bg-background p-0.5">
                   <button
@@ -499,7 +762,7 @@ export const WorkbenchToolbar: React.FC<WorkbenchToolbarProps> = ({
                         : 'text-muted-foreground hover:text-foreground'
                     }`}
                   >
-                    Compare
+                    Compare 2 Envs
                   </button>
                   <button
                     type="button"
@@ -510,7 +773,7 @@ export const WorkbenchToolbar: React.FC<WorkbenchToolbarProps> = ({
                         : 'text-muted-foreground hover:text-foreground'
                     }`}
                   >
-                    Single Run
+                    Single Env
                   </button>
                 </div>
               </div>
@@ -518,28 +781,7 @@ export const WorkbenchToolbar: React.FC<WorkbenchToolbarProps> = ({
               <div className="mt-3 space-y-2.5 text-xs">
                 <div>
                   <label className="block text-[11px] font-medium text-muted-foreground mb-1">
-                    Quick Comparison Mode (Prod/Stage or Prod/Prod)
-                  </label>
-                  <select
-                    value={topologyModeId}
-                    onChange={(e) => {
-                      const found = presets.find((p) => p.id === e.target.value);
-                      if (found) onSelectTopologyPreset?.(found);
-                    }}
-                    data-testid="select-topology-preset"
-                    className="h-8 w-full rounded border border-border bg-background px-2 text-xs text-foreground"
-                  >
-                    {presets.map((p) => (
-                      <option key={p.id} value={p.id}>
-                        {p.shortLabel}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-[11px] font-medium text-muted-foreground mb-1">
-                    {compareMode === 'single' ? 'Target Environment' : 'Candidate Side A Target'}
+                    {compareMode === 'single' ? 'Environment Target' : 'Env A Target & Run Snapshot'}
                   </label>
                   <select
                     value={candidateTarget}
@@ -570,7 +812,7 @@ export const WorkbenchToolbar: React.FC<WorkbenchToolbarProps> = ({
                 {compareMode === 'compare' && (
                   <div>
                     <label className="block text-[11px] font-medium text-muted-foreground mb-1">
-                      Baseline Side B Target
+                      Env B Target &amp; Run Snapshot
                     </label>
                     <select
                       value={baselineTarget}
@@ -622,11 +864,11 @@ export const WorkbenchToolbar: React.FC<WorkbenchToolbarProps> = ({
                   {compareMode === 'compare' ? (
                     <button
                       type="button"
-                      onClick={onSwapSides}
+                      onClick={handleSwapEnvs}
                       className="inline-flex h-7 items-center gap-1 rounded border border-border px-2.5 text-[11px] font-medium hover:bg-muted cursor-pointer"
                     >
                       <ArrowLeftRight className="h-3 w-3" />
-                      Swap Sides
+                      Swap Envs
                     </button>
                   ) : (
                     <button
@@ -756,6 +998,21 @@ export const WorkbenchToolbar: React.FC<WorkbenchToolbarProps> = ({
             <div className="absolute right-0 top-9.5 z-40 w-64 rounded-md border border-border bg-popover p-1.5 shadow-lg text-xs">
               <button
                 type="button"
+                onClick={() => setOpenMenu('compare')}
+                data-testid="btn-compare-popover"
+                className="flex w-full items-center justify-between rounded px-2.5 py-2 text-left hover:bg-muted cursor-pointer"
+              >
+                <span className="flex items-center gap-2">
+                  <ArrowLeftRight className="h-3.5 w-3.5 text-primary" />
+                  <span>Run Snapshots &amp; Edge PoP</span>
+                </span>
+                <span className="font-mono text-[11px] text-muted-foreground">
+                  {selectedExecutionPopId}
+                </span>
+              </button>
+
+              <button
+                type="button"
                 onClick={() => setOpenMenu('sre')}
                 data-testid="btn-sre-popover"
                 className="flex w-full items-center justify-between rounded px-2.5 py-2 text-left hover:bg-muted cursor-pointer"
@@ -809,12 +1066,12 @@ export const WorkbenchToolbar: React.FC<WorkbenchToolbarProps> = ({
                     <button
                       type="button"
                       onClick={() => {
-                        onOpenSetup('suite');
+                        onOpenSetup('envs');
                         setOpenMenu(null);
                       }}
                       className="flex w-full items-center justify-between rounded px-2.5 py-2 text-left hover:bg-muted cursor-pointer"
                     >
-                      <span>Manage Checks &amp; Envs</span>
+                      <span>Configure Property Envs</span>
                       <span className="font-mono text-[11px] text-primary">Config</span>
                     </button>
                   )}
@@ -907,41 +1164,162 @@ export const WorkbenchToolbar: React.FC<WorkbenchToolbarProps> = ({
         </div>
       </div>
 
-      {/* Row 2: Transparent Side-by-Side Comparison Endpoint Strip (Prod vs Stage OR Prod vs Prod) */}
-      <div
-        data-testid="comparison-topology-strip"
-        className="border-t border-border/60 bg-muted/20 px-4 py-1.5 flex flex-col gap-1.5 text-[11px]"
-      >
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <div
-            data-testid="topology-mode-pills"
-            className="flex flex-wrap items-center gap-1"
-          >
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mr-1">
-              Topology:
+      {/* Row 2: Slim 1-Line Active Environments Summary Strip (Compare 2 Envs OR Single Run View) */}
+      {compareMode === 'single' ? (
+        <div
+          data-testid="single-run-topology-strip"
+          className="border-t border-border/60 bg-primary/[0.04] px-4 py-1.5 flex flex-wrap items-center justify-between gap-2 text-[11px]"
+        >
+          <div className="flex flex-wrap items-center gap-2 min-w-0">
+            <span className="rounded bg-primary/15 px-1.5 py-0.5 font-mono text-[10px] font-bold text-primary">
+              SINGLE RUN VIEW
             </span>
-            {presets.map((preset) => {
-              const active = preset.id === topologyModeId;
-              return (
-                <button
-                  key={preset.id}
-                  type="button"
-                  data-testid={`topology-preset-${preset.id}`}
-                  onClick={() => onSelectTopologyPreset?.(preset)}
-                  title={preset.description}
-                  className={`h-6 rounded border px-2 text-[11px] font-medium whitespace-nowrap cursor-pointer transition-colors ${
-                    active
-                      ? 'border-primary bg-primary text-primary-foreground font-semibold'
-                      : 'border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted/60'
-                  }`}
-                >
-                  {preset.shortLabel}
-                </button>
-              );
-            })}
+            <span className="font-semibold text-foreground">
+              {matchedEnvA?.name || resolvedCand.label}
+            </span>
+            <span className="text-muted-foreground">·</span>
+            <span
+              data-testid="topology-candidate-url"
+              className="font-mono text-foreground font-medium truncate max-w-[260px]"
+            >
+              {resolvedCand.baseUrl}
+            </span>
+            {resolvedCand.routingMechanism === 'custom-header' && candHeaderSummary && (
+              <span
+                data-testid="topology-candidate-header"
+                className="font-mono text-primary truncate max-w-[240px]"
+              >
+                [Header: {candHeaderSummary}]
+              </span>
+            )}
+            {resolvedCand.routingMechanism === 'edge-dns' && resolvedCand.edgeHost && (
+              <span className="hidden md:inline font-mono text-muted-foreground truncate max-w-[220px]">
+                ({resolvedCand.edgeHost})
+              </span>
+            )}
+            <span className="text-muted-foreground">·</span>
+            <span className="font-mono text-muted-foreground truncate">
+              Run: <strong className="text-foreground">{activeCandRun?.key || candidateRunKey}</strong>
+            </span>
+            <span className="text-muted-foreground">·</span>
+            <span
+              data-testid="topology-active-pop"
+              className="inline-flex items-center gap-1 rounded border border-primary/30 bg-primary/10 px-1.5 py-0.5 font-mono text-[10px] font-semibold text-primary"
+            >
+              <span>PoP:</span>
+              <span>
+                {activeCandRun?.executionPop?.stagingPopCode
+                  ? `${activeCandRun.executionPop.stagingPopCode} (${
+                      activePopOption?.city ||
+                      activeCandRun.executionPop.regionLabel ||
+                      activeCandRun.executionPop.awsRegion ||
+                      'Edge'
+                    } · ${activeCandRun.executionPop.stagingEdgeIp})`
+                  : activePopOption
+                  ? `${activePopOption.popCode} (${activePopOption.city} · ${activePopOption.stagingEdgeIp})`
+                  : 'Auto (Default PoP)'}
+              </span>
+            </span>
           </div>
 
           <div className="flex items-center gap-2.5 shrink-0">
+            <span
+              data-testid="single-run-synthetics-canary-badge"
+              className="hidden sm:inline-flex items-center gap-1 rounded border border-emerald-500/30 bg-emerald-500/10 px-1.5 py-0.5 font-mono text-[10px] font-semibold text-emerald-700 dark:text-emerald-300"
+              title="Executed via AWS CloudWatch Synthetics Canary (syn-nodejs-puppeteer-9.1)"
+            >
+              <span>AWS Synthetics Canary:</span>
+              <span>ak-{activeAppId}-{matchedEnvA?.envKey || 'stg'}</span>
+            </span>
+            <button
+              type="button"
+              onClick={() => onSetCompareMode('compare')}
+              data-testid="btn-switch-to-compare-mode"
+              className="font-semibold text-primary hover:underline cursor-pointer"
+            >
+              Compare vs Another Env →
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div
+          data-testid="comparison-topology-strip"
+          className="border-t border-border/60 bg-muted/20 px-4 py-1.5 flex flex-wrap items-center justify-between gap-2 text-[11px]"
+        >
+          <div className="flex flex-wrap items-center gap-2 min-w-0">
+            {/* Env A Routing Summary */}
+            <div className="inline-flex items-center gap-1.5 min-w-0">
+              <span className="rounded bg-primary/12 px-1.5 py-0.5 font-mono text-[10px] font-bold text-primary">
+                ENV A
+              </span>
+              <span className="font-semibold text-foreground">
+                {matchedEnvA?.name || resolvedCand.label}
+              </span>
+              <span className="text-muted-foreground">·</span>
+              <span
+                data-testid="topology-candidate-url"
+                className="font-mono text-foreground font-medium truncate max-w-[230px]"
+              >
+                {resolvedCand.baseUrl}
+              </span>
+              {resolvedCand.routingMechanism === 'custom-header' && candHeaderSummary && (
+                <span
+                  data-testid="topology-candidate-header"
+                  className="font-mono text-primary truncate max-w-[220px]"
+                >
+                  [Header: {candHeaderSummary}]
+                </span>
+              )}
+              {resolvedCand.routingMechanism === 'edge-dns' && resolvedCand.edgeHost && (
+                <span className="hidden md:inline font-mono text-muted-foreground truncate max-w-[210px]">
+                  ({resolvedCand.edgeHost})
+                </span>
+              )}
+            </div>
+
+            <span className="font-mono font-bold text-muted-foreground px-1">vs</span>
+
+            {/* Env B Routing Summary */}
+            <div className="inline-flex items-center gap-1.5 min-w-0">
+              <span className="rounded bg-emerald-500/15 px-1.5 py-0.5 font-mono text-[10px] font-bold text-emerald-700 dark:text-emerald-300">
+                ENV B
+              </span>
+              <span className="font-semibold text-foreground">
+                {matchedEnvB?.name || resolvedBase.label}
+              </span>
+              <span className="text-muted-foreground">·</span>
+              <span
+                data-testid="topology-baseline-url"
+                className="font-mono text-foreground font-medium truncate max-w-[230px]"
+              >
+                {resolvedBase.baseUrl}
+              </span>
+              {resolvedBase.routingMechanism === 'custom-header' && baseHeaderSummary && (
+                <span className="font-mono text-muted-foreground truncate max-w-[180px]">
+                  [Header: {baseHeaderSummary}]
+                </span>
+              )}
+              {resolvedBase.routingMechanism === 'edge-dns' && resolvedBase.edgeHost && (
+                <span className="hidden xl:inline font-mono text-muted-foreground truncate max-w-[190px]">
+                  ({resolvedBase.edgeHost})
+                </span>
+              )}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2.5 shrink-0">
+            <span
+              data-testid="topology-active-pop"
+              className="hidden sm:inline-flex items-center gap-1 rounded border border-primary/30 bg-primary/10 px-1.5 py-0.5 font-mono text-[10px] font-semibold text-primary"
+              title="Active Edge PoP used when executing synthetic probes"
+            >
+              <span>PoP:</span>
+              <span>
+                {activePopOption
+                  ? `${activePopOption.popCode} (${activePopOption.city} · ${activePopOption.stagingEdgeIp})`
+                  : 'Auto (Default PoP)'}
+              </span>
+            </span>
             <span
               data-testid="compare-synthetics-canary-badge"
               className="hidden sm:inline-flex items-center gap-1 rounded border border-emerald-500/30 bg-emerald-500/10 px-1.5 py-0.5 font-mono text-[10px] font-semibold text-emerald-700 dark:text-emerald-300"
@@ -949,81 +1327,23 @@ export const WorkbenchToolbar: React.FC<WorkbenchToolbarProps> = ({
             >
               <span>AWS Synthetics:</span>
               <span>
-                ak-{activeAppId}-prod-stg ↔ ak-{activeAppId}-prod-prd
+                ak-{activeAppId}-{matchedEnvA?.envKey || 'env-a'} ↔ ak-{activeAppId}-{matchedEnvB?.envKey || 'env-b'}
               </span>
             </span>
-            <button
-              type="button"
-              onClick={() => setRoutingEditorOpen((v) => !v)}
-              className="font-medium text-primary hover:underline cursor-pointer"
-            >
-              {routingEditorOpen ? 'Close URL/Header Editor' : 'Customize URL / Header / CDN →'}
-            </button>
-          </div>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-2 min-w-0">
-          {/* Candidate Side A Summary */}
-          <div className="inline-flex items-center gap-1.5 min-w-0">
-            <span className="font-semibold text-foreground">Side A (Candidate):</span>
-            <span
-              className={`rounded px-1.5 py-0.5 font-mono text-[10px] font-bold ${
-                resolvedCand.tier === 'STAGE'
-                  ? 'bg-amber-500/15 text-amber-700 dark:text-amber-300'
-                  : 'bg-sky-500/15 text-sky-700 dark:text-sky-300'
-              }`}
-            >
-              {resolvedCand.tier}
-            </span>
-            <span className="font-medium text-foreground">{resolvedCand.provider}</span>
-            <span className="text-muted-foreground">·</span>
-            <span
-              data-testid="topology-candidate-url"
-              className="font-mono text-foreground font-medium truncate max-w-[230px]"
-            >
-              {resolvedCand.baseUrl}
-            </span>
-            {resolvedCand.routingMechanism === 'custom-header' && candHeaderSummary && (
-              <span
-                data-testid="topology-candidate-header"
-                className="font-mono text-primary truncate max-w-[220px]"
+            {onOpenSetup && (
+              <button
+                type="button"
+                onClick={() => onOpenSetup('envs')}
+                className="font-medium text-primary hover:underline cursor-pointer"
               >
-                [Header: {candHeaderSummary}]
-              </span>
-            )}
-            {resolvedCand.routingMechanism === 'edge-dns' && resolvedCand.edgeHost && (
-              <span className="hidden md:inline font-mono text-muted-foreground truncate max-w-[210px]">
-                ({resolvedCand.edgeHost})
-              </span>
-            )}
-          </div>
-
-          <span className="font-mono font-bold text-muted-foreground px-1">vs</span>
-
-          {/* Baseline Side B Summary */}
-          <div className="inline-flex items-center gap-1.5 min-w-0">
-            <span className="font-semibold text-foreground">Side B (Baseline):</span>
-            <span className="rounded bg-emerald-500/15 px-1.5 py-0.5 font-mono text-[10px] font-bold text-emerald-700 dark:text-emerald-300">
-              {resolvedBase.tier}
-            </span>
-            <span className="font-medium text-foreground">{resolvedBase.provider}</span>
-            <span className="text-muted-foreground">·</span>
-            <span
-              data-testid="topology-baseline-url"
-              className="font-mono text-foreground font-medium truncate max-w-[230px]"
-            >
-              {resolvedBase.baseUrl}
-            </span>
-            {resolvedBase.routingMechanism === 'custom-header' && baseHeaderSummary && (
-              <span className="font-mono text-muted-foreground truncate max-w-[180px]">
-                [Header: {baseHeaderSummary}]
-              </span>
+                Manage Envs ({envTargets.length}) →
+              </button>
             )}
           </div>
         </div>
-      </div>
+      )}
 
-      {/* Expandable Inline Custom URL, Header & CDN Routing Drawer */}
+      {/* Expandable Inline Environment A & Environment B Routing Override Drawer */}
       {routingEditorOpen && (
         <form
           onSubmit={handleApplyCustomRouting}
@@ -1034,10 +1354,10 @@ export const WorkbenchToolbar: React.FC<WorkbenchToolbarProps> = ({
             <div className="flex flex-wrap items-center gap-2">
               <Globe className="h-3.5 w-3.5 text-primary" />
               <span className="font-semibold text-foreground">
-                Universal Comparison Routing (Prod vs Stage OR Prod vs Prod)
+                Environment A vs Environment B Routing Configuration
               </span>
               <span className="text-muted-foreground">
-                Compare via Same URL + Edge DNS (Akamai), Same URL + Header (AWS CloudFront), or Completely Different URLs
+                Each environment defines its own URL, Edge DNS/IP (Akamai / CloudFront), and Custom Headers
               </span>
             </div>
             <button
@@ -1050,51 +1370,20 @@ export const WorkbenchToolbar: React.FC<WorkbenchToolbarProps> = ({
             </button>
           </div>
 
-          {/* 1-Click Preset Buttons inside Editor for all screen widths */}
-          <div className="flex flex-wrap items-center gap-1.5">
-            <span className="text-[11px] font-medium text-muted-foreground mr-1">
-              Quick Presets:
-            </span>
-            {presets.map((preset) => (
-              <button
-                key={preset.id}
-                type="button"
-                onClick={() => onSelectTopologyPreset?.(preset)}
-                className={`rounded border px-2 py-1 text-[11px] font-medium cursor-pointer transition-colors ${
-                  preset.id === topologyModeId
-                    ? 'border-primary bg-primary/12 text-primary font-semibold'
-                    : 'border-border bg-background text-foreground hover:bg-muted'
-                }`}
-              >
-                {preset.shortLabel}
-              </button>
-            ))}
-          </div>
-
           <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
-            {/* Side A: Candidate Configuration */}
+            {/* Env A Configuration */}
             <div className="rounded-md border border-border bg-card p-3 space-y-2">
               <div className="flex items-center justify-between">
                 <span className="font-semibold text-foreground">
-                  Side A — Candidate Target (Stage or Secondary Prod)
+                  Env A — {matchedEnvA?.name || 'First Environment'}
                 </span>
                 <div className="inline-flex items-center gap-1.5">
-                  <select
-                    value={candTierDraft}
-                    onChange={(e) => setCandTierDraft(e.target.value as 'STAGE' | 'PROD')}
-                    aria-label="Candidate tier"
-                    data-testid="input-candidate-tier"
-                    className="h-7 rounded border border-border bg-background px-2 font-mono text-[11px] font-semibold text-foreground"
-                  >
-                    <option value="STAGE">STAGE</option>
-                    <option value="PROD">PROD (Prod vs Prod)</option>
-                  </select>
                   <select
                     value={candProviderDraft}
                     onChange={(e) =>
                       setCandProviderDraft(e.target.value as CdnOrOriginProvider)
                     }
-                    aria-label="Candidate CDN or origin provider"
+                    aria-label="Env A CDN or origin provider"
                     data-testid="input-candidate-provider"
                     className="h-7 rounded border border-border bg-background px-2 text-[11px] text-foreground"
                   >
@@ -1107,7 +1396,7 @@ export const WorkbenchToolbar: React.FC<WorkbenchToolbarProps> = ({
                     onChange={(e) =>
                       setCandMechanismDraft(e.target.value as RoutingMechanism)
                     }
-                    aria-label="Candidate routing mechanism"
+                    aria-label="Env A routing mechanism"
                     data-testid="input-candidate-mechanism"
                     className="h-7 rounded border border-border bg-background px-2 text-[11px] text-foreground"
                   >
@@ -1121,28 +1410,28 @@ export const WorkbenchToolbar: React.FC<WorkbenchToolbarProps> = ({
               <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
                 <div>
                   <label className="block text-[11px] text-muted-foreground mb-0.5">
-                    Candidate Base URL
+                    Env A Base URL
                   </label>
                   <input
                     type="text"
                     value={candUrlDraft}
                     onChange={(e) => setCandUrlDraft(e.target.value)}
                     placeholder="https://www-uat1.salesforce.com"
-                    aria-label="Candidate Base URL"
+                    aria-label="Env A Base URL"
                     data-testid="input-candidate-url"
                     className="h-7.5 w-full rounded border border-border bg-background px-2 font-mono text-xs text-foreground"
                   />
                 </div>
                 <div>
                   <label className="block text-[11px] text-muted-foreground mb-0.5">
-                    Candidate Routing Headers (Key: Value)
+                    Env A Routing Headers (Key: Value)
                   </label>
                   <input
                     type="text"
                     value={candHeaderDraft}
                     onChange={(e) => setCandHeaderDraft(e.target.value)}
                     placeholder="aws-cf-cd-staging: true; x-canary: stage"
-                    aria-label="Candidate Routing Headers"
+                    aria-label="Env A Routing Headers"
                     data-testid="input-candidate-headers"
                     className="h-7.5 w-full rounded border border-border bg-background px-2 font-mono text-xs text-foreground"
                   />
@@ -1156,35 +1445,26 @@ export const WorkbenchToolbar: React.FC<WorkbenchToolbarProps> = ({
                     value={candEdgeIpDraft}
                     onChange={(e) => setCandEdgeIpDraft(e.target.value)}
                     placeholder="23.48.201.18"
-                    aria-label="Candidate Edge IP"
+                    aria-label="Env A Edge IP"
                     className="h-7.5 w-full rounded border border-border bg-background px-2 font-mono text-xs text-foreground"
                   />
                 </div>
               </div>
             </div>
 
-            {/* Side B: Baseline Configuration */}
+            {/* Env B Configuration */}
             <div className="rounded-md border border-border bg-card p-3 space-y-2">
               <div className="flex items-center justify-between">
                 <span className="font-semibold text-foreground">
-                  Side B — Baseline Target (Production Reference)
+                  Env B — {matchedEnvB?.name || 'Second Environment'}
                 </span>
                 <div className="inline-flex items-center gap-1.5">
-                  <select
-                    value={baseTierDraft}
-                    onChange={(e) => setBaseTierDraft(e.target.value as 'STAGE' | 'PROD')}
-                    aria-label="Baseline tier"
-                    className="h-7 rounded border border-border bg-background px-2 font-mono text-[11px] font-semibold text-foreground"
-                  >
-                    <option value="PROD">PROD</option>
-                    <option value="STAGE">STAGE</option>
-                  </select>
                   <select
                     value={baseProviderDraft}
                     onChange={(e) =>
                       setBaseProviderDraft(e.target.value as CdnOrOriginProvider)
                     }
-                    aria-label="Baseline CDN or origin provider"
+                    aria-label="Env B CDN or origin provider"
                     data-testid="input-baseline-provider"
                     className="h-7 rounded border border-border bg-background px-2 text-[11px] text-foreground"
                   >
@@ -1198,14 +1478,14 @@ export const WorkbenchToolbar: React.FC<WorkbenchToolbarProps> = ({
               <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
                 <div>
                   <label className="block text-[11px] text-muted-foreground mb-0.5">
-                    Baseline Base URL
+                    Env B Base URL
                   </label>
                   <input
                     type="text"
                     value={baseUrlDraft}
                     onChange={(e) => setBaseUrlDraft(e.target.value)}
                     placeholder="https://www.salesforce.com"
-                    aria-label="Baseline Base URL"
+                    aria-label="Env B Base URL"
                     data-testid="input-baseline-url"
                     className="h-7.5 w-full rounded border border-border bg-background px-2 font-mono text-xs text-foreground"
                   />
@@ -1271,20 +1551,61 @@ export const WorkbenchToolbar: React.FC<WorkbenchToolbarProps> = ({
         </form>
       )}
 
-      {runStreamState?.active && (
-        <div className="flex items-center gap-3 border-t border-border/60 px-4 py-1.5 text-xs">
-          <span className="font-mono text-foreground truncate">
-            {runStreamState.headlineStatus}
-          </span>
-          <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
-            <div
-              className="h-full bg-primary transition-all duration-200"
-              style={{ width: `${runStreamState.progressPercent}%` }}
-            />
+      {runStreamState && (
+        <div
+          data-testid="compare-live-run-banner"
+          className={`flex flex-wrap items-center justify-between gap-3 border-t px-4 py-1.5 text-xs transition-colors ${
+            runStreamState.active
+              ? 'border-primary/40 bg-primary/[0.08]'
+              : 'border-emerald-500/35 bg-emerald-500/[0.06]'
+          }`}
+        >
+          <div className="flex flex-wrap items-center gap-2 min-w-0">
+            {runStreamState.active ? (
+              <span className="inline-flex items-center gap-1 rounded bg-primary px-1.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-primary-foreground shrink-0">
+                <Loader2 className="h-2.5 w-2.5 animate-spin" />
+                <span>LIVE RUN</span>
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-1 rounded bg-emerald-600 px-1.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-white shrink-0">
+                <Check className="h-2.5 w-2.5" />
+                <span>RUN COMPLETED</span>
+              </span>
+            )}
+            <span className="font-semibold text-foreground shrink-0">Where:</span>
+            <span className="font-mono text-[11px] font-semibold text-primary truncate">
+              Env A ({matchedEnvA?.shortName || runStreamState.targetA}) ↔ Env B ({matchedEnvB?.shortName || runStreamState.targetB})
+            </span>
+            <span className="text-muted-foreground hidden sm:inline">·</span>
+            <span className="font-mono text-[11px] text-muted-foreground hidden sm:inline truncate">
+              ak-{activeAppId}-{matchedEnvA?.envKey || 'env-a'} ↔ ak-{activeAppId}-{matchedEnvB?.envKey || 'env-b'}
+            </span>
+            <span className="text-muted-foreground">·</span>
+            <span className="font-mono text-[11px] font-semibold text-primary">
+              PoP:{' '}
+              {activePopOption
+                ? `${activePopOption.popCode} (${activePopOption.city} · ${activePopOption.stagingEdgeIp})`
+                : 'Auto (Default PoP)'}
+            </span>
+            <span className="text-muted-foreground">·</span>
+            <span className="font-mono text-[11px] text-foreground truncate">
+              {runStreamState.headlineStatus}
+            </span>
           </div>
-          <span className="font-mono text-muted-foreground tabular-nums shrink-0">
-            {runStreamState.completedCount}/{runStreamState.totalCount}
-          </span>
+
+          <div className="flex items-center gap-2.5 shrink-0">
+            <div className="h-1.5 w-32 sm:w-44 overflow-hidden rounded-full bg-muted">
+              <div
+                className={`h-full transition-all duration-200 ${
+                  runStreamState.active ? 'bg-primary' : 'bg-emerald-500'
+                }`}
+                style={{ width: `${runStreamState.progressPercent}%` }}
+              />
+            </div>
+            <span className="font-mono text-[11px] font-semibold text-foreground tabular-nums shrink-0">
+              {runStreamState.completedCount}/{runStreamState.totalCount} ({runStreamState.progressPercent}%)
+            </span>
+          </div>
         </div>
       )}
     </div>

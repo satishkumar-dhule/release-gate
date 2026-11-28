@@ -16,8 +16,14 @@ import {
 import { DEFAULT_TEMPLATE_CONFIG } from '../config/template.config';
 import { INITIAL_RULES, INITIAL_RUNS, buildInitialComparison } from '../data/mockStore';
 
+import {
+  ABOUT_SLIDES,
+  filterAboutSlides,
+  resolveSlideStepIndex,
+} from './aboutSlidesModel';
+
 describe('workbenchModel pure logic', () => {
-  it('normalizes legacy and consolidated 4-workspace view modes cleanly', () => {
+  it('normalizes legacy and consolidated 5-workspace view modes cleanly', () => {
     assert.equal(normalizeWorkbenchViewMode('synthetics'), 'synthetics');
     assert.equal(normalizeWorkbenchViewMode('canaries'), 'synthetics');
     assert.equal(normalizeWorkbenchViewMode('fleet'), 'synthetics');
@@ -40,7 +46,29 @@ describe('workbenchModel pure logic', () => {
     assert.equal(normalizeWorkbenchViewMode('ide'), 'vscode');
     assert.equal(normalizeWorkbenchViewMode('code'), 'vscode');
     assert.equal(normalizeWorkbenchViewMode('terminal'), 'vscode');
+    assert.equal(normalizeWorkbenchViewMode('about'), 'about');
+    assert.equal(normalizeWorkbenchViewMode('slides'), 'about');
+    assert.equal(normalizeWorkbenchViewMode('guide'), 'about');
     assert.equal(normalizeWorkbenchViewMode('unknown'), 'synthetics');
+  });
+
+  it('provides 6 structured About & Architecture slides and supports category filtering and wrap-around navigation', () => {
+    assert.equal(ABOUT_SLIDES.length, 6);
+    assert.equal(filterAboutSlides(ABOUT_SLIDES, 'all').length, 6);
+    assert.equal(filterAboutSlides(ABOUT_SLIDES, 'journey').length, 2);
+    assert.equal(filterAboutSlides(ABOUT_SLIDES, 'architecture').length, 2);
+    assert.equal(filterAboutSlides(ABOUT_SLIDES, 'features').length, 2);
+    assert.equal(
+      filterAboutSlides(ABOUT_SLIDES, 'all', 'amazon.nova-lite-v1:0').length,
+      1
+    );
+    assert.equal(
+      filterAboutSlides(ABOUT_SLIDES, 'all', 'Bedrock Nova Lite').length,
+      2
+    );
+    assert.equal(resolveSlideStepIndex(0, 6, -1), 5);
+    assert.equal(resolveSlideStepIndex(5, 6, 1), 0);
+    assert.equal(resolveSlideStepIndex(2, 6, 1), 3);
   });
 
   it('replaces None affectedArea with meaningful visual status label', () => {

@@ -1142,6 +1142,10 @@ async function startServer() {
 
   app.post('/api/v1/synthetics/canaries/:canaryName/start', async (req, res) => {
     const canaryName = String(req.params.canaryName || '').trim().toLowerCase();
+    const popId =
+      typeof req.body?.popId === 'string' && req.body.popId.trim() && req.body.popId !== 'auto'
+        ? req.body.popId.trim().toLowerCase()
+        : undefined;
     const canaries = getManagedCanariesInventory();
     const canary = canaries.find(
       (c) => c.canaryName.toLowerCase() === canaryName || c.targetId.toLowerCase() === canaryName
@@ -1168,9 +1172,10 @@ async function startServer() {
     const ingestedRun = await executeLiveSalesforceRun({
       targetId: canary.targetId,
       runNumber: runNum,
-      label: `aws-syn #${runNum} (${canary.canaryName})`,
+      label: `aws-syn #${runNum} (${canary.canaryName}${popId ? ` · PoP ${popId.toUpperCase()}` : ''})`,
       operatorEmail,
       suiteAppId: canary.appId,
+      popId,
       config: getRuntimeConfigSnapshot(),
       suite,
     });
@@ -1197,6 +1202,8 @@ async function startServer() {
       executionPlane: 'AWS CloudWatch Synthetics',
       canaryName: canary.canaryName,
       targetId: canary.targetId,
+      popId: popId || 'auto',
+      executionPop: ingestedRun.executionPop,
       awsStartOutcome: startOutcome,
       durationMs: Date.now() - t0,
       startedAt,
@@ -1227,6 +1234,10 @@ async function startServer() {
     const scope = (req.body?.scope || 'property-pair') as FanOutScope;
     const appId = typeof req.body?.appId === 'string' ? req.body.appId.trim().toLowerCase() : undefined;
     const regionCode = typeof req.body?.regionCode === 'string' ? req.body.regionCode.trim().toUpperCase() : undefined;
+    const popId =
+      typeof req.body?.popId === 'string' && req.body.popId.trim() && req.body.popId !== 'auto'
+        ? req.body.popId.trim().toLowerCase()
+        : undefined;
     const canaryNames = Array.isArray(req.body?.canaryNames) ? req.body.canaryNames.map(String) : undefined;
     const networks = Array.isArray(req.body?.networks)
       ? req.body.networks.filter((n: unknown): n is 'staging' | 'prod' => n === 'staging' || n === 'prod')
@@ -1274,9 +1285,10 @@ async function startServer() {
           const ingestedRun = await executeLiveSalesforceRun({
             targetId: target.targetId,
             runNumber: runNum,
-            label: `fanout #${runNum} (${target.canaryName})`,
+            label: `fanout #${runNum} (${target.canaryName}${popId ? ` · PoP ${popId.toUpperCase()}` : ''})`,
             operatorEmail,
             suiteAppId: target.appId,
+            popId,
             config: getRuntimeConfigSnapshot(),
             suite,
           });
@@ -5868,7 +5880,6 @@ async function startServer() {
           server: {
             middlewareMode: true,
             hmr: disableHmr ? false : undefined,
-            watch: disableHmr ? null : undefined,
           },
           appType: 'spa',
         }).then((v) => {
@@ -5883,8 +5894,13 @@ async function startServer() {
       return vitePromise;
     };
     app.use(async (req, res, next) => {
+      // Respond immediately to health probe HEAD requests while Vite warms up
+      if (!viteInstance && req.method === 'HEAD' && (req.path === '/' || req.path === '/index.html')) {
+        res.status(200).setHeader('Content-Type', 'text/html').end();
+        return;
+      }
       try {
-        const vite = await getVite();
+        const vite = viteInstance || (await getVite());
         vite.middlewares(req, res, next);
       } catch (err) {
         next(err);

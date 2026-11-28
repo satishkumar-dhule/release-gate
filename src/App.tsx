@@ -80,6 +80,7 @@ import {
 import { SyntheticsOrchestratorView } from './components/SyntheticsOrchestratorView';
 import { ConfigHubView, type ConfigHubSection } from './components/ConfigHubView';
 import { DevStudioView, type DevStudioMode } from './components/DevStudioView';
+import { AboutSlidesView } from './components/AboutSlidesView';
 import { QuickPalette, ShortcutsModal } from './components/QuickPalette';
 import { normalizeFanOutApiResponse } from './engine/syntheticsResilience';
 import {
@@ -87,6 +88,7 @@ import {
   ComparisonTopologyPreset,
   TargetEndpointProfile,
   getComparisonTopologyPresets,
+  getPropertyEnvironmentTargets,
 } from './engine/targetRoutingModel';
 
 type AiJudgeOverride = {
@@ -606,11 +608,37 @@ export default function App() {
     [activeTopologyPresets, topologyModeId]
   );
 
+  const activeEnvTargets = useMemo(() => {
+    const canonical =
+      activeSummary?.canonicalHost ||
+      resolvePropertyHostname(activeAppId, 'prod');
+    const uatHost = resolvePropertyHostname(activeAppId, 'uat');
+    return getPropertyEnvironmentTargets(
+      activeAppId,
+      canonical,
+      activeProp?.envs || [],
+      uatHost
+    );
+  }, [activeAppId, activeSummary?.canonicalHost, activeProp?.envs]);
+
+  const defaultEnvATarget = activeEnvTargets[1] || activeEnvTargets[0];
+  const defaultEnvBTarget = activeEnvTargets[0];
+
+  const customCand = customProfilesByApp[activeAppId]?.candidate;
+  const customBase = customProfilesByApp[activeAppId]?.baseline;
+
   const activeCandidateProfile =
-    customProfilesByApp[activeAppId]?.candidate ||
+    (customCand &&
+      activeEnvTargets.some((e) => e.profile.label === customCand.label) &&
+      customCand) ||
+    defaultEnvATarget?.profile ||
     activeTopologyPreset?.candidate;
+
   const activeBaselineProfile =
-    customProfilesByApp[activeAppId]?.baseline ||
+    (customBase &&
+      activeEnvTargets.some((e) => e.profile.label === customBase.label) &&
+      customBase) ||
+    defaultEnvBTarget?.profile ||
     activeTopologyPreset?.baseline;
 
   const handleSelectTopologyPreset = (preset: ComparisonTopologyPreset) => {
@@ -1415,7 +1443,7 @@ export default function App() {
       passedTests: results.filter((r) => r.pass).length,
       failedTests: results.filter((r) => !r.pass).length,
       by: DEFAULT_TEMPLATE_CONFIG.branding.defaultOperator.email,
-      label: `${labelPrefix} #${count} · ${nowStr}`,
+      label: `${labelPrefix} #${count}${popOpt ? ` · PoP ${popOpt.popCode}` : ''} · ${nowStr}`,
       results,
     };
   };
@@ -1455,17 +1483,25 @@ export default function App() {
     setCandidateRunKey(runA.key);
     setBaselineRunKey(runB.key);
 
+    const popOpt = resolveExecutionPopOption(selectedExecutionPopId);
     const checks = runA.results.map((r) => ({ id: r.id, name: r.name }));
-    enqueueJob(`Live Gate: ${tA} ↔ ${tB}`, async () => {
-      await streamExecuteChecks({
-        mode: compareMode === 'single' ? 'single-run' : 'compare',
-        runA,
-        runB,
-        checks,
-        suiteAppId: prop.id,
-      });
-      toast.success(`Live Gate verified ${checks.length} checks for ${prop.id}`);
-    });
+    enqueueJob(
+      `Live Gate: ${tA} ↔ ${tB}${popOpt ? ` (${popOpt.popCode})` : ''}`,
+      async () => {
+        await streamExecuteChecks({
+          mode: compareMode === 'single' ? 'single-run' : 'compare',
+          runA,
+          runB,
+          checks,
+          suiteAppId: prop.id,
+        });
+        toast.success(
+          `Live Gate verified ${checks.length} checks for ${prop.id}${
+            popOpt ? ` from PoP ${popOpt.popCode} (${popOpt.city})` : ''
+          }`
+        );
+      }
+    );
   };
 
   const handleRerunSingleCheck = (testId: string) => {
@@ -2113,6 +2149,13 @@ export default function App() {
           setViewMode('studio');
         },
       },
+      {
+        id: 'nav-about-slides',
+        group: 'Views',
+        label: 'About — Interactive Architecture Slides & User Journeys',
+        subtitle: '6 slides explaining internal workings, PoP routing, 3-Dim Gate & features',
+        onSelect: () => setViewMode('about'),
+      },
       ...(codeEditorUnlocked
         ? [
             {
@@ -2338,8 +2381,28 @@ export default function App() {
             runs={runs}
             templateConfig={liveTemplateConfig}
             propertySummaries={propertySummaries}
-            onSelectPropertyAndCompare={(appId, testId, tab) => {
+            runStreamState={runStreamState}
+            selectedExecutionPopId={selectedExecutionPopId}
+            onChangeExecutionPopId={setSelectedExecutionPopId}
+            onSelectPropertyAndCompare={(appId, testId, tab, opts) => {
               handleSelectProperty(appId, 'workbench');
+              if (opts?.mode) {
+                setCompareMode(opts.mode);
+                if (opts.mode === 'single') {
+                  setDimensionFilter('all');
+                }
+              }
+              if (opts?.targetId) {
+                setCandidateTarget(opts.targetId);
+                const matchingRun = opts.runKey
+                  ? runs.find((r) => r.key === opts.runKey)
+                  : runs.find((r) => r.target === opts.targetId);
+                if (matchingRun) {
+                  setCandidateRunKey(matchingRun.key);
+                }
+              } else if (opts?.runKey) {
+                setCandidateRunKey(opts.runKey);
+              }
               if (testId) setSelectedTestId(testId);
               if (tab) setInspectorTab(tab);
             }}
@@ -2352,6 +2415,7 @@ export default function App() {
             onRunPropertyGate={(appId) => handleRunLiveGate(appId)}
             onDeleteProperty={handleDeleteProperty}
             onRestoreDefaultProperties={handleRestoreDefaultProperties}
+            onOpenAboutSlides={() => setViewMode('about')}
           />
         </main>
       )}
@@ -2363,13 +2427,19 @@ export default function App() {
               activeAppId={activeAppId}
               activeAppName={activeProp?.name || activeAppId}
               canonicalHost={activeHost}
+              propertyEnvs={activeProp?.envs}
               headlineVerdict={comparison.headlineVerdict}
               headerDiffs={activeSummary?.headerDiffCount ?? 0}
               cookieDiffs={activeSummary?.cookieDiffCount ?? 0}
               visualDiffs={activeSummary?.visualDiffCount ?? 0}
               totalChecks={comparison.items.length}
               compareMode={compareMode}
-              onSetCompareMode={setCompareMode}
+              onSetCompareMode={(nextMode) => {
+                setCompareMode(nextMode);
+                if (nextMode === 'single') {
+                  setDimensionFilter('all');
+                }
+              }}
               candidateTarget={candidateTarget}
               baselineTarget={baselineTarget}
               availableTargets={availableTargets}
@@ -2462,6 +2532,7 @@ export default function App() {
                 onChangePage={setCheckPage}
                 ignoreAcceptedDiffs={ignoreAcceptedDiffs}
                 runStreamState={runStreamState}
+                compareMode={compareMode}
                 onOpenManageTests={() => {
                   setConfigSection('suite');
                   setSetupInitialTab('suite');
@@ -2664,6 +2735,37 @@ export default function App() {
             onSaveProperty={handleSaveProperty}
             onSaveSuite={handleSaveSuiteForApp}
             onConfigMutated={refreshWorkspaceFromServer}
+          />
+        </main>
+      )}
+
+      {viewMode === 'about' && (
+        <main className="flex flex-1 flex-col min-w-0 min-h-0 lg:h-screen lg:max-h-screen lg:overflow-hidden">
+          <AboutSlidesView
+            activeAppId={activeAppId}
+            totalProperties={apps.length}
+            totalChecks={propertySummaries.reduce((acc, s) => acc + s.totalChecks, 0)}
+            totalPops={GLOBAL_EXECUTION_POPS.length}
+            onNavigateCta={(cta) => {
+              if (cta.compareMode) {
+                setCompareMode(cta.compareMode);
+                if (cta.compareMode === 'single') {
+                  setDimensionFilter('all');
+                }
+              }
+              if (cta.inspectorTab) {
+                setInspectorTab(cta.inspectorTab);
+              }
+              if (cta.setupTab) {
+                if (cta.setupTab === 'policies') {
+                  setConfigSection('policies');
+                } else {
+                  setConfigSection('suite');
+                  setSetupInitialTab(cta.setupTab);
+                }
+              }
+              setViewMode(cta.targetView);
+            }}
           />
         </main>
       )}

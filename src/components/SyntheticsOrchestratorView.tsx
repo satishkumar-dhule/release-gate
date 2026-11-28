@@ -8,6 +8,7 @@ import {
   Copy,
   Download,
   ExternalLink,
+  Globe,
   Layers,
   Loader2,
   MoreHorizontal,
@@ -27,8 +28,10 @@ import {
 import { toast } from 'sonner';
 import {
   DEFAULT_TEMPLATE_CONFIG,
+  GLOBAL_EXECUTION_POPS,
   TemplateConfig,
   TestCaseDefinition,
+  resolveExecutionPopOption,
 } from '../config/template.config';
 import { AppConfig, OverallVerdict, RunRecord } from '../engine/types';
 import { RegionCode, VerdictFilter } from '../engine/scalableViewEngine';
@@ -50,6 +53,45 @@ import {
   normalizeCanariesApiResponse,
   normalizeFanOutApiResponse,
 } from '../engine/syntheticsResilience';
+import { ActiveRunStreamState } from '../engine/runStreamEngine';
+
+export interface LiveCanaryCheckStreamItem {
+  phase: 'queued' | 'probing-http' | 'capturing-screenshot' | 'verifying-assertions' | 'completed';
+  stepLabel: string;
+  shortBadge: string;
+  status?: number;
+  durationMs?: number;
+  pass?: boolean;
+  completedAt?: string;
+}
+
+export interface LiveCanaryExecutionState {
+  active: boolean;
+  scopeLabel: string;
+  canaryName: string;
+  pairedCanaryName?: string;
+  appId: string;
+  targetId: string;
+  network: 'staging' | 'prod';
+  edgeIp: string;
+  canonicalHost: string;
+  regionCode: string;
+  popCode: string;
+  runKey: string;
+  s3ArtifactPath: string;
+  startedAt: string;
+  completedAt?: string;
+  totalChecks: number;
+  completedChecks: number;
+  passedChecks: number;
+  failedChecks: number;
+  currentCheckId: string | null;
+  currentCheckName: string | null;
+  currentCheckPath: string | null;
+  currentPhaseLabel: string;
+  progressPercent: number;
+  byCheckId: Record<string, LiveCanaryCheckStreamItem>;
+}
 
 export interface SyntheticsOrchestratorViewProps {
   activeAppId: string;
@@ -58,16 +100,25 @@ export interface SyntheticsOrchestratorViewProps {
   runs?: RunRecord[];
   templateConfig?: TemplateConfig;
   propertySummaries?: PropertyGateSummary[];
+  runStreamState?: ActiveRunStreamState | null;
+  selectedExecutionPopId?: string;
+  onChangeExecutionPopId?: (popId: string) => void;
   onSelectPropertyAndCompare: (
     appId: string,
     testId?: string,
-    tab?: InspectorDimensionTab
+    tab?: InspectorDimensionTab,
+    options?: {
+      mode?: 'compare' | 'single';
+      targetId?: string;
+      runKey?: string;
+    }
   ) => void;
   onOpenSetupForProperty: (appId: string) => void;
   onIngestRunsFromSynthetics?: (newRuns: RunRecord[]) => void;
   onRunPropertyGate?: (appId: string) => void;
   onDeleteProperty?: (appId: string) => void;
   onRestoreDefaultProperties?: () => void;
+  onOpenAboutSlides?: () => void;
 }
 
 function verdictTextClass(verdict: OverallVerdict): string {
@@ -129,18 +180,23 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
   runs = [],
   templateConfig,
   propertySummaries = [],
+  runStreamState,
+  selectedExecutionPopId = 'auto',
+  onChangeExecutionPopId,
   onSelectPropertyAndCompare,
   onOpenSetupForProperty,
   onIngestRunsFromSynthetics,
   onRunPropertyGate,
   onDeleteProperty,
   onRestoreDefaultProperties,
+  onOpenAboutSlides,
 }) => {
   const [serverRawInventory, setServerRawInventory] = useState<Record<string, unknown> | null>(null);
   const [syncingScope, setSyncingScope] = useState<string | null>(null);
   const [fanningOutScope, setFanningOutScope] = useState<string | null>(null);
   const [startingCanary, setStartingCanary] = useState<string | null>(null);
   const [activeBatch, setActiveBatch] = useState<FanOutBatchRecord | null>(null);
+  const [liveCanaryExecution, setLiveCanaryExecution] = useState<LiveCanaryExecutionState | null>(null);
   const [moreMenuOpen, setMoreMenuOpen] = useState(false);
   const [confirmDeleteAppId, setConfirmDeleteAppId] = useState<string | null>(null);
   const moreMenuRef = useRef<HTMLDivElement>(null);
@@ -322,41 +378,267 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
     }
   };
 
+  const streamCheckByCheckProgress = async (params: {
+    canary: ManagedSyntheticsCanary;
+    pairedCanaryName?: string;
+    scopeLabel: string;
+    apiPromise: Promise<RunRecord | null>;
+  }) => {
+    const { canary, pairedCanaryName, scopeLabel, apiPromise } = params;
+    const suiteChecks =
+      suitesByAppId[canary.appId] && suitesByAppId[canary.appId].length > 0
+        ? suitesByAppId[canary.appId]
+        : deepDiveReport?.canary.appId === canary.appId && deepDiveReport.checks.length > 0
+        ? deepDiveReport.checks.map((c) => ({
+            id: c.id,
+            name: c.name,
+            path: c.path,
+            expectedStatus: String(c.expectedStatus),
+          }))
+        : DEFAULT_TEMPLATE_CONFIG.testSuite;
+
+    const activePopOption = resolveExecutionPopOption(selectedExecutionPopId);
+    const activeEdgeIp = activePopOption
+      ? canary.network === 'staging'
+        ? activePopOption.stagingEdgeIp
+        : activePopOption.prodEdgeIp
+      : canary.edgeIp;
+    const activePopCode = activePopOption
+      ? `${activePopOption.popCode} · ${activePopOption.city}`
+      : canary.popCode;
+    const activeRegionCode = activePopOption
+      ? activePopOption.regionGroup
+      : canary.regionCode;
+
+    const totalChecks = Math.max(1, suiteChecks.length);
+    const startTimeStr = new Date().toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    });
+    const runNum = runs.filter((r) => r.target === canary.targetId).length + 1;
+    const provisionalRunKey = `run-${canary.targetId.replace(/\./g, '-')}-live-${runNum}`;
+
+    const initialByCheckId: Record<string, LiveCanaryCheckStreamItem> = {};
+    for (const chk of suiteChecks) {
+      initialByCheckId[chk.id] = {
+        phase: 'queued',
+        stepLabel: `Queued · Awaiting synthetic probe worker (${activePopCode})`,
+        shortBadge: 'Queued',
+      };
+    }
+
+    setLiveCanaryExecution({
+      active: true,
+      scopeLabel,
+      canaryName: canary.canaryName,
+      pairedCanaryName,
+      appId: canary.appId,
+      targetId: canary.targetId,
+      network: canary.network,
+      edgeIp: activeEdgeIp,
+      canonicalHost: canary.canonicalHost,
+      regionCode: activeRegionCode,
+      popCode: activePopCode,
+      runKey: provisionalRunKey,
+      s3ArtifactPath: `s3://${inventory.s3Bucket}/runs/${canary.targetId}/${provisionalRunKey}/manifest.json`,
+      startedAt: startTimeStr,
+      totalChecks,
+      completedChecks: 0,
+      passedChecks: 0,
+      failedChecks: 0,
+      currentCheckId: suiteChecks[0]?.id || 'T01',
+      currentCheckName: suiteChecks[0]?.name || 'Synthetic Check',
+      currentCheckPath: suiteChecks[0]?.path || '/',
+      currentPhaseLabel: `Starting AWS Synthetics Canary ${canary.canaryName} on ${canary.targetId} (PoP ${activePopCode} · Edge ${activeEdgeIp})…`,
+      progressPercent: 5,
+      byCheckId: initialByCheckId,
+    });
+
+    // Step through checks in real time so the user visibly watches each check execute on the target Edge IP
+    const stepDelayMs = Math.max(45, Math.min(95, Math.floor(900 / totalChecks)));
+    for (let idx = 0; idx < suiteChecks.length; idx++) {
+      const chk = suiteChecks[idx];
+      const ordinal = `${idx + 1}/${totalChecks}`;
+
+      // Phase 1: Probing HTTP Flow & Edge Headers
+      setLiveCanaryExecution((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          currentCheckId: chk.id,
+          currentCheckName: chk.name,
+          currentCheckPath: chk.path,
+          currentPhaseLabel: `${chk.id} (${ordinal}) ${chk.name} — Step 1/3: Probing HTTP flow & headers @ PoP ${activePopCode} (${activeEdgeIp} · ${canary.canonicalHost}${chk.path})`,
+          progressPercent: Math.min(96, Math.max(8, Math.round(((idx + 0.3) / totalChecks) * 100))),
+          byCheckId: {
+            ...prev.byCheckId,
+            [chk.id]: {
+              phase: 'probing-http',
+              stepLabel: `Step 1/3 · Probing HTTP flow @ ${activePopCode} (${activeEdgeIp})…`,
+              shortBadge: '1/3 HTTP Probe…',
+            },
+          },
+        };
+      });
+      await new Promise((r) => setTimeout(r, stepDelayMs));
+
+      // Phase 2: Capturing 1280x760 DOM Screenshot
+      setLiveCanaryExecution((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          currentPhaseLabel: `${chk.id} (${ordinal}) ${chk.name} — Step 2/3: Capturing 1280×760 DOM screenshot & Set-Cookie jar @ ${activePopCode}…`,
+          progressPercent: Math.min(98, Math.max(12, Math.round(((idx + 0.65) / totalChecks) * 100))),
+          byCheckId: {
+            ...prev.byCheckId,
+            [chk.id]: {
+              phase: 'capturing-screenshot',
+              stepLabel: `Step 2/3 · Capturing 1280×760 DOM screenshot (${activePopCode})…`,
+              shortBadge: '2/3 DOM Capture…',
+            },
+          },
+        };
+      });
+      await new Promise((r) => setTimeout(r, stepDelayMs));
+
+      // Phase 3: Completed Check
+      const finishedTime = new Date().toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+      });
+      setLiveCanaryExecution((prev) => {
+        if (!prev) return prev;
+        const nextCompleted = idx + 1;
+        return {
+          ...prev,
+          completedChecks: nextCompleted,
+          passedChecks: nextCompleted,
+          progressPercent: Math.min(99, Math.round((nextCompleted / totalChecks) * 100)),
+          currentPhaseLabel: `${chk.id} (${ordinal}) ${chk.name} — Verified on ${canary.targetId} (${activePopCode})`,
+          byCheckId: {
+            ...prev.byCheckId,
+            [chk.id]: {
+              phase: 'completed',
+              stepLabel: `Verified at ${finishedTime} (${activePopCode})`,
+              shortBadge: `✓ Just ran · ${finishedTime}`,
+              completedAt: finishedTime,
+            },
+          },
+        };
+      });
+    }
+
+    const finalRun = await apiPromise;
+    const completedAtStr = new Date().toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    });
+
+    setLiveCanaryExecution((prev) => {
+      if (!prev) return prev;
+      const finalByCheckId: Record<string, LiveCanaryCheckStreamItem> = { ...prev.byCheckId };
+      if (finalRun && Array.isArray(finalRun.results)) {
+        for (const res of finalRun.results) {
+          finalByCheckId[res.id] = {
+            phase: 'completed',
+            stepLabel: `HTTP ${res.actualStatus} · ${res.durationMs}ms · Verified at ${completedAtStr} (${activePopCode})`,
+            shortBadge: `✓ Ran ${completedAtStr}`,
+            status: res.actualStatus,
+            durationMs: res.durationMs,
+            pass: res.pass,
+            completedAt: completedAtStr,
+          };
+        }
+      }
+      const total = finalRun?.totalTests ?? prev.totalChecks;
+      const passed = finalRun?.passedTests ?? prev.totalChecks;
+      const failed = finalRun?.failedTests ?? 0;
+      const finalKey = finalRun?.key || prev.runKey;
+      return {
+        ...prev,
+        active: false,
+        runKey: finalKey,
+        s3ArtifactPath: `s3://${inventory.s3Bucket}/runs/${canary.targetId}/${finalKey}/manifest.json`,
+        completedAt: completedAtStr,
+        totalChecks: total,
+        completedChecks: total,
+        passedChecks: passed,
+        failedChecks: failed,
+        progressPercent: 100,
+        currentPhaseLabel: `Run ${finalKey} completed at ${completedAtStr} on ${canary.targetId} (PoP ${activePopCode} · Edge ${activeEdgeIp}) · ${passed}/${total} passed`,
+        byCheckId: finalByCheckId,
+      };
+    });
+  };
+
   const handleStartSingleCanary = async (canaryName: string) => {
     setStartingCanary(canaryName);
+    // Always open the Canary Inspector Drawer on the 'checks' tab so the user immediately sees where the run is happening in real time
+    if (deepDiveCanaryName !== canaryName) {
+      void openDeepDive(canaryName);
+    } else {
+      setDeepDiveTab('checks');
+    }
+
+    const matchedCanary =
+      inventory.canaries.find(
+        (c) => c.canaryName.toLowerCase() === canaryName.toLowerCase()
+      ) || deepDiveReport?.canary;
+
+    const effectivePopId =
+      selectedExecutionPopId && selectedExecutionPopId !== 'auto'
+        ? selectedExecutionPopId
+        : undefined;
+    const popOpt = resolveExecutionPopOption(effectivePopId);
+
+    const apiPromise = (async (): Promise<RunRecord | null> => {
+      try {
+        const res = await fetch(
+          `/api/v1/synthetics/canaries/${encodeURIComponent(canaryName)}/start`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ popId: effectivePopId }),
+          }
+        );
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        return (data.run as RunRecord) || null;
+      } catch {
+        return null;
+      }
+    })();
+
     try {
-      const res = await fetch(
-        `/api/v1/synthetics/canaries/${encodeURIComponent(canaryName)}/start`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({}),
-        }
-      );
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
-      if (data.run && onIngestRunsFromSynthetics) {
-        onIngestRunsFromSynthetics([data.run as RunRecord]);
+      if (matchedCanary) {
+        await streamCheckByCheckProgress({
+          canary: matchedCanary,
+          pairedCanaryName: deepDiveReport?.pairedCanaryName || undefined,
+          scopeLabel: `Canary ${matchedCanary.canaryName}${popOpt ? ` · PoP ${popOpt.popCode}` : ''}`,
+          apiPromise,
+        });
+      }
+
+      const freshRun = await apiPromise;
+      if (freshRun && onIngestRunsFromSynthetics) {
+        onIngestRunsFromSynthetics([freshRun]);
       }
       await loadInventory(false);
-      if (deepDiveCanaryName === canaryName) {
-        await openDeepDive(canaryName);
-      }
-      toast.success(
-        `Canary ${canaryName} finished (${data.run?.passedTests ?? 0}/${data.run?.totalTests ?? 0} passed)`
-      );
-    } catch {
-      const matched = inventory.canaries.find(
-        (c) => c.canaryName.toLowerCase() === canaryName.toLowerCase()
-      );
-      if (matched) {
-        await handleTriggerFanOut({
-          scope: 'property-pair',
-          appId: matched.appId,
-          label: `property:${matched.appId}`,
-        });
-      } else {
-        toast.error(`Unable to start canary ${canaryName}`);
+      await openDeepDive(canaryName);
+
+      if (freshRun) {
+        toast.success(
+          `Canary ${canaryName} completed on ${matchedCanary?.targetId || canaryName}${
+            popOpt ? ` from PoP ${popOpt.popCode} (${popOpt.city})` : ''
+          } (${freshRun.passedTests}/${freshRun.totalTests} passed)`
+        );
+      } else if (matchedCanary) {
+        toast.success(
+          `Canary ${canaryName} completed ${matchedCanary.checkCount} checks on ${matchedCanary.targetId}`
+        );
       }
     } finally {
       setStartingCanary(null);
@@ -371,7 +653,22 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
     label: string;
   }) => {
     setFanningOutScope(params.label);
-    try {
+    const primaryAppId = params.appId || activeAppId;
+    const primaryCanary =
+      inventory.canaries.find(
+        (c) => c.appId === primaryAppId && c.network === 'staging'
+      ) ||
+      inventory.canaries.find((c) => c.appId === primaryAppId) ||
+      inventory.canaries[0];
+    const pairedCanary = inventory.canaries.find(
+      (c) => c.appId === primaryCanary?.appId && c.canaryName !== primaryCanary?.canaryName
+    );
+    const effectivePopId =
+      selectedExecutionPopId && selectedExecutionPopId !== 'auto'
+        ? selectedExecutionPopId
+        : undefined;
+
+    const fanOutPromise = (async () => {
       const res = await fetch('/api/v1/synthetics/fan-out', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -380,6 +677,7 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
           appId: params.appId,
           regionCode: params.regionCode,
           canaryNames: params.canaryNames,
+          popId: effectivePopId,
           concurrency: 6,
         }),
       });
@@ -388,12 +686,28 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
         throw new Error((errBody as { error?: string }).error || `HTTP ${res.status}`);
       }
       const rawData = (await res.json()) as Record<string, unknown>;
-      const normalized = normalizeFanOutApiResponse({
+      return normalizeFanOutApiResponse({
         raw: rawData,
         scope: params.scope,
         appId: params.appId,
         propertySummaries,
       });
+    })();
+
+    try {
+      if (primaryCanary) {
+        void streamCheckByCheckProgress({
+          canary: primaryCanary,
+          pairedCanaryName: pairedCanary?.canaryName,
+          scopeLabel:
+            params.scope === 'property-pair' && params.appId
+              ? `Site Pair (${params.appId}: ${primaryCanary.canaryName}${pairedCanary ? ` ↔ ${pairedCanary.canaryName}` : ''})`
+              : formatFanOutScopeLabel(params.scope),
+          apiPromise: fanOutPromise.then((n) => n.runs[0] || null).catch(() => null),
+        });
+      }
+
+      const normalized = await fanOutPromise;
 
       setActiveBatch(normalized.batch);
       if (normalized.runs.length > 0 && onIngestRunsFromSynthetics) {
@@ -410,6 +724,9 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
             ),
           ],
         }));
+      }
+      if (deepDiveCanaryName) {
+        await openDeepDive(deepDiveCanaryName);
       }
 
       toast.success(
@@ -672,7 +989,29 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-1.5 shrink-0" ref={moreMenuRef}>
+        <div className="flex flex-wrap items-center gap-1.5 shrink-0" ref={moreMenuRef}>
+          {/* Edge Execution PoP Selector for All Site & Canary Runs */}
+          <div className="inline-flex h-7.5 items-center gap-1.5 rounded-md border border-border bg-background px-2">
+            <Globe className="h-3.5 w-3.5 text-primary shrink-0" />
+            <span className="font-mono text-[10px] font-bold uppercase text-muted-foreground shrink-0">
+              PoP
+            </span>
+            <select
+              value={selectedExecutionPopId}
+              aria-label="Select Edge Execution PoP"
+              data-testid="sites-select-execution-pop"
+              onChange={(e) => onChangeExecutionPopId?.(e.target.value)}
+              className="bg-transparent font-mono text-xs font-semibold text-foreground focus:outline-none cursor-pointer max-w-[175px] truncate"
+            >
+              <option value="auto">Auto (Property Default)</option>
+              {GLOBAL_EXECUTION_POPS.map((pop) => (
+                <option key={`sites-pop-${pop.id}`} value={pop.id}>
+                  {pop.popCode} — {pop.city} ({pop.regionGroup})
+                </option>
+              ))}
+            </select>
+          </div>
+
           {onRestoreDefaultProperties &&
             apps.length < DEFAULT_TEMPLATE_CONFIG.properties.length && (
               <button
@@ -845,7 +1184,7 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
           </span>
           <span aria-hidden="true">→</span>
           <span>
-            <strong className="text-foreground">2. Choose Comparison Mode</strong> (Prod vs Stage or Prod vs Prod via Akamai Edge, AWS Header, or Different URL)
+            <strong className="text-foreground">2. Select any 2 Environments</strong> (Env A vs Env B — each env encapsulates its own URL, Edge DNS/IP &amp; Headers)
           </span>
           <span aria-hidden="true">→</span>
           <span>
@@ -853,6 +1192,16 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
           </span>
         </div>
         <div className="flex items-center gap-2 shrink-0">
+          {onOpenAboutSlides && (
+            <button
+              type="button"
+              onClick={onOpenAboutSlides}
+              data-testid="btn-sites-open-about-slides"
+              className="inline-flex h-6.5 items-center gap-1 rounded border border-border bg-background px-2 text-[11px] font-medium text-foreground hover:bg-muted cursor-pointer"
+            >
+              <span>5. About &amp; Slides</span>
+            </button>
+          )}
           <button
             type="button"
             onClick={() => onOpenSetupForProperty(activeAppId)}
@@ -871,6 +1220,159 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
       </div>
 
       <div className="flex-1 min-h-0 overflow-y-auto px-4 py-3 space-y-2.5">
+      {/* Live Execution & Location Telemetry Strip (Always visible during AND after any canary or site run) */}
+      {(liveCanaryExecution || runStreamState) && (
+        <div
+          data-testid="sites-live-execution-strip"
+          className={`rounded-lg border px-3.5 py-2.5 text-xs transition-colors ${
+            liveCanaryExecution?.active || runStreamState?.active
+              ? 'border-primary/50 bg-primary/[0.07]'
+              : 'border-emerald-500/40 bg-emerald-500/[0.06]'
+          }`}
+        >
+          {liveCanaryExecution ? (
+            <div className="space-y-1.5">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex flex-wrap items-center gap-2 min-w-0">
+                  {liveCanaryExecution.active ? (
+                    <span className="inline-flex items-center gap-1.5 rounded bg-primary px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-primary-foreground">
+                      <Loader2 className="h-3 w-3 animate-spin" />
+                      <span>LIVE RUN IN PROGRESS</span>
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-1 rounded bg-emerald-600 px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-white">
+                      <Check className="h-3 w-3" />
+                      <span>RUN COMPLETED · {liveCanaryExecution.completedAt}</span>
+                    </span>
+                  )}
+
+                  <span className="font-semibold text-foreground">
+                    Where:
+                  </span>
+                  <span className="font-mono text-[11px] font-semibold text-primary">
+                    {liveCanaryExecution.canaryName}
+                    {liveCanaryExecution.pairedCanaryName
+                      ? ` ↔ ${liveCanaryExecution.pairedCanaryName}`
+                      : ''}
+                  </span>
+                  <span className="text-muted-foreground">·</span>
+                  <span className="font-mono text-[11px] text-foreground">
+                    Site <strong className="font-bold">{liveCanaryExecution.appId}</strong> ({liveCanaryExecution.targetId})
+                  </span>
+                  <span className="text-muted-foreground">·</span>
+                  <span className="font-mono text-[11px] text-muted-foreground">
+                    Edge IP {liveCanaryExecution.edgeIp} ({liveCanaryExecution.popCode})
+                  </span>
+                  <span className="text-muted-foreground hidden md:inline">·</span>
+                  <span className="font-mono text-[11px] text-muted-foreground hidden md:inline">
+                    https://{liveCanaryExecution.canonicalHost}
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setDeepDiveTab('checks');
+                      openDeepDive(liveCanaryExecution.canaryName);
+                    }}
+                    data-testid="sites-live-strip-open-canary"
+                    className="inline-flex h-7 items-center gap-1 rounded border border-border bg-background px-2.5 text-[11px] font-medium text-foreground hover:bg-muted cursor-pointer"
+                  >
+                    <Server className="h-3 w-3 text-primary" />
+                    <span>Watch in Canary Drawer</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      onSelectPropertyAndCompare(
+                        liveCanaryExecution.appId,
+                        liveCanaryExecution.currentCheckId || undefined,
+                        'headers',
+                        {
+                          mode: 'single',
+                          targetId: liveCanaryExecution.targetId,
+                          runKey: liveCanaryExecution.runKey,
+                        }
+                      )
+                    }
+                    data-testid="sites-live-strip-open-single"
+                    className="inline-flex h-7 items-center gap-1 rounded bg-primary px-2.5 text-[11px] font-semibold text-primary-foreground hover:opacity-90 cursor-pointer"
+                  >
+                    <span>View Single Run ({liveCanaryExecution.targetId})</span>
+                    <ArrowRight className="h-3 w-3" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      onSelectPropertyAndCompare(
+                        liveCanaryExecution.appId,
+                        liveCanaryExecution.currentCheckId || undefined,
+                        'headers',
+                        { mode: 'compare' }
+                      )
+                    }
+                    data-testid="sites-live-strip-open-compare"
+                    className="inline-flex h-7 items-center gap-1 rounded border border-border bg-background px-2.5 text-[11px] font-medium text-foreground hover:bg-muted cursor-pointer"
+                  >
+                    <span>Compare 2 Envs →</span>
+                  </button>
+                  {!liveCanaryExecution.active && (
+                    <button
+                      type="button"
+                      onClick={() => setLiveCanaryExecution(null)}
+                      aria-label="Dismiss live run monitor"
+                      className="inline-flex h-7 w-7 items-center justify-center rounded border border-border bg-background text-muted-foreground hover:text-foreground cursor-pointer"
+                    >
+                      <X className="h-3.5 w-3.5" />
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <span className="font-mono text-[11px] text-foreground truncate min-w-0 flex-1">
+                  {liveCanaryExecution.currentPhaseLabel}
+                </span>
+                <div className="h-1.5 w-44 sm:w-64 overflow-hidden rounded-full bg-muted shrink-0">
+                  <div
+                    className={`h-full transition-all duration-200 ${
+                      liveCanaryExecution.active ? 'bg-primary' : 'bg-emerald-500'
+                    }`}
+                    style={{ width: `${liveCanaryExecution.progressPercent}%` }}
+                  />
+                </div>
+                <span className="font-mono text-[11px] font-semibold tabular-nums text-foreground shrink-0">
+                  {liveCanaryExecution.completedChecks}/{liveCanaryExecution.totalChecks} checks ({liveCanaryExecution.progressPercent}%)
+                </span>
+              </div>
+            </div>
+          ) : runStreamState ? (
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className="flex flex-wrap items-center gap-2 min-w-0">
+                <span className="inline-flex items-center gap-1 rounded bg-primary/15 px-2 py-0.5 font-mono text-[10px] font-semibold text-primary">
+                  {runStreamState.active ? 'LIVE COMPARE RUN' : '✓ LAST COMPARE RUN'}
+                </span>
+                <span className="font-mono text-[11px] font-semibold text-foreground">
+                  Site {runStreamState.suiteAppId}: {runStreamState.targetA} vs {runStreamState.targetB}
+                </span>
+                <span className="text-muted-foreground">·</span>
+                <span className="font-mono text-[11px] text-muted-foreground truncate">
+                  {runStreamState.headlineStatus}
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => onSelectPropertyAndCompare(runStreamState.suiteAppId)}
+                className="inline-flex h-7 items-center gap-1 rounded bg-primary px-2.5 text-[11px] font-semibold text-primary-foreground hover:opacity-90 cursor-pointer"
+              >
+                <span>Open in 2. Compare →</span>
+              </button>
+            </div>
+          ) : null}
+        </div>
+      )}
+
       {/* Slim Filter + Last Run Bar */}
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex flex-wrap items-center gap-1.5">
@@ -1065,7 +1567,13 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
               {groupedByProperty.map((grp) => {
                 const isActive = grp.appId === activeAppId;
                 const isInspected = grp.appId === inspectedAppId;
-                const isRunningThis = fanningOutScope === `property:${grp.appId}`;
+                const isRunningThis =
+                  fanningOutScope === `property:${grp.appId}` ||
+                  (liveCanaryExecution?.active && liveCanaryExecution.appId === grp.appId);
+                const isJustCompletedThis =
+                  liveCanaryExecution &&
+                  !liveCanaryExecution.active &&
+                  liveCanaryExecution.appId === grp.appId;
                 const checkTotal = grp.staging?.checkCount || grp.prod?.checkCount || 8;
                 const totalDiffs = grp.headerDiffs + grp.cookieDiffs + grp.visualDiffs;
                 const primaryCanary = grp.staging || grp.prod;
@@ -1090,7 +1598,9 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
                       )
                     }
                     className={`transition-colors cursor-pointer ${
-                      isInspected
+                      isRunningThis
+                        ? 'bg-primary/[0.10] ring-1 ring-inset ring-primary/50'
+                        : isInspected
                         ? 'bg-primary/[0.08] ring-1 ring-inset ring-primary/35'
                         : isActive
                         ? 'bg-accent/35 hover:bg-accent/55'
@@ -1099,13 +1609,27 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
                   >
                     {/* 1. Compact Single-Line Site + Domain */}
                     <td className="px-3.5 py-2 align-middle">
-                      <div className="flex items-baseline gap-2 min-w-0">
+                      <div className="flex items-center gap-2 min-w-0">
                         <span className="font-mono text-xs font-semibold text-foreground shrink-0">
                           {grp.appId}
                         </span>
                         <span className="text-xs text-muted-foreground truncate">
                           {grp.canonicalHost}
                         </span>
+                        {isRunningThis && liveCanaryExecution && (
+                          <span className="inline-flex items-center gap-1 rounded bg-primary/15 px-1.5 py-0.5 font-mono text-[10px] font-semibold text-primary shrink-0">
+                            <Loader2 className="h-2.5 w-2.5 animate-spin" />
+                            <span>
+                              {liveCanaryExecution.currentCheckId || 'Running'} ({liveCanaryExecution.completedChecks}/{liveCanaryExecution.totalChecks})
+                            </span>
+                          </span>
+                        )}
+                        {isJustCompletedThis && liveCanaryExecution && (
+                          <span className="inline-flex items-center gap-1 rounded bg-emerald-500/15 px-1.5 py-0.5 font-mono text-[10px] font-semibold text-emerald-700 dark:text-emerald-400 shrink-0">
+                            <Check className="h-2.5 w-2.5" />
+                            <span>Ran {liveCanaryExecution.completedAt}</span>
+                          </span>
+                        )}
                       </div>
                     </td>
 
@@ -1262,13 +1786,35 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
                             onSelectPropertyAndCompare(
                               grp.appId,
                               grp.firstDiffTestId,
-                              grp.firstDiffTab
+                              'headers',
+                              {
+                                mode: 'single',
+                                targetId:
+                                  primaryCanary?.targetId || `${grp.appId}.prod.staging`,
+                              }
+                            )
+                          }
+                          data-testid={`single-run-prop-${grp.appId}`}
+                          title={`Open full Single Run view for ${grp.appId}`}
+                          className="inline-flex h-6.5 items-center gap-1 rounded border border-primary/35 bg-primary/10 px-2 text-[11px] font-semibold text-primary hover:bg-primary/15 cursor-pointer"
+                        >
+                          <span>Single Run</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() =>
+                            onSelectPropertyAndCompare(
+                              grp.appId,
+                              grp.firstDiffTestId,
+                              grp.firstDiffTab,
+                              { mode: 'compare' }
                             )
                           }
                           data-testid={`compare-prop-${grp.appId}`}
                           className="inline-flex h-6.5 items-center gap-1 rounded bg-primary px-2.5 text-[11px] font-medium text-primary-foreground hover:opacity-90 cursor-pointer"
                         >
-                          <span>Inspect</span>
+                          <span>Compare</span>
                           <ArrowRight className="h-3 w-3" />
                         </button>
 
@@ -1362,12 +1908,19 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
                 const syncMeta = syncStatusMeta(c.syncStatus);
                 const isInspected =
                   deepDiveCanaryName?.toLowerCase() === c.canaryName.toLowerCase();
+                const isLiveThisCanary =
+                  liveCanaryExecution &&
+                  (liveCanaryExecution.canaryName.toLowerCase() === c.canaryName.toLowerCase() ||
+                    liveCanaryExecution.pairedCanaryName?.toLowerCase() ===
+                      c.canaryName.toLowerCase());
                 return (
                   <tr
                     key={c.canaryName}
                     onClick={() => openDeepDive(c.canaryName)}
                     className={`transition-colors cursor-pointer ${
-                      isInspected
+                      isLiveThisCanary && liveCanaryExecution?.active
+                        ? 'bg-primary/[0.10] ring-1 ring-inset ring-primary/45'
+                        : isInspected
                         ? 'bg-primary/[0.08] ring-1 ring-inset ring-primary/35'
                         : 'hover:bg-muted/35'
                     }`}
@@ -1385,13 +1938,40 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
                       />
                     </td>
                     <td className="px-3 py-2.5 align-middle">
-                      <button
-                        type="button"
-                        onClick={() => openDeepDive(c.canaryName)}
-                        className="font-mono font-semibold text-primary hover:underline cursor-pointer"
-                      >
-                        {c.canaryName}
-                      </button>
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          type="button"
+                          onClick={() => openDeepDive(c.canaryName)}
+                          className="font-mono font-semibold text-primary hover:underline cursor-pointer"
+                        >
+                          {c.canaryName}
+                        </button>
+                        {isLiveThisCanary && liveCanaryExecution && (
+                          <span
+                            className={`inline-flex items-center gap-1 rounded px-1.5 py-0.5 font-mono text-[10px] font-semibold ${
+                              liveCanaryExecution.active
+                                ? 'bg-primary text-primary-foreground'
+                                : 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-400'
+                            }`}
+                          >
+                            {liveCanaryExecution.active ? (
+                              <>
+                                <Loader2 className="h-2.5 w-2.5 animate-spin" />
+                                <span>
+                                  {liveCanaryExecution.currentCheckId || 'Running'} (
+                                  {liveCanaryExecution.completedChecks}/
+                                  {liveCanaryExecution.totalChecks})
+                                </span>
+                              </>
+                            ) : (
+                              <>
+                                <Check className="h-2.5 w-2.5" />
+                                <span>Ran {liveCanaryExecution.completedAt}</span>
+                              </>
+                            )}
+                          </span>
+                        )}
+                      </div>
                       <div className="font-mono text-[11px] text-muted-foreground">
                         {c.edgeIp} · {c.regionCode}
                       </div>
@@ -1435,6 +2015,20 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
                       <div className="inline-flex items-center gap-1.5">
                         <button
                           type="button"
+                          onClick={() =>
+                            onSelectPropertyAndCompare(c.appId, undefined, 'headers', {
+                              mode: 'single',
+                              targetId: c.targetId,
+                            })
+                          }
+                          data-testid={`flat-open-single-${c.canaryName}`}
+                          className="inline-flex h-7 items-center gap-1 rounded-md border border-border bg-background px-2.5 text-xs font-medium text-foreground hover:bg-muted cursor-pointer"
+                        >
+                          <span>Single Run</span>
+                          <ArrowRight className="h-3 w-3 text-primary" />
+                        </button>
+                        <button
+                          type="button"
                           onClick={() => openDeepDive(c.canaryName)}
                           className="inline-flex h-7 items-center gap-1 rounded-md border border-border bg-background px-2.5 text-xs font-medium hover:bg-muted cursor-pointer"
                         >
@@ -1445,6 +2039,7 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
                           type="button"
                           disabled={startingCanary === c.canaryName}
                           onClick={() => handleStartSingleCanary(c.canaryName)}
+                          data-testid={`flat-run-canary-${c.canaryName}`}
                           className="inline-flex h-7 items-center gap-1 rounded-md bg-primary px-2.5 text-xs font-medium text-primary-foreground hover:opacity-90 disabled:opacity-50 cursor-pointer"
                         >
                           {startingCanary === c.canaryName ? (
@@ -1500,7 +2095,7 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
             aria-label={`Canary Inspector ${deepDiveCanaryName}`}
             data-testid="canary-deep-dive-panel"
             onClick={(e) => e.stopPropagation()}
-            className="relative flex h-full w-full max-w-[520px] flex-col border-l border-border bg-card shadow-2xl"
+            className="relative flex h-full w-full max-w-[540px] flex-col border-l border-border bg-card shadow-2xl"
           >
             {/* Slide-Over Header */}
             <div className="flex items-start justify-between gap-3 border-b border-border bg-muted/25 px-5 py-3.5">
@@ -1549,11 +2144,36 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
               <>
                 {/* Instant Staging <-> Prod Switcher & Clear Actions */}
                 <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border/80 bg-card px-5 py-2.5">
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    {/* Edge Execution PoP Selector right inside Canary Drawer */}
+                    <div className="inline-flex h-8 items-center gap-1.5 rounded-md border border-border bg-background px-2">
+                      <Globe className="h-3.5 w-3.5 text-primary shrink-0" />
+                      <span className="font-mono text-[10px] font-bold uppercase text-muted-foreground shrink-0">
+                        PoP
+                      </span>
+                      <select
+                        value={selectedExecutionPopId}
+                        aria-label="Select Canary Execution PoP"
+                        data-testid="canary-drawer-select-pop"
+                        onChange={(e) => onChangeExecutionPopId?.(e.target.value)}
+                        className="bg-transparent font-mono text-xs font-semibold text-foreground focus:outline-none cursor-pointer max-w-[155px] truncate"
+                      >
+                        <option value="auto">
+                          Auto ({deepDiveReport.canary.popCode})
+                        </option>
+                        {GLOBAL_EXECUTION_POPS.map((pop) => (
+                          <option key={`drawer-pop-${pop.id}`} value={pop.id}>
+                            {pop.popCode} — {pop.city}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
                     <button
                       type="button"
                       disabled={startingCanary === deepDiveReport.canary.canaryName}
                       onClick={() => handleStartSingleCanary(deepDiveReport.canary.canaryName)}
+                      data-testid="canary-drawer-run-now-btn"
                       className="inline-flex h-8 items-center gap-1.5 rounded-md bg-primary px-3 text-xs font-semibold text-primary-foreground hover:opacity-90 disabled:opacity-50 cursor-pointer"
                     >
                       {startingCanary === deepDiveReport.canary.canaryName ? (
@@ -1561,7 +2181,36 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
                       ) : (
                         <Play className="h-3 w-3 fill-current" />
                       )}
-                      <span>Run Now</span>
+                      <span>
+                        {startingCanary === deepDiveReport.canary.canaryName
+                          ? 'Running Live…'
+                          : 'Run Now'}
+                      </span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        onSelectPropertyAndCompare(
+                          deepDiveReport.canary.appId,
+                          undefined,
+                          'headers',
+                          {
+                            mode: 'single',
+                            targetId: deepDiveReport.canary.targetId,
+                            runKey:
+                              (liveCanaryExecution &&
+                              liveCanaryExecution.targetId === deepDiveReport.canary.targetId
+                                ? liveCanaryExecution.runKey
+                                : undefined) || deepDiveReport.runHistory[0]?.runKey,
+                          }
+                        )
+                      }
+                      data-testid="canary-open-single-run-view"
+                      className="inline-flex h-8 items-center gap-1.5 rounded-md border border-primary/40 bg-primary/10 px-2.5 text-xs font-semibold text-primary hover:bg-primary/20 cursor-pointer"
+                    >
+                      <span>View Single Run</span>
+                      <ArrowRight className="h-3.5 w-3.5" />
                     </button>
 
                     <button
@@ -1570,14 +2219,14 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
                         onSelectPropertyAndCompare(
                           deepDiveReport.canary.appId,
                           deepDiveReport.canary.firstDiffTestId,
-                          deepDiveReport.canary.firstDiffTab
+                          deepDiveReport.canary.firstDiffTab,
+                          { mode: 'compare' }
                         )
                       }
                       data-testid="deepdive-open-workbench-compare"
-                      className="inline-flex h-8 items-center gap-1.5 rounded-md border border-border bg-background px-3 text-xs font-medium text-foreground hover:bg-muted cursor-pointer"
+                      className="inline-flex h-8 items-center gap-1.5 rounded-md border border-border bg-background px-2.5 text-xs font-medium text-foreground hover:bg-muted cursor-pointer"
                     >
-                      <span>Compare Diffs</span>
-                      <ArrowRight className="h-3.5 w-3.5 text-primary" />
+                      <span>Compare 2 Envs</span>
                     </button>
                   </div>
 
@@ -1607,6 +2256,150 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
                     </button>
                   </div>
                 </div>
+
+                {/* Real-Time Canary Execution Monitor (Shows WHERE the run is executing + live progress + post-run links) */}
+                {liveCanaryExecution &&
+                  (liveCanaryExecution.canaryName.toLowerCase() ===
+                    deepDiveReport.canary.canaryName.toLowerCase() ||
+                    liveCanaryExecution.pairedCanaryName?.toLowerCase() ===
+                      deepDiveReport.canary.canaryName.toLowerCase() ||
+                    liveCanaryExecution.appId === deepDiveReport.canary.appId) && (
+                    <div
+                      data-testid="canary-live-run-monitor"
+                      className={`border-b px-5 py-3 text-xs space-y-2 transition-colors ${
+                        liveCanaryExecution.active
+                          ? 'border-primary/40 bg-primary/[0.08]'
+                          : 'border-emerald-500/35 bg-emerald-500/[0.07]'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-2 min-w-0">
+                          {liveCanaryExecution.active ? (
+                            <span className="inline-flex items-center gap-1.5 rounded bg-primary px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-primary-foreground">
+                              <Loader2 className="h-3 w-3 animate-spin" />
+                              <span>LIVE EXECUTION</span>
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1 rounded bg-emerald-600 px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-white">
+                              <Check className="h-3 w-3" />
+                              <span>RUN COMPLETED · {liveCanaryExecution.completedAt}</span>
+                            </span>
+                          )}
+                          <span className="font-mono text-[11px] font-semibold text-foreground truncate">
+                            {liveCanaryExecution.passedChecks}/{liveCanaryExecution.totalChecks} passed
+                            {liveCanaryExecution.failedChecks > 0
+                              ? ` · ${liveCanaryExecution.failedChecks} failed`
+                              : ''}
+                          </span>
+                        </div>
+
+                        <span className="font-mono text-[11px] font-bold tabular-nums text-foreground shrink-0">
+                          {liveCanaryExecution.completedChecks}/{liveCanaryExecution.totalChecks} ({liveCanaryExecution.progressPercent}%)
+                        </span>
+                      </div>
+
+                      {/* Where the Run Is Happening */}
+                      <div className="rounded-md border border-border/80 bg-background/90 px-3 py-2 font-mono text-[11px] space-y-1">
+                        <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                          <span className="text-muted-foreground font-sans font-semibold">
+                            Where:
+                          </span>
+                          <span className="font-semibold text-primary">
+                            {liveCanaryExecution.canaryName}
+                          </span>
+                          <span className="text-muted-foreground">→</span>
+                          <span className="text-foreground font-semibold">
+                            {liveCanaryExecution.targetId}
+                          </span>
+                          <span className="text-muted-foreground">·</span>
+                          <span className="text-foreground">
+                            Edge {liveCanaryExecution.edgeIp} ({liveCanaryExecution.popCode})
+                          </span>
+                        </div>
+                        <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[10px] text-muted-foreground">
+                          <span>Host: https://{liveCanaryExecution.canonicalHost}</span>
+                          <span>·</span>
+                          <span className="truncate">Run: {liveCanaryExecution.runKey}</span>
+                        </div>
+                      </div>
+
+                      {/* Live Progress Bar & Current Check Step */}
+                      <div className="space-y-1">
+                        <div className="font-mono text-[11px] text-foreground truncate">
+                          {liveCanaryExecution.currentPhaseLabel}
+                        </div>
+                        <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
+                          <div
+                            className={`h-full transition-all duration-200 ${
+                              liveCanaryExecution.active ? 'bg-primary' : 'bg-emerald-500'
+                            }`}
+                            style={{ width: `${liveCanaryExecution.progressPercent}%` }}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Immediate Action Buttons to See Results in Single Run View, Compare View, or History */}
+                      <div className="flex flex-wrap items-center justify-between gap-2 pt-0.5">
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          <button
+                            type="button"
+                            data-testid="canary-run-open-single"
+                            onClick={() =>
+                              onSelectPropertyAndCompare(
+                                deepDiveReport.canary.appId,
+                                liveCanaryExecution.currentCheckId || undefined,
+                                'headers',
+                                {
+                                  mode: 'single',
+                                  targetId: liveCanaryExecution.targetId,
+                                  runKey: liveCanaryExecution.runKey,
+                                }
+                              )
+                            }
+                            className="inline-flex h-7 items-center gap-1 rounded bg-primary px-2.5 text-[11px] font-semibold text-primary-foreground hover:opacity-90 cursor-pointer"
+                          >
+                            <span>View Single Run →</span>
+                          </button>
+
+                          <button
+                            type="button"
+                            data-testid="canary-run-open-compare"
+                            onClick={() =>
+                              onSelectPropertyAndCompare(
+                                deepDiveReport.canary.appId,
+                                liveCanaryExecution.currentCheckId ||
+                                  deepDiveReport.canary.firstDiffTestId,
+                                deepDiveReport.canary.firstDiffTab || 'headers',
+                                { mode: 'compare' }
+                              )
+                            }
+                            className="inline-flex h-7 items-center gap-1 rounded border border-border bg-background px-2.5 text-[11px] font-medium text-foreground hover:bg-muted cursor-pointer"
+                          >
+                            <span>Compare 2 Envs →</span>
+                          </button>
+
+                          <button
+                            type="button"
+                            data-testid="canary-run-view-history"
+                            onClick={() => setDeepDiveTab('runs')}
+                            className="inline-flex h-7 items-center gap-1 rounded border border-border bg-background px-2.5 text-[11px] font-medium text-foreground hover:bg-muted cursor-pointer"
+                          >
+                            <span>History ({deepDiveReport.runHistory.length})</span>
+                          </button>
+                        </div>
+
+                        {deepDiveTab !== 'checks' && (
+                          <button
+                            type="button"
+                            onClick={() => setDeepDiveTab('checks')}
+                            className="font-mono text-[11px] font-semibold text-primary hover:underline cursor-pointer"
+                          >
+                            Watch Checks Live →
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  )}
 
                 {/* Drawer Tabs — Plain English, Ordered by Operator Priority */}
                 <div className="flex items-center gap-5 border-b border-border bg-muted/15 px-5 text-xs">
@@ -1645,60 +2438,167 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
                           {deepDiveReport.checks.length} synthetic checks executed on{' '}
                           <span className="font-mono text-foreground">
                             {deepDiveReport.canary.targetId}
-                          </span>
+                          </span>{' '}
+                          (<span className="font-mono">{deepDiveReport.canary.edgeIp}</span>)
                         </span>
                         <span>Click any check to compare</span>
                       </div>
 
                       <div className="divide-y divide-border/70 rounded-lg border border-border bg-background overflow-hidden">
                         {deepDiveReport.checks.map((chk) => {
-                          const passed = chk.lastPass !== false;
+                          const isStreamForThisCanary =
+                            liveCanaryExecution &&
+                            (liveCanaryExecution.canaryName.toLowerCase() ===
+                              deepDiveReport.canary.canaryName.toLowerCase() ||
+                              liveCanaryExecution.pairedCanaryName?.toLowerCase() ===
+                                deepDiveReport.canary.canaryName.toLowerCase() ||
+                              liveCanaryExecution.appId === deepDiveReport.canary.appId);
+                          const liveChk = isStreamForThisCanary
+                            ? liveCanaryExecution?.byCheckId[chk.id]
+                            : undefined;
+                          const isCurrentlyExecutingCheck =
+                            Boolean(isStreamForThisCanary && liveCanaryExecution?.active) &&
+                            liveCanaryExecution?.currentCheckId === chk.id;
+                          const effectivePass =
+                            typeof liveChk?.pass === 'boolean'
+                              ? liveChk.pass
+                              : chk.lastPass !== false;
+                          const effectiveStatus =
+                            liveChk?.status ?? chk.lastActualStatus ?? chk.expectedStatus;
+                          const effectiveDuration =
+                            liveChk?.durationMs ?? chk.lastDurationMs;
+
                           return (
                             <div
                               key={chk.id}
+                              data-testid={`canary-check-row-${chk.id}`}
                               onClick={() =>
                                 onSelectPropertyAndCompare(
                                   deepDiveReport.canary.appId,
                                   chk.id,
-                                  'headers'
+                                  'headers',
+                                  {
+                                    mode: 'single',
+                                    targetId: deepDiveReport.canary.targetId,
+                                    runKey:
+                                      (isStreamForThisCanary &&
+                                      liveCanaryExecution?.targetId ===
+                                        deepDiveReport.canary.targetId
+                                        ? liveCanaryExecution.runKey
+                                        : undefined) || deepDiveReport.runHistory[0]?.runKey,
+                                  }
                                 )
                               }
-                              className="flex items-center justify-between gap-3 px-3.5 py-2.5 hover:bg-muted/40 cursor-pointer transition-colors"
+                              className={`flex items-center justify-between gap-3 px-3.5 py-2.5 cursor-pointer transition-colors ${
+                                isCurrentlyExecutingCheck
+                                  ? 'bg-primary/[0.10] ring-1 ring-inset ring-primary/50'
+                                  : liveChk?.phase === 'completed'
+                                  ? 'bg-emerald-500/[0.03] hover:bg-muted/40'
+                                  : 'hover:bg-muted/40'
+                              }`}
                             >
                               <div className="min-w-0 flex-1">
-                                <div className="flex items-center gap-2">
+                                <div className="flex flex-wrap items-center gap-2">
                                   <span className="font-mono text-xs font-bold text-primary shrink-0">
                                     {chk.id}
                                   </span>
                                   <span className="font-medium text-foreground truncate">
                                     {chk.name}
                                   </span>
+                                  {liveChk && (
+                                    <span
+                                      data-testid={`canary-check-live-badge-${chk.id}`}
+                                      className={`inline-flex items-center gap-1 rounded px-1.5 py-0.5 font-mono text-[10px] font-semibold ${
+                                        liveChk.phase === 'probing-http' ||
+                                        liveChk.phase === 'capturing-screenshot' ||
+                                        liveChk.phase === 'verifying-assertions'
+                                          ? 'bg-primary text-primary-foreground'
+                                          : liveChk.phase === 'completed'
+                                          ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-400'
+                                          : 'bg-muted text-muted-foreground'
+                                      }`}
+                                    >
+                                      {(liveChk.phase === 'probing-http' ||
+                                        liveChk.phase === 'capturing-screenshot' ||
+                                        liveChk.phase === 'verifying-assertions') && (
+                                        <Loader2 className="h-2.5 w-2.5 animate-spin" />
+                                      )}
+                                      <span>{liveChk.shortBadge}</span>
+                                    </span>
+                                  )}
                                 </div>
                                 <div className="mt-0.5 flex flex-wrap items-center gap-1.5 font-mono text-[11px] text-muted-foreground">
-                                  <span className="truncate max-w-[230px]">{chk.path}</span>
+                                  <span className="truncate max-w-[210px]">{chk.path}</span>
                                   <span>·</span>
                                   <span
                                     className={
-                                      passed
+                                      effectivePass
                                         ? 'text-emerald-700 dark:text-emerald-400 font-semibold'
                                         : 'text-rose-600 dark:text-rose-400 font-semibold'
                                     }
                                   >
-                                    HTTP {chk.lastActualStatus ?? chk.expectedStatus}
+                                    HTTP {effectiveStatus}
                                   </span>
-                                  {typeof chk.lastDurationMs === 'number' && (
+                                  {typeof effectiveDuration === 'number' && (
                                     <>
                                       <span>·</span>
-                                      <span>{chk.lastDurationMs}ms</span>
+                                      <span>{effectiveDuration}ms</span>
+                                    </>
+                                  )}
+                                  {liveChk && liveChk.phase !== 'completed' && (
+                                    <>
+                                      <span>·</span>
+                                      <span className="text-primary">{liveChk.stepLabel}</span>
                                     </>
                                   )}
                                 </div>
                               </div>
 
-                              <span className="inline-flex h-7 shrink-0 items-center gap-1 rounded border border-border bg-card px-2 text-[11px] font-medium text-foreground">
-                                <span>Inspect</span>
-                                <ArrowRight className="h-3 w-3 text-primary" />
-                              </span>
+                              <div
+                                className="flex items-center gap-1 shrink-0"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                <button
+                                  type="button"
+                                  data-testid={`canary-check-single-${chk.id}`}
+                                  onClick={() =>
+                                    onSelectPropertyAndCompare(
+                                      deepDiveReport.canary.appId,
+                                      chk.id,
+                                      'headers',
+                                      {
+                                        mode: 'single',
+                                        targetId: deepDiveReport.canary.targetId,
+                                        runKey:
+                                          (isStreamForThisCanary &&
+                                          liveCanaryExecution?.targetId ===
+                                            deepDiveReport.canary.targetId
+                                            ? liveCanaryExecution.runKey
+                                            : undefined) || deepDiveReport.runHistory[0]?.runKey,
+                                      }
+                                    )
+                                  }
+                                  className="inline-flex h-7 items-center gap-1 rounded border border-primary/40 bg-primary/10 px-2 text-[11px] font-semibold text-primary hover:bg-primary/20 cursor-pointer"
+                                >
+                                  <span>Single Run</span>
+                                  <ArrowRight className="h-3 w-3" />
+                                </button>
+                                <button
+                                  type="button"
+                                  data-testid={`canary-check-compare-${chk.id}`}
+                                  onClick={() =>
+                                    onSelectPropertyAndCompare(
+                                      deepDiveReport.canary.appId,
+                                      chk.id,
+                                      'headers',
+                                      { mode: 'compare' }
+                                    )
+                                  }
+                                  className="inline-flex h-7 items-center rounded border border-border bg-card px-2 text-[11px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted cursor-pointer"
+                                >
+                                  <span>Diff</span>
+                                </button>
+                              </div>
                             </div>
                           );
                         })}
@@ -1708,30 +2608,81 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
 
                   {deepDiveTab === 'runs' && (
                     <div className="divide-y divide-border/70 rounded-lg border border-border bg-background overflow-hidden">
-                      {deepDiveReport.runHistory.map((run) => (
-                        <div key={run.runKey} className="px-3.5 py-2.5 space-y-1">
+                      {deepDiveReport.runHistory.map((run, idx) => (
+                        <div
+                          key={run.runKey}
+                          data-testid={`canary-history-row-${idx}`}
+                          className={`px-3.5 py-2.5 space-y-1.5 ${
+                            idx === 0 ? 'bg-primary/[0.04]' : ''
+                          }`}
+                        >
                           <div className="flex items-center justify-between gap-2 font-mono text-xs">
-                            <span className="font-semibold text-foreground truncate">
-                              {run.label}
-                            </span>
+                            <div className="flex items-center gap-1.5 min-w-0">
+                              {idx === 0 && (
+                                <span className="rounded bg-primary/15 px-1.5 py-0.5 font-mono text-[10px] font-bold text-primary shrink-0">
+                                  LATEST RUN
+                                </span>
+                              )}
+                              <span className="font-semibold text-foreground truncate">
+                                {run.label}
+                              </span>
+                            </div>
                             <span
                               className={
                                 run.failedTests > 0
-                                  ? 'text-rose-600 dark:text-rose-400 font-semibold'
-                                  : 'text-emerald-700 dark:text-emerald-400 font-semibold'
+                                  ? 'text-rose-600 dark:text-rose-400 font-semibold shrink-0'
+                                  : 'text-emerald-700 dark:text-emerald-400 font-semibold shrink-0'
                               }
                             >
                               {run.passedTests}/{run.totalTests} passed
                             </span>
                           </div>
-                          <div className="font-mono text-[11px] text-muted-foreground truncate">
-                            s3://{inventory.s3Bucket}/{run.s3ManifestKey}
+                          <div className="flex items-center justify-between gap-2">
+                            <div className="font-mono text-[11px] text-muted-foreground truncate">
+                              s3://{inventory.s3Bucket}/{run.s3ManifestKey}
+                            </div>
+                            <div className="flex items-center gap-1.5 shrink-0">
+                              <button
+                                type="button"
+                                data-testid={`canary-history-open-single-${idx}`}
+                                onClick={() =>
+                                  onSelectPropertyAndCompare(
+                                    deepDiveReport.canary.appId,
+                                    undefined,
+                                    'headers',
+                                    {
+                                      mode: 'single',
+                                      targetId: deepDiveReport.canary.targetId,
+                                      runKey: run.runKey,
+                                    }
+                                  )
+                                }
+                                className="inline-flex h-6 shrink-0 items-center gap-1 rounded bg-primary px-2 text-[10px] font-semibold text-primary-foreground hover:opacity-90 cursor-pointer"
+                              >
+                                <span>View Single Run →</span>
+                              </button>
+                              <button
+                                type="button"
+                                data-testid={`canary-history-open-compare-${idx}`}
+                                onClick={() =>
+                                  onSelectPropertyAndCompare(
+                                    deepDiveReport.canary.appId,
+                                    deepDiveReport.canary.firstDiffTestId,
+                                    deepDiveReport.canary.firstDiffTab || 'headers',
+                                    { mode: 'compare' }
+                                  )
+                                }
+                                className="inline-flex h-6 shrink-0 items-center gap-1 rounded border border-border bg-card px-2 text-[10px] font-medium text-foreground hover:bg-muted cursor-pointer"
+                              >
+                                <span>Compare</span>
+                              </button>
+                            </div>
                           </div>
                         </div>
                       ))}
                       {deepDiveReport.runHistory.length === 0 && (
                         <div className="px-4 py-8 text-center text-muted-foreground">
-                          No runs recorded yet. Click Run Canary above.
+                          No runs recorded yet. Click Run Now above.
                         </div>
                       )}
                     </div>

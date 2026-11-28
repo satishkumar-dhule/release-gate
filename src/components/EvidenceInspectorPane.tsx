@@ -283,8 +283,14 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
     );
   }
 
-  const headerKeys = collectHeaderKeys(cand, base);
-  const cookieKeys = collectCookieKeys(cand, base);
+  const headerKeys = collectHeaderKeys(
+    cand,
+    compareMode === 'compare' ? base : undefined
+  );
+  const cookieKeys = collectCookieKeys(
+    cand,
+    compareMode === 'compare' ? base : undefined
+  );
 
   const sortedHeaderKeys = [...headerKeys].sort((a, b) => {
     const diffA = item.functionalDiffs.some((d) => d.field?.toLowerCase() === a.toLowerCase()) ? 1 : 0;
@@ -292,7 +298,7 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
     return diffB - diffA;
   });
   const headerKeysByFilter = sortedHeaderKeys.filter((key) => {
-    if (headerFilter === 'all') return true;
+    if (compareMode === 'single' || headerFilter === 'all') return true;
     return item.functionalDiffs.some(
       (d) =>
         d.field?.toLowerCase() === key.toLowerCase() ||
@@ -303,7 +309,7 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
     keys: headerKeysByFilter,
     query: headerQuery,
     candValues: cand.capturedHeaders,
-    baseValues: base?.capturedHeaders,
+    baseValues: compareMode === 'compare' ? base?.capturedHeaders : undefined,
   });
 
   const sortedCookieKeys = [...cookieKeys].sort((a, b) => {
@@ -312,7 +318,7 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
     return diffB - diffA;
   });
   const cookieKeysByFilter = sortedCookieKeys.filter((key) => {
-    if (cookieFilter === 'all') return true;
+    if (compareMode === 'single' || cookieFilter === 'all') return true;
     return (item.cookieDiffs || []).some(
       (d) => d.field?.toLowerCase() === key.toLowerCase()
     );
@@ -321,7 +327,7 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
     keys: cookieKeysByFilter,
     query: cookieQuery,
     candValues: cand.capturedCookies,
-    baseValues: base?.capturedCookies,
+    baseValues: compareMode === 'compare' ? base?.capturedCookies : undefined,
   });
 
   const unacceptedHeaderCount = ignoreAcceptedDiffs
@@ -331,8 +337,9 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
     ? (item.cookieDiffs || []).filter((d) => !d.accepted).length
     : (item.cookieDiffs || []).length;
   const hasVisualDiff =
-    item.visualResult?.verdict === 'different' ||
-    item.visualResult?.verdict === 'minor';
+    compareMode === 'compare' &&
+    (item.visualResult?.verdict === 'different' ||
+      item.visualResult?.verdict === 'minor');
 
   const rawSideAUrl =
     cand.screenshotUrl && !cand.screenshotUrl.startsWith('data:image/svg+xml')
@@ -695,19 +702,26 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
       id: 'headers',
       label: 'Headers',
       count:
-        unacceptedHeaderCount + failedAssertionCount > 0
+        compareMode === 'single'
+          ? headerKeys.length
+          : unacceptedHeaderCount + failedAssertionCount > 0
           ? unacceptedHeaderCount + failedAssertionCount
           : undefined,
     },
     {
       id: 'cookies',
       label: 'Cookies',
-      count: unacceptedCookieCount > 0 ? unacceptedCookieCount : undefined,
+      count:
+        compareMode === 'single'
+          ? cookieKeys.length
+          : unacceptedCookieCount > 0
+          ? unacceptedCookieCount
+          : undefined,
     },
     {
       id: 'image',
-      label: 'Visual',
-      count: hasVisualDiff ? '!' : undefined,
+      label: compareMode === 'single' ? 'Screenshot' : 'Visual',
+      count: compareMode === 'compare' && hasVisualDiff ? '!' : undefined,
     },
     {
       id: 'flow',
@@ -784,7 +798,8 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
                     className="inline-flex flex-wrap items-center gap-1 text-[10px]"
                   >
                     <span className="rounded bg-primary/10 px-1.5 py-0.2 font-semibold text-primary">
-                      A: {candidateProfile.tier} ({candidateProfile.provider})
+                      {compareMode === 'single' ? 'Target:' : 'Env A:'}{' '}
+                      {candidateProfile.label || candidateProfile.provider}
                     </span>
                     <span className="text-foreground/80">
                       {resolveEndpointUrlForPath(candidateProfile, testDef?.path || item.url)}
@@ -798,7 +813,7 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
                       <>
                         <span className="text-muted-foreground">vs</span>
                         <span className="rounded bg-emerald-500/10 px-1.5 py-0.2 font-semibold text-emerald-700 dark:text-emerald-300">
-                          B: {baselineProfile.tier} ({baselineProfile.provider})
+                          Env B: {baselineProfile.label || baselineProfile.provider}
                         </span>
                         <span className="text-foreground/80">
                           {resolveEndpointUrlForPath(baselineProfile, testDef?.path || item.url)}
@@ -816,7 +831,7 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
               className="flex flex-wrap items-center gap-1.5 pt-1 text-[11px] font-mono"
             >
               <span className="font-sans text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mr-0.5">
-                Verified Gates:
+                {compareMode === 'single' ? 'Captured Telemetry:' : 'Verified Gates:'}
               </span>
               <span
                 className={`inline-flex items-center gap-1 rounded border px-1.5 py-0.5 ${
@@ -831,14 +846,16 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
                 type="button"
                 onClick={() => onChangeTab('headers')}
                 className={`inline-flex items-center gap-1 rounded border px-1.5 py-0.5 cursor-pointer transition-colors ${
-                  unacceptedHeaderCount === 0
+                  compareMode === 'single' || unacceptedHeaderCount === 0
                     ? 'border-emerald-500/30 bg-emerald-500/8 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-500/15'
                     : 'border-amber-500/35 bg-amber-500/10 text-amber-700 dark:text-amber-300 hover:bg-amber-500/15'
                 }`}
               >
                 <span>
                   Headers{' '}
-                  {unacceptedHeaderCount === 0
+                  {compareMode === 'single'
+                    ? `(${headerKeys.length} captured)`
+                    : unacceptedHeaderCount === 0
                     ? `(${headerKeys.length} parity)`
                     : `(${unacceptedHeaderCount} drift)`}
                 </span>
@@ -847,14 +864,16 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
                 type="button"
                 onClick={() => onChangeTab('cookies')}
                 className={`inline-flex items-center gap-1 rounded border px-1.5 py-0.5 cursor-pointer transition-colors ${
-                  unacceptedCookieCount === 0
+                  compareMode === 'single' || unacceptedCookieCount === 0
                     ? 'border-emerald-500/30 bg-emerald-500/8 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-500/15'
                     : 'border-amber-500/35 bg-amber-500/10 text-amber-700 dark:text-amber-300 hover:bg-amber-500/15'
                 }`}
               >
                 <span>
                   Cookies{' '}
-                  {unacceptedCookieCount === 0
+                  {compareMode === 'single'
+                    ? `(${cookieKeys.length} captured)`
+                    : unacceptedCookieCount === 0
                     ? `(${cookieKeys.length} parity)`
                     : `(${unacceptedCookieCount} drift)`}
                 </span>
@@ -863,7 +882,7 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
                 type="button"
                 onClick={() => onChangeTab('image')}
                 className={`inline-flex items-center gap-1 rounded border px-1.5 py-0.5 cursor-pointer transition-colors ${
-                  unacceptedDriftParamCount === 0 || effectivePixelDiff <= 0.1
+                  compareMode === 'single' || unacceptedDriftParamCount === 0 || effectivePixelDiff <= 0.1
                     ? 'border-emerald-500/30 bg-emerald-500/8 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-500/15'
                     : effectivePixelDiff > 5
                     ? 'border-rose-500/35 bg-rose-500/10 text-rose-700 dark:text-rose-300 hover:bg-rose-500/15'
@@ -871,9 +890,11 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
                 }`}
               >
                 <span>
-                  UI Layout ({effectivePixelDiff.toFixed(1)}% ·{' '}
-                  {itemizedFindings.filter((f) => f.severity === 'match').length}/
-                  {itemizedFindings.length} zones)
+                  {compareMode === 'single'
+                    ? 'DOM Screenshot (1280×760)'
+                    : `UI Layout (${effectivePixelDiff.toFixed(1)}% · ${
+                        itemizedFindings.filter((f) => f.severity === 'match').length
+                      }/${itemizedFindings.length} zones)`}
                 </span>
               </button>
               {assertions.length > 0 && (
@@ -1051,30 +1072,36 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
                 )}
               </div>
 
-              <div className="inline-flex h-7 items-center rounded-md border border-border bg-background p-0.5 text-[11px]">
-                <button
-                  type="button"
-                  onClick={() => setHeaderFilter('diffs')}
-                  className={`h-6 rounded px-2 font-medium cursor-pointer transition-colors whitespace-nowrap ${
-                    headerFilter === 'diffs'
-                      ? 'bg-primary text-primary-foreground'
-                      : 'text-muted-foreground hover:text-foreground'
-                  }`}
-                >
-                  Diffs ({item.functionalDiffs.length})
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setHeaderFilter('all')}
-                  className={`h-6 rounded px-2 font-medium cursor-pointer transition-colors whitespace-nowrap ${
-                    headerFilter === 'all'
-                      ? 'bg-primary text-primary-foreground'
-                      : 'text-muted-foreground hover:text-foreground'
-                  }`}
-                >
-                  All ({headerKeys.length})
-                </button>
-              </div>
+              {compareMode === 'single' ? (
+                <span className="inline-flex h-7 items-center rounded-md border border-border bg-background px-2.5 font-mono text-[11px] font-semibold text-foreground">
+                  All Captured ({headerKeys.length})
+                </span>
+              ) : (
+                <div className="inline-flex h-7 items-center rounded-md border border-border bg-background p-0.5 text-[11px]">
+                  <button
+                    type="button"
+                    onClick={() => setHeaderFilter('diffs')}
+                    className={`h-6 rounded px-2 font-medium cursor-pointer transition-colors whitespace-nowrap ${
+                      headerFilter === 'diffs'
+                        ? 'bg-primary text-primary-foreground'
+                        : 'text-muted-foreground hover:text-foreground'
+                    }`}
+                  >
+                    Diffs ({item.functionalDiffs.length})
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setHeaderFilter('all')}
+                    className={`h-6 rounded px-2 font-medium cursor-pointer transition-colors whitespace-nowrap ${
+                      headerFilter === 'all'
+                        ? 'bg-primary text-primary-foreground'
+                        : 'text-muted-foreground hover:text-foreground'
+                    }`}
+                  >
+                    All ({headerKeys.length})
+                  </button>
+                </div>
+              )}
             </div>
           )}
 
@@ -1103,30 +1130,36 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
                 )}
               </div>
 
-              <div className="inline-flex h-7 items-center rounded-md border border-border bg-background p-0.5 text-[11px]">
-                <button
-                  type="button"
-                  onClick={() => setCookieFilter('diffs')}
-                  className={`h-6 rounded px-2 font-medium cursor-pointer transition-colors whitespace-nowrap ${
-                    cookieFilter === 'diffs'
-                      ? 'bg-primary text-primary-foreground'
-                      : 'text-muted-foreground hover:text-foreground'
-                  }`}
-                >
-                  Diffs ({(item.cookieDiffs || []).length})
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setCookieFilter('all')}
-                  className={`h-6 rounded px-2 font-medium cursor-pointer transition-colors whitespace-nowrap ${
-                    cookieFilter === 'all'
-                      ? 'bg-primary text-primary-foreground'
-                      : 'text-muted-foreground hover:text-foreground'
-                  }`}
-                >
-                  All ({cookieKeys.length})
-                </button>
-              </div>
+              {compareMode === 'single' ? (
+                <span className="inline-flex h-7 items-center rounded-md border border-border bg-background px-2.5 font-mono text-[11px] font-semibold text-foreground">
+                  All Captured ({cookieKeys.length})
+                </span>
+              ) : (
+                <div className="inline-flex h-7 items-center rounded-md border border-border bg-background p-0.5 text-[11px]">
+                  <button
+                    type="button"
+                    onClick={() => setCookieFilter('diffs')}
+                    className={`h-6 rounded px-2 font-medium cursor-pointer transition-colors whitespace-nowrap ${
+                      cookieFilter === 'diffs'
+                        ? 'bg-primary text-primary-foreground'
+                        : 'text-muted-foreground hover:text-foreground'
+                    }`}
+                  >
+                    Diffs ({(item.cookieDiffs || []).length})
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setCookieFilter('all')}
+                    className={`h-6 rounded px-2 font-medium cursor-pointer transition-colors whitespace-nowrap ${
+                      cookieFilter === 'all'
+                        ? 'bg-primary text-primary-foreground'
+                        : 'text-muted-foreground hover:text-foreground'
+                    }`}
+                  >
+                    All ({cookieKeys.length})
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -1215,7 +1248,8 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
               </div>
             )}
 
-            {item.functionalDiffs.some((d) => d.kind === 'status' || d.kind === 'assertions') && (
+            {compareMode === 'compare' &&
+              item.functionalDiffs.some((d) => d.kind === 'status' || d.kind === 'assertions') && (
               <div className="rounded-lg border border-rose-500/40 bg-rose-500/[0.06] px-3.5 py-2.5 text-xs">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <span className="font-semibold text-rose-700 dark:text-rose-400">
@@ -1259,11 +1293,19 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
                 <thead>
                   <tr className="border-b border-border bg-muted/40 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                     <th className="w-[22%] px-3 py-2">Header</th>
-                    <th className="w-[33%] px-3 py-2">Staging ({candidateLabel})</th>
+                    <th className={compareMode === 'single' ? 'w-[66%] px-3 py-2' : 'w-[33%] px-3 py-2'}>
+                      {compareMode === 'single'
+                        ? `Captured Value (${candidateProfile?.label || candidateLabel})`
+                        : `Env A (${candidateProfile?.label || candidateLabel})`}
+                    </th>
                     {compareMode === 'compare' && (
-                      <th className="w-[33%] px-3 py-2">Prod ({baselineLabel})</th>
+                      <th className="w-[33%] px-3 py-2">
+                        Env B ({baselineProfile?.label || baselineLabel})
+                      </th>
                     )}
-                    <th className="w-[12%] px-3 py-2 text-right">Action</th>
+                    <th className="w-[12%] px-3 py-2 text-right">
+                      {compareMode === 'single' ? 'Status' : 'Action'}
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/70">
@@ -1278,7 +1320,7 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
                       acceptedRulesKinds.some(
                         (k) => k.toLowerCase() === key.toLowerCase()
                       );
-                    const isDiff = Boolean(matchedDiff);
+                    const isDiff = compareMode === 'compare' && Boolean(matchedDiff);
 
                     return (
                       <tr
@@ -1340,7 +1382,11 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
                           </td>
                         )}
                         <td className="px-3 py-2 text-right align-top whitespace-nowrap">
-                          {isDiff ? (
+                          {compareMode === 'single' ? (
+                            <span className="font-mono text-[11px] text-emerald-700 dark:text-emerald-400">
+                              Captured
+                            </span>
+                          ) : isDiff ? (
                             <button
                               type="button"
                               onClick={() => onToggleAcceptHeader(key)}
@@ -1394,11 +1440,19 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
                 <thead>
                   <tr className="border-b border-border bg-muted/40 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                     <th className="w-[22%] px-3 py-2">Cookie Name</th>
-                    <th className="w-[33%] px-3 py-2">Staging ({candidateLabel})</th>
+                    <th className={compareMode === 'single' ? 'w-[66%] px-3 py-2' : 'w-[33%] px-3 py-2'}>
+                      {compareMode === 'single'
+                        ? `Captured Cookie Value (${candidateProfile?.label || candidateLabel})`
+                        : `Env A (${candidateProfile?.label || candidateLabel})`}
+                    </th>
                     {compareMode === 'compare' && (
-                      <th className="w-[33%] px-3 py-2">Prod ({baselineLabel})</th>
+                      <th className="w-[33%] px-3 py-2">
+                        Env B ({baselineProfile?.label || baselineLabel})
+                      </th>
                     )}
-                    <th className="w-[12%] px-3 py-2 text-right">Action</th>
+                    <th className="w-[12%] px-3 py-2 text-right">
+                      {compareMode === 'single' ? 'Status' : 'Action'}
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/70">
@@ -1411,7 +1465,7 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
                     const isAccepted =
                       Boolean(matchedDiff?.accepted) ||
                       acceptedCookies.includes(cookieKey.toLowerCase());
-                    const isDiff = Boolean(matchedDiff);
+                    const isDiff = compareMode === 'compare' && Boolean(matchedDiff);
 
                     return (
                       <tr
@@ -1473,7 +1527,11 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
                           </td>
                         )}
                         <td className="px-3 py-2 text-right align-top whitespace-nowrap">
-                          {isDiff ? (
+                          {compareMode === 'single' ? (
+                            <span className="font-mono text-[11px] text-emerald-700 dark:text-emerald-400">
+                              Captured
+                            </span>
+                          ) : isDiff ? (
                             <button
                               type="button"
                               onClick={() => onToggleAcceptCookie(cookieKey)}
@@ -1521,7 +1579,126 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
           </div>
         )}
 
-        {activeTab === 'image' && (
+        {activeTab === 'image' && compareMode === 'single' && (
+          <div data-testid="single-run-visual-view" className="space-y-3">
+            <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-border bg-card px-3.5 py-2.5">
+              <div className="flex flex-wrap items-center gap-2 text-xs">
+                <span className="rounded bg-primary/15 px-2 py-0.5 font-mono text-[10px] font-bold uppercase text-primary">
+                  Single Run DOM Capture
+                </span>
+                <span className="font-semibold text-foreground">
+                  {candidateProfile
+                    ? `${candidateProfile.label || candidateProfile.provider}`
+                    : candidateLabel}
+                </span>
+                <span className="text-muted-foreground">·</span>
+                <span className="font-mono text-muted-foreground">
+                  1280×760 Viewport · HTTP {cand.actualStatus} · {candMs}ms
+                </span>
+              </div>
+
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => onRerunCheck(item.testId)}
+                  disabled={isRerunningThis}
+                  className="inline-flex h-7 items-center gap-1 rounded-md border border-border bg-background px-2.5 text-xs font-medium text-foreground hover:bg-muted cursor-pointer"
+                >
+                  <RotateCw className={`h-3 w-3 ${isRerunningThis ? 'animate-spin' : ''}`} />
+                  <span>Re-capture Screenshot</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLightboxOpen(true)}
+                  className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-border bg-background text-foreground hover:bg-muted cursor-pointer"
+                  aria-label="Expand screenshot"
+                >
+                  <Maximize2 className="h-3.5 w-3.5 text-muted-foreground" />
+                </button>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
+              <div className="rounded-lg border border-border bg-card px-3 py-2">
+                <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  HTTP Status
+                </div>
+                <div className="mt-0.5 font-mono text-sm font-bold text-emerald-600 dark:text-emerald-400">
+                  HTTP {cand.actualStatus} (Expected {testDef?.expectedStatus || cand.expectedStatus || 200})
+                </div>
+              </div>
+              <div className="rounded-lg border border-border bg-card px-3 py-2">
+                <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  Edge Response Time
+                </div>
+                <div className="mt-0.5 font-mono text-sm font-bold text-foreground">
+                  {candMs}ms ({cand.redirectChain?.length || 1} hop)
+                </div>
+              </div>
+              <div className="rounded-lg border border-border bg-card px-3 py-2">
+                <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  Headers &amp; Cookies
+                </div>
+                <div className="mt-0.5 font-mono text-sm font-bold text-foreground">
+                  {headerKeys.length} headers · {cookieKeys.length} cookies
+                </div>
+              </div>
+              <div className="rounded-lg border border-border bg-card px-3 py-2">
+                <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  SLA Assertions
+                </div>
+                <div className="mt-0.5 font-mono text-sm font-bold text-emerald-600 dark:text-emerald-400">
+                  {assertions.length - failedAssertionCount}/{assertions.length} Passed
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-lg border border-border bg-card p-3">
+              {isSideAUnavailable ? (
+                <div
+                  data-testid="screenshot-retry-card-A"
+                  className="flex aspect-[16/9.5] w-full flex-col items-center justify-center rounded border border-dashed border-border bg-muted/30 p-6 text-center"
+                >
+                  <AlertTriangle className="mb-2 h-6 w-6 text-amber-500" />
+                  <div className="text-xs font-semibold text-foreground">
+                    Live Screenshot Unavailable (HTTP {cand.actualStatus})
+                  </div>
+                  <div className="mt-3">
+                    <button
+                      type="button"
+                      data-testid="btn-retry-screenshot-A"
+                      disabled={isRerunningThis}
+                      onClick={() => {
+                        setFallbackStageA(0);
+                        setRetryNonceA(Date.now());
+                        onRerunCheck(item.testId);
+                      }}
+                      className="inline-flex h-8 items-center gap-1.5 rounded-md bg-primary px-3 text-xs font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-60 cursor-pointer"
+                    >
+                      <RotateCw className={`h-3.5 w-3.5 ${isRerunningThis ? 'animate-spin' : ''}`} />
+                      {isRerunningThis ? 'Capturing Live DOM…' : 'Retry Live Capture'}
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="relative aspect-[16/9.5] w-full overflow-hidden rounded-md border border-border bg-muted">
+                  <img
+                    src={sideAConsentImg}
+                    alt={`${item.testName} Single Run DOM Capture`}
+                    data-testid="dom-snapshot-img-A"
+                    crossOrigin={sideAConsentImg.startsWith('data:') ? undefined : 'anonymous'}
+                    decoding="sync"
+                    fetchPriority="high"
+                    onError={handleImgErrorA}
+                    className="h-full w-full object-cover object-top"
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'image' && compareMode === 'compare' && (
           <div className="space-y-2.5">
             {/* Compact Single-Line Visual Toolbar + Hoverable Diff Region Pills (Images immediately below, no AI table) */}
             <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-border bg-card px-3 py-2">
@@ -1711,13 +1888,13 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
                             <div className="mt-1.5 space-y-0.5 border-t border-border/50 pt-1.5 font-mono text-[10px] text-muted-foreground">
                               {finding.stagingObservation && (
                                 <div className="truncate" title={finding.stagingObservation}>
-                                  <span className="font-semibold text-foreground">Staging:</span>{' '}
+                                  <span className="font-semibold text-foreground">Env A:</span>{' '}
                                   {finding.stagingObservation}
                                 </div>
                               )}
                               {compareMode === 'compare' && finding.prodObservation && (
                                 <div className="truncate" title={finding.prodObservation}>
-                                  <span className="font-semibold text-foreground">Prod:</span>{' '}
+                                  <span className="font-semibold text-foreground">Env B:</span>{' '}
                                   {finding.prodObservation}
                                 </div>
                               )}
@@ -1777,9 +1954,9 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
                   {visualMode === 'wipe' && (
                     <div className="rounded-lg border border-border bg-card p-3 space-y-2">
                       <div className="flex items-center justify-between text-xs font-mono text-muted-foreground">
-                        <span>Staging ({candidateLabel})</span>
+                        <span>Env A ({candidateProfile?.label || candidateLabel})</span>
                         <span>Split: {wipePercent}%</span>
-                        <span>Prod ({baselineLabel})</span>
+                        <span>Env B ({baselineProfile?.label || baselineLabel})</span>
                       </div>
 
                       {isSideAUnavailable || isSideBUnavailable ? (
@@ -1959,8 +2136,8 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
                         <div className="mb-1.5 flex items-center justify-between text-xs font-mono text-muted-foreground">
                           <span className="truncate">
                             {candidateProfile
-                              ? `Side A · ${candidateProfile.tier} (${candidateProfile.provider})`
-                              : `Staging (${candidateLabel})`}
+                              ? `Env A · ${candidateProfile.label || candidateProfile.provider}`
+                              : `Env A (${candidateLabel})`}
                           </span>
                           <span className="shrink-0">HTTP {cand.actualStatus}</span>
                         </div>
@@ -2028,8 +2205,8 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
                         <div className="mb-1.5 flex items-center justify-between text-xs font-mono text-muted-foreground">
                           <span className="truncate">
                             {baselineProfile
-                              ? `Side B · ${baselineProfile.tier} (${baselineProfile.provider})`
-                              : `Production (${baselineLabel})`}
+                              ? `Env B · ${baselineProfile.label || baselineProfile.provider}`
+                              : `Env B (${baselineLabel})`}
                           </span>
                           <span className="shrink-0">HTTP {sideBStatus}</span>
                         </div>

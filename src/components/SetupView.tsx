@@ -1036,7 +1036,7 @@ export const SetupView: React.FC<SetupViewProps> = ({
 
             {setupTab === 'envs' && (
               <div className="flex-1 min-h-0 overflow-y-auto divide-y divide-border">
-                {/* 1-Click Real-World Environment Templates (Akamai, AWS Header, Different URL, Prod vs Prod) */}
+                {/* 1-Click Real-World Environment Templates (Akamai Edge, AWS CloudFront Header, Different URL) */}
                 <div
                   data-testid="quick-env-templates"
                   className="bg-muted/15 p-3.5 space-y-2 text-xs"
@@ -1044,10 +1044,10 @@ export const SetupView: React.FC<SetupViewProps> = ({
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div>
                       <span className="font-semibold text-foreground">
-                        1-Click Comparison Templates for {activeProp.id}
+                        1-Click Environment Templates for {activeProp.id}
                       </span>
                       <span className="ml-2 text-[11px] text-muted-foreground">
-                        Supports Prod vs Stage and Prod vs Prod via Same URL + Edge IP (Akamai), Same URL + Header (AWS CloudFront), or Completely Different URL
+                        Each environment encapsulates its own URL, Edge DNS/IP, or Custom Headers — select any 2 environments (Env A vs Env B) in 2. Compare to run a diff
                       </span>
                     </div>
                   </div>
@@ -1080,20 +1080,20 @@ export const SetupView: React.FC<SetupViewProps> = ({
                   </div>
                 </div>
 
-                {/* Custom Environment Form (URL + Optional Routing Headers + Stage/Prod Tier) */}
+                {/* Custom Environment Form (URL + Optional Routing Headers) */}
                 <form
                   onSubmit={handleAddEnv}
                   className="bg-muted/25 p-3.5 space-y-2.5 text-xs"
                 >
                   <div className="font-semibold text-foreground">
-                    Add Custom Environment or Target Profile to {activeProp.id}
+                    Add Environment to {activeProp.id}
                   </div>
-                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-[120px_150px_1fr_1fr_auto_auto]">
+                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-[120px_160px_1fr_1fr_auto]">
                     <input
                       type="text"
                       value={newEnvId}
                       onChange={(e) => setNewEnvId(e.target.value)}
-                      placeholder="ID (e.g. qa)"
+                      placeholder="ID (e.g. prod-aws)"
                       aria-label="New environment ID"
                       data-testid="add-env-id"
                       className="h-8 rounded border border-border bg-background px-2.5 font-mono text-xs text-foreground focus:border-primary focus:outline-none"
@@ -1102,7 +1102,7 @@ export const SetupView: React.FC<SetupViewProps> = ({
                       type="text"
                       value={newEnvName}
                       onChange={(e) => setNewEnvName(e.target.value)}
-                      placeholder="Name (QA Stage)"
+                      placeholder="Name (Prod · AWS CloudFront)"
                       aria-label="New environment display name"
                       data-testid="add-env-name"
                       className="h-8 rounded border border-border bg-background px-2.5 text-xs text-foreground focus:border-primary focus:outline-none"
@@ -1111,7 +1111,7 @@ export const SetupView: React.FC<SetupViewProps> = ({
                       type="text"
                       value={newEnvTargetHost}
                       onChange={(e) => setNewEnvTargetHost(e.target.value)}
-                      placeholder={`Target URL or host (e.g. ${resolvePropertyHostname(activeProp.id, newEnvId || 'qa')})`}
+                      placeholder={`Target URL or host (e.g. ${resolvePropertyHostname(activeProp.id, newEnvId || 'uat1')})`}
                       aria-label="New environment target host"
                       data-testid="add-env-host"
                       className="h-8 rounded border border-border bg-background px-2.5 font-mono text-xs text-foreground focus:border-primary focus:outline-none"
@@ -1125,26 +1125,6 @@ export const SetupView: React.FC<SetupViewProps> = ({
                       data-testid="add-env-headers"
                       className="h-8 rounded border border-border bg-background px-2.5 font-mono text-xs text-foreground focus:border-primary focus:outline-none"
                     />
-                    <div className="flex items-center gap-3 px-1">
-                      <label className="inline-flex items-center gap-1.5 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={newEnvStaging}
-                          onChange={(e) => setNewEnvStaging(e.target.checked)}
-                          className="accent-primary"
-                        />
-                        <span className="font-mono text-[11px]">Staging</span>
-                      </label>
-                      <label className="inline-flex items-center gap-1.5 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={newEnvProd}
-                          onChange={(e) => setNewEnvProd(e.target.checked)}
-                          className="accent-primary"
-                        />
-                        <span className="font-mono text-[11px]">Prod</span>
-                      </label>
-                    </div>
                     <button
                       type="submit"
                       data-testid="btn-add-env"
@@ -1181,37 +1161,6 @@ export const SetupView: React.FC<SetupViewProps> = ({
                                 data-testid={`edit-env-name-${env.id}`}
                                 className="h-7 rounded border border-border bg-background px-2 text-xs text-foreground"
                               />
-                            </div>
-
-                            <div className="flex items-center gap-3">
-                              <label className="inline-flex items-center gap-1.5 cursor-pointer">
-                                <input
-                                  type="checkbox"
-                                  checked={editEnvDraft.staging}
-                                  onChange={(e) =>
-                                    setEditEnvDraft((d) => ({
-                                      ...d,
-                                      staging: e.target.checked,
-                                    }))
-                                  }
-                                  className="accent-primary"
-                                />
-                                <span className="font-mono text-[11px]">staging</span>
-                              </label>
-                              <label className="inline-flex items-center gap-1.5 cursor-pointer">
-                                <input
-                                  type="checkbox"
-                                  checked={editEnvDraft.prod}
-                                  onChange={(e) =>
-                                    setEditEnvDraft((d) => ({
-                                      ...d,
-                                      prod: e.target.checked,
-                                    }))
-                                  }
-                                  className="accent-primary"
-                                />
-                                <span className="font-mono text-[11px]">prod</span>
-                              </label>
                             </div>
                           </div>
 
@@ -1353,10 +1302,7 @@ export const SetupView: React.FC<SetupViewProps> = ({
                               {env.name}
                             </span>
                             <span className="font-mono text-[11px] text-muted-foreground">
-                              ({env.id}) ·{' '}
-                              {(env.networks || ['prod', 'staging'])
-                                .map((n) => (n === 'staging' ? 'Staging' : n === 'prod' ? 'Prod' : n))
-                                .join(' / ')}
+                              ({env.id})
                             </span>
                             <span className="font-mono text-[11px] text-primary">
                               ·{' '}

@@ -22,12 +22,11 @@ export default defineConfig(() => {
         'react',
         'react-dom',
         'react-dom/client',
-        '@monaco-editor/react',
-        'monaco-editor/editor',
-        '@xterm/xterm',
-        '@xterm/addon-fit',
+        'lucide-react',
+        'clsx',
+        'tailwind-merge',
       ],
-      exclude: ['echarts'],
+      exclude: ['echarts', 'monaco-editor', '@monaco-editor/react'],
     },
     server: {
       host: '0.0.0.0',
@@ -35,8 +34,21 @@ export default defineConfig(() => {
       // HMR is disabled in AI Studio via DISABLE_HMR env var or sandbox control plane.
       // Do not modify—file watching is disabled to prevent flickering during agent edits.
       hmr: !disableHmr,
-      // Disable file watching when HMR is disabled to save CPU/RAM during startup & edits.
-      watch: disableHmr ? null : {},
+      // Ignore large non-source directories so Vite starts in <400ms with minimal RAM.
+      watch: {
+        ignored: [
+          '**/node_modules/**',
+          '**/.git/**',
+          '**/dist/**',
+          '**/infra/**',
+          '**/public/**',
+          '**/.aistudio/**',
+          '**/.tempmediaStorage/**',
+          '**/aws-lambda/**',
+          '**/aws-synthetics/**',
+          '**/.data/**',
+        ],
+      },
     },
   };
 });

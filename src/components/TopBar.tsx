@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
+  BookOpen,
   Check,
   Command,
   GitCompareArrows,
@@ -50,14 +51,14 @@ const NAV_ITEMS: Array<{
     id: 'workbench',
     step: '2',
     label: 'Compare',
-    tooltip: '2. Compare — Prod vs Stage & Prod vs Prod Diff Gate',
+    tooltip: '2. Compare — Any 2 Environments (Env A vs Env B) Diff Gate',
     icon: GitCompareArrows,
   },
   {
     id: 'config',
     step: '3',
     label: 'Settings',
-    tooltip: '3. Configure — Pages, URLs/Headers & Accepted Rules',
+    tooltip: '3. Configure — Checks, Environments & Accepted Rules',
     icon: SlidersHorizontal,
   },
   {
@@ -66,6 +67,13 @@ const NAV_ITEMS: Array<{
     label: 'Developer',
     tooltip: '4. Automate — CI/CD REST API & MCP Agent Tools',
     icon: Terminal,
+  },
+  {
+    id: 'about',
+    step: '5',
+    label: 'About',
+    tooltip: '5. About — Interactive Architecture Slides & User Journeys',
+    icon: BookOpen,
   },
 ];
 

@@ -465,15 +465,15 @@ export interface QuickEnvironmentTemplate {
 export const QUICK_ENVIRONMENT_TEMPLATES: QuickEnvironmentTemplate[] = [
   {
     id: 'tpl-akamai-stage-prod',
-    badge: 'Akamai Case',
-    title: 'Akamai Same-URL Stage & Prod Edge',
+    badge: 'Akamai Edge',
+    title: 'Stage · Akamai Edge (.edgekey-staging.net)',
     description:
-      'Same canonical URL routed to .edgekey-staging.net (23.48.201.18) vs .edgekey.net (23.212.251.15) with Akamai Pragma headers.',
+      'Same canonical URL routed to Akamai Staging Edge (23.48.201.18) with Akamai Pragma cache-key headers.',
     buildEnv: (canonicalHost: string) => ({
       id: 'akamai-edge',
-      name: 'Akamai Stage vs Prod Edge',
+      name: 'Stage · Akamai Edge',
       tier: 'staging',
-      description: 'Same URL with Akamai Staging vs Production Edge IP & Pragma headers',
+      description: 'Same URL routed to Akamai Staging Edge (.edgekey-staging.net / 23.48.201.18)',
       hostMap: { [canonicalHost]: canonicalHost },
       networks: ['staging', 'prod'],
       edgeIps: {
@@ -482,18 +482,19 @@ export const QUICK_ENVIRONMENT_TEMPLATES: QuickEnvironmentTemplate[] = [
       },
       headers: {
         Pragma: 'akamai-x-cache-on, akamai-x-check-cacheable, akamai-x-get-cache-key',
+        'x-edge-network': 'akamai-staging',
       },
     }),
   },
   {
     id: 'tpl-aws-cf-header',
-    badge: 'AWS Case',
-    title: 'AWS CloudFront Header-Routed Stage',
+    badge: 'AWS Header',
+    title: 'Stage · AWS CloudFront Header Canary',
     description:
-      'Same URL routed via AWS CloudFront Continuous Deployment header (aws-cf-cd-staging: true) vs Production.',
+      'Same canonical URL routed via AWS CloudFront Continuous Deployment header (aws-cf-cd-staging: true).',
     buildEnv: (canonicalHost: string) => ({
       id: 'aws-cf-stage',
-      name: 'AWS CloudFront Continuous Deploy',
+      name: 'Stage · AWS Header Canary',
       tier: 'canary',
       description: 'Same URL with aws-cf-cd-staging: true header routing',
       hostMap: { [canonicalHost]: canonicalHost },
@@ -504,25 +505,25 @@ export const QUICK_ENVIRONMENT_TEMPLATES: QuickEnvironmentTemplate[] = [
       },
       headers: {
         'aws-cf-cd-staging': 'true',
-        'x-aws-cdn-tier': 'staging-distribution',
+        'x-canary-stage': 'candidate',
       },
     }),
   },
   {
     id: 'tpl-different-url-stage',
     badge: 'Different URL',
-    title: 'Completely Different Stage / UAT URL',
+    title: 'Stage · Dedicated Stage URL',
     description:
-      'Maps canonical production host to a separate staging/UAT URL (e.g. www-uat1.*) with automatic redirect host normalization.',
+      'Maps canonical host to a separate staging URL (e.g. www-stage.*) with automatic redirect host normalization.',
     buildEnv: (canonicalHost: string) => {
       const stageHost = canonicalHost.startsWith('www.')
         ? canonicalHost.replace(/^www\./, 'www-stage.')
         : `stage-${canonicalHost}`;
       return {
         id: 'stage-url',
-        name: 'Dedicated Stage URL',
+        name: 'Stage · Dedicated URL',
         tier: 'uat',
-        description: `Separate URL (${stageHost}) compared against Production (${canonicalHost})`,
+        description: `Separate URL (${stageHost})`,
         hostMap: { [canonicalHost]: stageHost },
         networks: ['staging', 'prod'],
         headers: {
@@ -533,30 +534,24 @@ export const QUICK_ENVIRONMENT_TEMPLATES: QuickEnvironmentTemplate[] = [
   },
   {
     id: 'tpl-prod-prod-multicdn',
-    badge: 'Prod vs Prod',
-    title: 'Prod vs Prod (AWS CloudFront vs Akamai / Blue-Green)',
+    badge: 'Prod · AWS CDN',
+    title: 'Prod · AWS CloudFront (Multi-CDN / Green)',
     description:
-      'Active-active Production comparison between AWS CloudFront Prod and Akamai Prod or Blue/Green production URLs.',
-    buildEnv: (canonicalHost: string) => {
-      const greenHost = canonicalHost.startsWith('www.')
-        ? canonicalHost.replace(/^www\./, 'www-green.')
-        : `prod-green.${canonicalHost}`;
-      return {
-        id: 'prod-green',
-        name: 'Prod B (AWS CloudFront / Green Prod)',
-        tier: 'prod',
-        description: 'Secondary Production target for Prod-vs-Prod multi-CDN or Blue/Green parity',
-        hostMap: { [canonicalHost]: greenHost },
-        networks: ['prod'],
-        edgeIps: {
-          prod: '18.165.83.42',
-        },
-        headers: {
-          'x-cdn-provider': 'aws-cloudfront-prod',
-          'x-prod-slice': 'green',
-        },
-      };
-    },
+      'Production environment on AWS CloudFront (d2sfdc-prod.cloudfront.net) for Prod-vs-Prod comparison against Akamai Prod.',
+    buildEnv: (canonicalHost: string) => ({
+      id: 'prod-green',
+      name: 'Prod · AWS CloudFront',
+      tier: 'prod',
+      description: 'Production target on AWS CloudFront for Prod-vs-Prod multi-CDN parity',
+      hostMap: { [canonicalHost]: canonicalHost },
+      networks: ['prod'],
+      edgeIps: {
+        prod: '18.165.83.42',
+      },
+      headers: {
+        'x-cdn-provider': 'aws-cloudfront-prod',
+      },
+    }),
   },
 ];
 
@@ -635,4 +630,142 @@ export function applyEnvironmentTemplate<
     envs: nextEnvs,
   };
 }
+
+/**
+ * Self-contained Environment Target definition.
+ * Derived strictly 1:1 from the property's configured environments (`app.envs`),
+ * so `3. Configure -> 2. Environments` and `2. Compare` (`Env A` vs `Env B`)
+ * always display the exact same environments and count.
+ */
+export interface PropertyEnvironmentTarget {
+  envKey: string;
+  envId: string;
+  name: string;
+  shortName: string;
+  targetId: string;
+  profile: TargetEndpointProfile;
+  isCustomEnv?: boolean;
+}
+
+export function getPropertyEnvironmentTargets(
+  appId: string,
+  canonicalHost: string,
+  envs: EnvironmentConfig[] = [],
+  alternateUatHost?: string
+): PropertyEnvironmentTarget[] {
+  const effectiveEnvs: EnvironmentConfig[] =
+    envs && envs.length > 0
+      ? envs
+      : [
+          {
+            id: 'prod',
+            name: 'PROD',
+            hostMap: { [canonicalHost]: canonicalHost },
+            networks: ['prod', 'staging'],
+          },
+          {
+            id: 'uat',
+            name: 'UAT',
+            hostMap: {
+              [canonicalHost]:
+                alternateUatHost ||
+                (canonicalHost.startsWith('www.')
+                  ? canonicalHost.replace(/^www\./, 'www-uat1.')
+                  : `uat.${canonicalHost}`),
+            },
+            networks: ['prod', 'staging'],
+          },
+        ];
+
+  return effectiveEnvs.map((env) => {
+    const mappedHost =
+      Object.values(env.hostMap || {})[0] || canonicalHost || 'www.salesforce.com';
+    const norm = normalizeBaseUrl(mappedHost);
+    const hasCustomHeaders = Boolean(env.headers && Object.keys(env.headers).length > 0);
+    const isDiffUrl = norm.hostname.toLowerCase() !== canonicalHost.toLowerCase();
+    const isStageLike =
+      env.id.toLowerCase() !== 'prod' &&
+      !env.id.toLowerCase().startsWith('prod-') &&
+      (env.tier === 'staging' ||
+        env.tier === 'uat' ||
+        env.tier === 'canary' ||
+        isDiffUrl ||
+        /uat|stag|qa|dev|test|canary|edge/i.test(env.id));
+
+    const mechanism: RoutingMechanism = isDiffUrl
+      ? 'different-url'
+      : hasCustomHeaders
+      ? 'custom-header'
+      : 'edge-dns';
+
+    const provider: CdnOrOriginProvider =
+      env.headers?.['aws-cf-cd-staging'] ||
+      env.headers?.['x-cdn-provider']?.includes('aws') ||
+      /aws|cf|cloudfront/i.test(env.id)
+        ? 'AWS CloudFront'
+        : isDiffUrl
+        ? 'Direct / Custom URL'
+        : 'Akamai Edge';
+
+    const resolvedEdgeIp = isStageLike
+      ? env.edgeIps?.staging || env.edgeIps?.prod || '23.48.201.18'
+      : env.edgeIps?.prod || env.edgeIps?.staging || '23.212.251.15';
+
+    const resolvedEdgeHost =
+      provider === 'Akamai Edge'
+        ? isStageLike
+          ? `${norm.hostname}.edgekey-staging.net`
+          : `${norm.hostname}.edgekey.net`
+        : provider === 'AWS CloudFront'
+        ? isStageLike
+          ? 'd2sfdc-staging.cloudfront.net'
+          : 'd2sfdc-prod.cloudfront.net'
+        : norm.hostname;
+
+    const defaultHeaders: Record<string, string> =
+      hasCustomHeaders && env.headers
+        ? env.headers
+        : provider === 'Akamai Edge'
+        ? {
+            Pragma:
+              'akamai-x-cache-on, akamai-x-check-cacheable, akamai-x-get-cache-key',
+          }
+        : {};
+
+    const netSuffix = isStageLike ? 'staging' : 'prod';
+    const displayLabel = `${env.name} (${env.id})`;
+    const dropdownName = isDiffUrl
+      ? `${env.name} (${env.id}) · ${norm.hostname}`
+      : hasCustomHeaders
+      ? `${env.name} (${env.id}) · Header`
+      : `${env.name} (${env.id}) · ${provider}`;
+
+    return {
+      envKey: env.id,
+      envId: env.id,
+      name: dropdownName,
+      shortName: displayLabel,
+      targetId: `${appId}.${env.id}.${netSuffix}`,
+      profile: {
+        role: isStageLike ? 'candidate' : 'baseline',
+        label: displayLabel,
+        tier: isStageLike ? 'STAGE' : 'PROD',
+        provider,
+        routingMechanism: mechanism,
+        baseUrl: norm.baseUrl,
+        hostname: norm.hostname,
+        edgeHost: resolvedEdgeHost,
+        edgeIp: resolvedEdgeIp,
+        customHeaders: defaultHeaders,
+        summaryNote: isDiffUrl
+          ? `Different URL (${norm.baseUrl})`
+          : hasCustomHeaders
+          ? `Same URL (${norm.baseUrl}) + Header ${formatHeaderKeyValueLine(defaultHeaders)}`
+          : `Same URL (${norm.baseUrl}) via ${resolvedEdgeHost} (${resolvedEdgeIp})`,
+      },
+    };
+  });
+}
+
+
 

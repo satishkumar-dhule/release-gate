@@ -27,6 +27,7 @@ export interface CheckListPaneProps {
   onChangePage: (p: number) => void;
   ignoreAcceptedDiffs: boolean;
   runStreamState: ActiveRunStreamState | null;
+  compareMode?: 'compare' | 'single';
   onOpenManageTests?: () => void;
   collapsed?: boolean;
   onToggleCollapsed?: () => void;
@@ -52,6 +53,7 @@ export const CheckListPane: React.FC<CheckListPaneProps> = ({
   onChangePage,
   ignoreAcceptedDiffs,
   runStreamState,
+  compareMode = 'compare',
   onOpenManageTests,
   collapsed = false,
   onToggleCollapsed,
@@ -59,6 +61,7 @@ export const CheckListPane: React.FC<CheckListPaneProps> = ({
   const { items, totalItems, totalPages, facetCounts } = filteredResult;
 
   const pickBestTabForItem = (item: ComparisonItem): InspectorDimensionTab => {
+    if (compareMode === 'single') return 'headers';
     const counts = getItemDiffCounts(item, ignoreAcceptedDiffs);
     if (dimensionFilter === 'headers' && counts.headerDiffs > 0) return 'headers';
     if (dimensionFilter === 'cookies' && counts.cookieDiffs > 0) return 'cookies';
@@ -170,7 +173,10 @@ export const CheckListPane: React.FC<CheckListPaneProps> = ({
         </div>
 
         <div className="flex items-center justify-between gap-2">
-          {FILTER_TABS.map((tab) => {
+          {(compareMode === 'single'
+            ? FILTER_TABS.filter((t) => t.id === 'all')
+            : FILTER_TABS
+          ).map((tab) => {
             const active = dimensionFilter === tab.id;
             const count = facetCounts[tab.id] ?? 0;
             return (
@@ -185,7 +191,7 @@ export const CheckListPane: React.FC<CheckListPaneProps> = ({
                     : 'font-medium text-muted-foreground hover:text-foreground'
                 }`}
               >
-                <span>{tab.label}</span>
+                <span>{compareMode === 'single' ? 'All Checks' : tab.label}</span>
                 <span className="font-mono text-[11px] tabular-nums text-muted-foreground">
                   {count}
                 </span>
@@ -198,6 +204,11 @@ export const CheckListPane: React.FC<CheckListPaneProps> = ({
               </button>
             );
           })}
+          {compareMode === 'single' && (
+            <span className="pb-2 font-mono text-[10px] font-semibold uppercase tracking-wider text-primary">
+              Single Run Mode
+            </span>
+          )}
         </div>
       </div>
 
@@ -205,9 +216,9 @@ export const CheckListPane: React.FC<CheckListPaneProps> = ({
         {items.map((item) => {
           const active = item.testId === selectedTestId;
           const counts = getItemDiffCounts(item, ignoreAcceptedDiffs);
-          const streamItem = runStreamState?.active
-            ? runStreamState.byTestId[item.testId]
-            : undefined;
+          const streamItem = runStreamState?.byTestId[item.testId];
+          const isCurrentlyRunningCheck =
+            Boolean(runStreamState?.active) && runStreamState?.currentTestId === item.testId;
           const candStatus = item.candidateResult?.actualStatus ?? 200;
           const latency = item.candidateResult?.durationMs ?? 0;
           const statusIsErr = candStatus >= 400 || item.candidateFailed;
@@ -225,7 +236,9 @@ export const CheckListPane: React.FC<CheckListPaneProps> = ({
               key={item.testId}
               data-testid={`check-row-${item.testId}`}
               className={`flex items-start justify-between gap-1.5 px-2.5 py-2 transition-colors ${
-                active
+                isCurrentlyRunningCheck
+                  ? 'bg-primary/[0.12] ring-1 ring-inset ring-primary/50'
+                  : active
                   ? 'bg-accent/65 ring-1 ring-inset ring-primary/25'
                   : 'hover:bg-muted/50'
               }`}
@@ -286,19 +299,47 @@ export const CheckListPane: React.FC<CheckListPaneProps> = ({
                       </span>
                     </>
                   )}
-                  {streamItem && streamItem.phase !== 'completed' && (
+                  {streamItem && (
                     <>
                       <span aria-hidden="true">·</span>
-                      <span className="text-primary">{streamItem.shortBadge}</span>
+                      <span
+                        className={
+                          streamItem.phase === 'completed'
+                            ? 'text-emerald-700 dark:text-emerald-400 font-semibold'
+                            : 'text-primary font-semibold'
+                        }
+                      >
+                        {streamItem.shortBadge}
+                      </span>
                     </>
                   )}
                 </div>
               </button>
 
               <div className="flex items-center gap-1 shrink-0 font-mono text-[11px] tabular-nums pt-0.5">
-                {counts.headerDiffs === 0 &&
-                counts.cookieDiffs === 0 &&
-                !counts.hasVisualDiff ? (
+                {compareMode === 'single' ? (
+                  <>
+                    <span
+                      className={`rounded px-1.5 py-0.5 text-[10px] font-bold ${
+                        statusIsErr || failedAssertions > 0
+                          ? 'bg-rose-500/12 text-rose-700 dark:text-rose-300'
+                          : 'bg-emerald-500/12 text-emerald-700 dark:text-emerald-300'
+                      }`}
+                    >
+                      {statusIsErr || failedAssertions > 0 ? 'FAIL' : 'PASS'}
+                    </span>
+                    <button
+                      type="button"
+                      title="Inspect captured headers"
+                      onClick={() => onSelectTest(item.testId, 'headers')}
+                      className="cursor-pointer rounded px-1 py-0.5 text-[10px] text-muted-foreground hover:bg-muted hover:text-foreground"
+                    >
+                      {Object.keys(item.candidateResult?.capturedHeaders || {}).length} hdr
+                    </button>
+                  </>
+                ) : counts.headerDiffs === 0 &&
+                  counts.cookieDiffs === 0 &&
+                  !counts.hasVisualDiff ? (
                   <span className="text-[11px] font-sans font-medium text-emerald-700 dark:text-emerald-400 px-1">
                     Match
                   </span>

@@ -4,24 +4,62 @@ import { buildInitialComparison, BuildComparisonOptions } from '../data/mockStor
 import { classifyPropertyRegion } from './scalableViewEngine';
 import { humanizeVisualSummary, type LogicalVisualDiffInput } from './pixelDiff';
 
-export type WorkbenchViewMode = 'synthetics' | 'workbench' | 'config' | 'studio' | 'vscode';
+export type WorkbenchViewMode =
+  | 'synthetics'
+  | 'workbench'
+  | 'config'
+  | 'studio'
+  | 'vscode'
+  | 'about';
 export type InspectorDimensionTab = 'headers' | 'cookies' | 'image' | 'flow';
 
 export function normalizeWorkbenchViewMode(raw?: string): WorkbenchViewMode {
-  if (raw === 'synthetics' || raw === 'canaries' || raw === 'fanout' || raw === 'aws' || raw === 'fleet' || raw === 'suites') {
+  if (
+    raw === 'synthetics' ||
+    raw === 'canaries' ||
+    raw === 'fanout' ||
+    raw === 'aws' ||
+    raw === 'fleet' ||
+    raw === 'suites'
+  ) {
     return 'synthetics';
   }
-  if (raw === 'workbench' || raw === 'compare' || raw === 'property' || raw === 'diff' || raw === 'run' || raw === 'schedules') {
+  if (
+    raw === 'workbench' ||
+    raw === 'compare' ||
+    raw === 'property' ||
+    raw === 'diff' ||
+    raw === 'run' ||
+    raw === 'schedules'
+  ) {
     return 'workbench';
   }
-  if (raw === 'config' || raw === 'setup' || raw === 'settings' || raw === 'policies') {
+  if (
+    raw === 'config' ||
+    raw === 'setup' ||
+    raw === 'settings' ||
+    raw === 'policies'
+  ) {
     return 'config';
   }
-  if (raw === 'vscode' || raw === 'ide' || raw === 'code' || raw === 'terminal') {
+  if (
+    raw === 'vscode' ||
+    raw === 'ide' ||
+    raw === 'code' ||
+    raw === 'terminal'
+  ) {
     return 'vscode';
   }
-  if (raw === 'studio' || raw === 'mcp' || raw === 'rpc' || raw === 'protocol') {
+  if (
+    raw === 'studio' ||
+    raw === 'mcp' ||
+    raw === 'rpc' ||
+    raw === 'protocol'
+  ) {
     return 'studio';
+  }
+  if (raw === 'about' || raw === 'guide' || raw === 'slides' || raw === 'docs') {
+    return 'about';
   }
   return 'synthetics';
 }
