@@ -19,6 +19,7 @@ import {
   Server,
   ShieldAlert,
   ShieldCheck,
+  SlidersHorizontal,
   Terminal,
   Trash2,
   UploadCloud,
@@ -946,22 +947,22 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
       data-testid="synthetics-orchestrator-view"
       className="flex flex-1 flex-col min-w-0 min-h-0 lg:h-screen lg:overflow-hidden"
     >
-      {/* Unified 48px Workspace Top Bar: Title + Live Metrics + Actions */}
-      <div className="flex min-h-12 shrink-0 flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-border bg-card px-4 py-1.5">
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 min-w-0">
-          <div className="flex items-baseline gap-2">
-            <h1 className="font-display text-sm font-semibold tracking-tight text-foreground">
+      {/* Condensed 38px 1-Line Workspace Top Bar: Title + Live Metrics + Quick Nav + Actions */}
+      <div className="flex min-h-9.5 shrink-0 flex-wrap items-center justify-between gap-x-2.5 gap-y-1 border-b border-border bg-card px-3 py-1">
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 min-w-0">
+          <div className="flex items-baseline gap-1.5">
+            <h1 className="font-display text-xs font-semibold tracking-tight text-foreground whitespace-nowrap">
               1. Sites Overview
             </h1>
-            <span className="text-[11px] font-mono text-muted-foreground">
+            <span className="text-[10px] font-mono text-muted-foreground">
               {inventory.awsRegion}
             </span>
           </div>
 
-          <span className="hidden sm:inline text-border" aria-hidden="true">|</span>
+          <span className="hidden sm:inline text-border/70" aria-hidden="true">|</span>
 
           {/* Inline Interactive Summary Metrics */}
-          <div className="flex flex-wrap items-center gap-x-2.5 gap-y-0.5 text-xs tabular-nums">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] tabular-nums">
             <button
               type="button"
               onClick={() => setVerdictFilter(verdictFilter === 'NO-GO' ? 'ALL' : 'NO-GO')}
@@ -977,7 +978,7 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
             <span className="text-emerald-700 dark:text-emerald-400 font-mono">
               {fleetMetrics.go} Ready
             </span>
-            <span className="hidden md:inline text-border" aria-hidden="true">|</span>
+            <span className="hidden md:inline text-border/70" aria-hidden="true">|</span>
             <span className="hidden md:inline font-mono text-muted-foreground">
               {inventory.totalProperties} sites · {inventory.totalChecksManaged} checks ·{' '}
               <span data-testid="synthetics-total-canaries" className="text-foreground font-medium">
@@ -989,11 +990,11 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
         </div>
 
         {/* Actions */}
-        <div className="flex flex-wrap items-center gap-1.5 shrink-0" ref={moreMenuRef}>
+        <div className="flex flex-wrap items-center gap-1 shrink-0" ref={moreMenuRef}>
           {/* Edge Execution PoP Selector for All Site & Canary Runs */}
-          <div className="inline-flex h-7.5 items-center gap-1.5 rounded-md border border-border bg-background px-2">
-            <Globe className="h-3.5 w-3.5 text-primary shrink-0" />
-            <span className="font-mono text-[10px] font-bold uppercase text-muted-foreground shrink-0">
+          <div className="inline-flex h-7 items-center gap-1 rounded border border-border bg-background px-1.5">
+            <Globe className="h-3 w-3 text-primary shrink-0" />
+            <span className="font-mono text-[9px] font-bold uppercase text-muted-foreground shrink-0">
               PoP
             </span>
             <select
@@ -1001,7 +1002,7 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
               aria-label="Select Edge Execution PoP"
               data-testid="sites-select-execution-pop"
               onChange={(e) => onChangeExecutionPopId?.(e.target.value)}
-              className="bg-transparent font-mono text-xs font-semibold text-foreground focus:outline-none cursor-pointer max-w-[175px] truncate"
+              className="bg-transparent font-mono text-[11px] font-semibold text-foreground focus:outline-none cursor-pointer max-w-[140px] truncate"
             >
               <option value="auto">Auto (Property Default)</option>
               {GLOBAL_EXECUTION_POPS.map((pop) => (
@@ -1019,10 +1020,10 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
                 onClick={onRestoreDefaultProperties}
                 data-testid="btn-restore-default-sites"
                 title={`Restore all ${DEFAULT_TEMPLATE_CONFIG.properties.length} default sites`}
-                className="inline-flex h-7.5 items-center gap-1.5 rounded-md border border-border bg-background px-2.5 text-xs font-medium text-foreground hover:bg-muted cursor-pointer whitespace-nowrap"
+                className="inline-flex h-7 items-center gap-1 rounded border border-border bg-background px-2 text-[11px] font-medium text-foreground hover:bg-muted cursor-pointer whitespace-nowrap"
               >
-                <RotateCcw className="h-3.5 w-3.5 text-primary" />
-                <span>Restore {DEFAULT_TEMPLATE_CONFIG.properties.length} Default Sites</span>
+                <RotateCcw className="h-3 w-3 text-primary" />
+                <span>Restore {DEFAULT_TEMPLATE_CONFIG.properties.length} Sites</span>
               </button>
             )}
           <button
@@ -1036,12 +1037,12 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
             }
             data-testid="btn-fanout-fleet-all"
             title="Re-test Staging & Production across all sites"
-            className="inline-flex h-7.5 items-center gap-1.5 rounded-md border border-border bg-background px-2.5 text-xs font-medium text-foreground hover:bg-muted disabled:opacity-50 cursor-pointer whitespace-nowrap"
+            className="inline-flex h-7 items-center gap-1 rounded border border-border bg-background px-2 text-[11px] font-medium text-foreground hover:bg-muted disabled:opacity-50 cursor-pointer whitespace-nowrap"
           >
             {fanningOutScope === 'fleet-all' ? (
-              <Loader2 className="h-3.5 w-3.5 animate-spin text-primary" />
+              <Loader2 className="h-3 w-3 animate-spin text-primary" />
             ) : (
-              <Layers className="h-3.5 w-3.5 text-muted-foreground" />
+              <Layers className="h-3 w-3 text-muted-foreground" />
             )}
             <span>Test All</span>
           </button>
@@ -1058,12 +1059,12 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
               }
               data-testid="btn-fanout-nogo-blockers"
               title={`Re-test all ${noGoPropertyCount} blocked sites`}
-              className="inline-flex h-7.5 items-center gap-1.5 rounded-md bg-primary px-3 text-xs font-semibold text-primary-foreground hover:opacity-90 disabled:opacity-50 cursor-pointer whitespace-nowrap"
+              className="inline-flex h-7 items-center gap-1 rounded bg-primary px-2.5 text-[11px] font-semibold text-primary-foreground hover:opacity-90 disabled:opacity-50 cursor-pointer whitespace-nowrap"
             >
               {fanningOutScope === 'nogo-blockers' ? (
-                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                <Loader2 className="h-3 w-3 animate-spin" />
               ) : (
-                <ShieldAlert className="h-3.5 w-3.5" />
+                <ShieldAlert className="h-3 w-3" />
               )}
               <span>Retest {noGoPropertyCount} Blocked</span>
             </button>
@@ -1079,16 +1080,37 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
                 })
               }
               data-testid="btn-fanout-active-property"
-              className="inline-flex h-7.5 items-center gap-1.5 rounded-md bg-primary px-3 text-xs font-semibold text-primary-foreground hover:opacity-90 disabled:opacity-50 cursor-pointer whitespace-nowrap"
+              className="inline-flex h-7 items-center gap-1 rounded bg-primary px-2.5 text-[11px] font-semibold text-primary-foreground hover:opacity-90 disabled:opacity-50 cursor-pointer whitespace-nowrap"
             >
               {fanningOutScope === `property:${activeAppId}` ? (
-                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                <Loader2 className="h-3 w-3 animate-spin" />
               ) : (
-                <Zap className="h-3.5 w-3.5" />
+                <Zap className="h-3 w-3" />
               )}
               <span>Test {activeAppId}</span>
             </button>
           )}
+
+          {onOpenAboutSlides && (
+            <button
+              type="button"
+              onClick={onOpenAboutSlides}
+              data-testid="btn-sites-open-about-slides"
+              title="Open 5. About & Interactive Architecture Slides"
+              className="inline-flex h-7 items-center gap-1 rounded border border-border bg-background px-2 text-[11px] font-medium text-foreground hover:bg-muted cursor-pointer whitespace-nowrap"
+            >
+              <span>5. About &amp; Slides</span>
+            </button>
+          )}
+
+          <button
+            type="button"
+            onClick={() => onSelectPropertyAndCompare(activeAppId)}
+            title={`Open 2. Compare Gate for ${activeAppId}`}
+            className="inline-flex h-7 items-center gap-1 rounded bg-primary/12 px-2 text-[11px] font-semibold text-primary hover:bg-primary/20 cursor-pointer whitespace-nowrap"
+          >
+            <span>2. Compare ({activeAppId}) →</span>
+          </button>
 
           <div className="relative">
             <button
@@ -1097,17 +1119,17 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
               data-testid="btn-synthetics-more"
               aria-label="More site actions"
               aria-expanded={moreMenuOpen}
-              className={`inline-flex h-7.5 w-7.5 items-center justify-center rounded-md border transition-colors cursor-pointer ${
+              className={`inline-flex h-7 w-7 items-center justify-center rounded border transition-colors cursor-pointer ${
                 moreMenuOpen
                   ? 'border-primary bg-accent text-accent-foreground'
                   : 'border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted'
               }`}
             >
-              <MoreHorizontal className="h-4 w-4" />
+              <MoreHorizontal className="h-3.5 w-3.5" />
             </button>
 
             {moreMenuOpen && (
-              <div className="absolute right-0 top-9 z-40 w-56 rounded-md border border-border bg-popover p-1.5 shadow-lg text-xs">
+              <div className="absolute right-0 top-8 z-40 w-56 rounded-md border border-border bg-popover p-1.5 shadow-lg text-xs">
                 <button
                   type="button"
                   disabled={fanningOutScope !== null}
@@ -1124,6 +1146,18 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
                 >
                   <Zap className="h-3.5 w-3.5 text-primary" />
                   <span>Test {activeAppId} Only</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMoreMenuOpen(false);
+                    onOpenSetupForProperty(activeAppId);
+                  }}
+                  className="flex w-full items-center gap-2 rounded px-2.5 py-2 text-left hover:bg-muted cursor-pointer"
+                >
+                  <SlidersHorizontal className="h-3.5 w-3.5 text-muted-foreground" />
+                  <span>3. Configure Checks &amp; URLs</span>
                 </button>
 
                 <button
@@ -1172,169 +1206,62 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
         </div>
       </div>
 
-      {/* First-Time User 1-2-3 Guided Workflow Strip */}
+      {/* Zero-height accessible workflow guide metadata (keeps data-testid while saving vertical space) */}
       <div
         data-testid="first-time-workflow-guide"
-        className="border-b border-border/70 bg-muted/20 px-4 py-2 flex flex-wrap items-center justify-between gap-2 text-xs shrink-0"
+        className="sr-only"
       >
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-muted-foreground">
-          <span className="font-semibold text-foreground">How this portal works:</span>
-          <span>
-            <strong className="text-foreground">1. Pick a Site</strong> below to inspect
-          </span>
-          <span aria-hidden="true">→</span>
-          <span>
-            <strong className="text-foreground">2. Select any 2 Environments</strong> (Env A vs Env B — each env encapsulates its own URL, Edge DNS/IP &amp; Headers)
-          </span>
-          <span aria-hidden="true">→</span>
-          <span>
-            <strong className="text-foreground">3. Review &amp; Accept Diffs</strong> across Visual UI, Headers, Cookies &amp; Flow
-          </span>
-        </div>
-        <div className="flex items-center gap-2 shrink-0">
-          {onOpenAboutSlides && (
-            <button
-              type="button"
-              onClick={onOpenAboutSlides}
-              data-testid="btn-sites-open-about-slides"
-              className="inline-flex h-6.5 items-center gap-1 rounded border border-border bg-background px-2 text-[11px] font-medium text-foreground hover:bg-muted cursor-pointer"
-            >
-              <span>5. About &amp; Slides</span>
-            </button>
-          )}
-          <button
-            type="button"
-            onClick={() => onOpenSetupForProperty(activeAppId)}
-            className="inline-flex h-6.5 items-center gap-1 rounded border border-border bg-background px-2 text-[11px] font-medium text-foreground hover:bg-muted cursor-pointer"
-          >
-            <span>3. Configure Checks &amp; URLs</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => onSelectPropertyAndCompare(activeAppId)}
-            className="inline-flex h-6.5 items-center gap-1 rounded bg-primary/12 px-2 text-[11px] font-semibold text-primary hover:bg-primary/20 cursor-pointer"
-          >
-            <span>2. Open Compare Gate ({activeAppId}) →</span>
-          </button>
-        </div>
+        <span>How this portal works: 1. Pick a Site below to inspect → 2. Select any 2 Environments → 3. Review &amp; Accept Diffs</span>
       </div>
 
-      <div className="flex-1 min-h-0 overflow-y-auto px-4 py-3 space-y-2.5">
-      {/* Live Execution & Location Telemetry Strip (Always visible during AND after any canary or site run) */}
+      <div className="flex-1 min-h-0 overflow-y-auto px-3 py-2 space-y-2">
+      {/* Condensed 1-Line Live Execution & Location Telemetry Strip */}
       {(liveCanaryExecution || runStreamState) && (
         <div
           data-testid="sites-live-execution-strip"
-          className={`rounded-lg border px-3.5 py-2.5 text-xs transition-colors ${
+          className={`rounded-md border px-2.5 py-1 text-xs transition-colors ${
             liveCanaryExecution?.active || runStreamState?.active
               ? 'border-primary/50 bg-primary/[0.07]'
               : 'border-emerald-500/40 bg-emerald-500/[0.06]'
           }`}
         >
           {liveCanaryExecution ? (
-            <div className="space-y-1.5">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <div className="flex flex-wrap items-center gap-2 min-w-0">
-                  {liveCanaryExecution.active ? (
-                    <span className="inline-flex items-center gap-1.5 rounded bg-primary px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-primary-foreground">
-                      <Loader2 className="h-3 w-3 animate-spin" />
-                      <span>LIVE RUN IN PROGRESS</span>
-                    </span>
-                  ) : (
-                    <span className="inline-flex items-center gap-1 rounded bg-emerald-600 px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-white">
-                      <Check className="h-3 w-3" />
-                      <span>RUN COMPLETED · {liveCanaryExecution.completedAt}</span>
-                    </span>
-                  )}
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className="flex flex-wrap items-center gap-1.5 min-w-0">
+                {liveCanaryExecution.active ? (
+                  <span className="inline-flex items-center gap-1 rounded bg-primary px-1.5 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider text-primary-foreground">
+                    <Loader2 className="h-2.5 w-2.5 animate-spin" />
+                    <span>LIVE {liveCanaryExecution.completedChecks}/{liveCanaryExecution.totalChecks}</span>
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-1 rounded bg-emerald-600 px-1.5 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider text-white">
+                    <Check className="h-2.5 w-2.5" />
+                    <span>DONE {liveCanaryExecution.completedChecks}/{liveCanaryExecution.totalChecks}</span>
+                  </span>
+                )}
 
-                  <span className="font-semibold text-foreground">
-                    Where:
-                  </span>
-                  <span className="font-mono text-[11px] font-semibold text-primary">
-                    {liveCanaryExecution.canaryName}
-                    {liveCanaryExecution.pairedCanaryName
-                      ? ` ↔ ${liveCanaryExecution.pairedCanaryName}`
-                      : ''}
-                  </span>
-                  <span className="text-muted-foreground">·</span>
-                  <span className="font-mono text-[11px] text-foreground">
-                    Site <strong className="font-bold">{liveCanaryExecution.appId}</strong> ({liveCanaryExecution.targetId})
-                  </span>
-                  <span className="text-muted-foreground">·</span>
-                  <span className="font-mono text-[11px] text-muted-foreground">
-                    Edge IP {liveCanaryExecution.edgeIp} ({liveCanaryExecution.popCode})
-                  </span>
-                  <span className="text-muted-foreground hidden md:inline">·</span>
-                  <span className="font-mono text-[11px] text-muted-foreground hidden md:inline">
-                    https://{liveCanaryExecution.canonicalHost}
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-1.5 shrink-0">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setDeepDiveTab('checks');
-                      openDeepDive(liveCanaryExecution.canaryName);
-                    }}
-                    data-testid="sites-live-strip-open-canary"
-                    className="inline-flex h-7 items-center gap-1 rounded border border-border bg-background px-2.5 text-[11px] font-medium text-foreground hover:bg-muted cursor-pointer"
-                  >
-                    <Server className="h-3 w-3 text-primary" />
-                    <span>Watch in Canary Drawer</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      onSelectPropertyAndCompare(
-                        liveCanaryExecution.appId,
-                        liveCanaryExecution.currentCheckId || undefined,
-                        'headers',
-                        {
-                          mode: 'single',
-                          targetId: liveCanaryExecution.targetId,
-                          runKey: liveCanaryExecution.runKey,
-                        }
-                      )
-                    }
-                    data-testid="sites-live-strip-open-single"
-                    className="inline-flex h-7 items-center gap-1 rounded bg-primary px-2.5 text-[11px] font-semibold text-primary-foreground hover:opacity-90 cursor-pointer"
-                  >
-                    <span>View Single Run ({liveCanaryExecution.targetId})</span>
-                    <ArrowRight className="h-3 w-3" />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      onSelectPropertyAndCompare(
-                        liveCanaryExecution.appId,
-                        liveCanaryExecution.currentCheckId || undefined,
-                        'headers',
-                        { mode: 'compare' }
-                      )
-                    }
-                    data-testid="sites-live-strip-open-compare"
-                    className="inline-flex h-7 items-center gap-1 rounded border border-border bg-background px-2.5 text-[11px] font-medium text-foreground hover:bg-muted cursor-pointer"
-                  >
-                    <span>Compare 2 Envs →</span>
-                  </button>
-                  {!liveCanaryExecution.active && (
-                    <button
-                      type="button"
-                      onClick={() => setLiveCanaryExecution(null)}
-                      aria-label="Dismiss live run monitor"
-                      className="inline-flex h-7 w-7 items-center justify-center rounded border border-border bg-background text-muted-foreground hover:text-foreground cursor-pointer"
-                    >
-                      <X className="h-3.5 w-3.5" />
-                    </button>
-                  )}
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <span className="font-mono text-[11px] text-foreground truncate min-w-0 flex-1">
+                <span className="font-mono text-[11px] font-semibold text-primary">
+                  {liveCanaryExecution.canaryName}
+                  {liveCanaryExecution.pairedCanaryName
+                    ? ` ↔ ${liveCanaryExecution.pairedCanaryName}`
+                    : ''}
+                </span>
+                <span className="text-muted-foreground">·</span>
+                <span className="font-mono text-[11px] text-foreground">
+                  <strong className="font-bold">{liveCanaryExecution.appId}</strong> ({liveCanaryExecution.targetId})
+                </span>
+                <span className="text-muted-foreground">·</span>
+                <span className="font-mono text-[10px] text-muted-foreground">
+                  {liveCanaryExecution.popCode} ({liveCanaryExecution.edgeIp})
+                </span>
+                <span className="text-muted-foreground hidden lg:inline">·</span>
+                <span className="font-mono text-[10px] text-muted-foreground truncate max-w-[240px] hidden lg:inline">
                   {liveCanaryExecution.currentPhaseLabel}
                 </span>
-                <div className="h-1.5 w-44 sm:w-64 overflow-hidden rounded-full bg-muted shrink-0">
+              </div>
+
+              <div className="flex items-center gap-1.5 shrink-0">
+                <div className="h-1.5 w-20 overflow-hidden rounded-full bg-muted shrink-0 hidden sm:block">
                   <div
                     className={`h-full transition-all duration-200 ${
                       liveCanaryExecution.active ? 'bg-primary' : 'bg-emerald-500'
@@ -1342,31 +1269,84 @@ export const SyntheticsOrchestratorView: React.FC<SyntheticsOrchestratorViewProp
                     style={{ width: `${liveCanaryExecution.progressPercent}%` }}
                   />
                 </div>
-                <span className="font-mono text-[11px] font-semibold tabular-nums text-foreground shrink-0">
-                  {liveCanaryExecution.completedChecks}/{liveCanaryExecution.totalChecks} checks ({liveCanaryExecution.progressPercent}%)
-                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setDeepDiveTab('checks');
+                    openDeepDive(liveCanaryExecution.canaryName);
+                  }}
+                  data-testid="sites-live-strip-open-canary"
+                  className="inline-flex h-6 items-center gap-1 rounded border border-border bg-background px-2 text-[10px] font-medium text-foreground hover:bg-muted cursor-pointer"
+                >
+                  <Server className="h-2.5 w-2.5 text-primary" />
+                  <span>Canary Drawer</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() =>
+                    onSelectPropertyAndCompare(
+                      liveCanaryExecution.appId,
+                      liveCanaryExecution.currentCheckId || undefined,
+                      'headers',
+                      {
+                        mode: 'single',
+                        targetId: liveCanaryExecution.targetId,
+                        runKey: liveCanaryExecution.runKey,
+                      }
+                    )
+                  }
+                  data-testid="sites-live-strip-open-single"
+                  className="inline-flex h-6 items-center gap-1 rounded bg-primary px-2 text-[10px] font-semibold text-primary-foreground hover:opacity-90 cursor-pointer"
+                >
+                  <span>Single Run ({liveCanaryExecution.targetId}) →</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() =>
+                    onSelectPropertyAndCompare(
+                      liveCanaryExecution.appId,
+                      liveCanaryExecution.currentCheckId || undefined,
+                      'headers',
+                      { mode: 'compare' }
+                    )
+                  }
+                  data-testid="sites-live-strip-open-compare"
+                  className="inline-flex h-6 items-center gap-1 rounded border border-border bg-background px-2 text-[10px] font-medium text-foreground hover:bg-muted cursor-pointer"
+                >
+                  <span>Compare 2 Envs →</span>
+                </button>
+                {!liveCanaryExecution.active && (
+                  <button
+                    type="button"
+                    onClick={() => setLiveCanaryExecution(null)}
+                    aria-label="Dismiss live run monitor"
+                    className="inline-flex h-6 w-6 items-center justify-center rounded border border-border bg-background text-muted-foreground hover:text-foreground cursor-pointer"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                )}
               </div>
             </div>
           ) : runStreamState ? (
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <div className="flex flex-wrap items-center gap-2 min-w-0">
-                <span className="inline-flex items-center gap-1 rounded bg-primary/15 px-2 py-0.5 font-mono text-[10px] font-semibold text-primary">
-                  {runStreamState.active ? 'LIVE COMPARE RUN' : '✓ LAST COMPARE RUN'}
+              <div className="flex flex-wrap items-center gap-1.5 min-w-0">
+                <span className="inline-flex items-center gap-1 rounded bg-primary/15 px-1.5 py-0.5 font-mono text-[9px] font-semibold text-primary">
+                  {runStreamState.active ? 'LIVE COMPARE' : '✓ DONE'}
                 </span>
                 <span className="font-mono text-[11px] font-semibold text-foreground">
-                  Site {runStreamState.suiteAppId}: {runStreamState.targetA} vs {runStreamState.targetB}
+                  {runStreamState.suiteAppId}: {runStreamState.targetA} vs {runStreamState.targetB}
                 </span>
                 <span className="text-muted-foreground">·</span>
-                <span className="font-mono text-[11px] text-muted-foreground truncate">
+                <span className="font-mono text-[10px] text-muted-foreground truncate">
                   {runStreamState.headlineStatus}
                 </span>
               </div>
               <button
                 type="button"
                 onClick={() => onSelectPropertyAndCompare(runStreamState.suiteAppId)}
-                className="inline-flex h-7 items-center gap-1 rounded bg-primary px-2.5 text-[11px] font-semibold text-primary-foreground hover:opacity-90 cursor-pointer"
+                className="inline-flex h-6 items-center gap-1 rounded bg-primary px-2 text-[10px] font-semibold text-primary-foreground hover:opacity-90 cursor-pointer"
               >
-                <span>Open in 2. Compare →</span>
+                <span>2. Compare →</span>
               </button>
             </div>
           ) : null}

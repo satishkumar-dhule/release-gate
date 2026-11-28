@@ -18,7 +18,9 @@ import { INITIAL_RULES, INITIAL_RUNS, buildInitialComparison } from '../data/moc
 
 import {
   ABOUT_SLIDES,
+  APP_WALKTHROUGH_VIDEOS,
   filterAboutSlides,
+  getWalkthroughVideoForSlide,
   resolveSlideStepIndex,
 } from './aboutSlidesModel';
 
@@ -52,8 +54,19 @@ describe('workbenchModel pure logic', () => {
     assert.equal(normalizeWorkbenchViewMode('unknown'), 'synthetics');
   });
 
-  it('provides 6 structured About & Architecture slides and supports category filtering and wrap-around navigation', () => {
+  it('provides 6 structured About & Architecture slides, 3 walkthrough videos, and supports category filtering and wrap-around navigation', () => {
     assert.equal(ABOUT_SLIDES.length, 6);
+    assert.equal(APP_WALKTHROUGH_VIDEOS.length, 3);
+    for (const vid of APP_WALKTHROUGH_VIDEOS) {
+      assert.ok(vid.src.endsWith('.webm'));
+      assert.ok(vid.chapters.length >= 3);
+    }
+    for (const slide of ABOUT_SLIDES) {
+      assert.equal(slide.metrics.length, 3);
+      assert.ok(slide.simulatorType);
+      const matchedVideo = getWalkthroughVideoForSlide(slide);
+      assert.equal(matchedVideo.id, slide.videoId);
+    }
     assert.equal(filterAboutSlides(ABOUT_SLIDES, 'all').length, 6);
     assert.equal(filterAboutSlides(ABOUT_SLIDES, 'journey').length, 2);
     assert.equal(filterAboutSlides(ABOUT_SLIDES, 'architecture').length, 2);

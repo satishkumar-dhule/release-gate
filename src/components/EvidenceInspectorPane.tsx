@@ -221,6 +221,7 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
   const [retryNonceA, setRetryNonceA] = useState<number>(0);
   const [retryNonceB, setRetryNonceB] = useState<number>(0);
   const [highlightedZoneIndex, setHighlightedZoneIndex] = useState<number | null>(null);
+  const [pinnedZoneIndex, setPinnedZoneIndex] = useState<number | null>(null);
   const [heatmapOverlayMode, setHeatmapOverlayMode] = useState<'pixel-heatmap' | 'zone-boxes'>('pixel-heatmap');
   const [heatmapDataUrl, setHeatmapDataUrl] = useState<string | null>(null);
   const [liveMeasuredState, setLiveMeasuredState] = useState<{
@@ -264,6 +265,7 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
     setRetryNonceA(0);
     setRetryNonceB(0);
     setHighlightedZoneIndex(null);
+    setPinnedZoneIndex(null);
     setLiveMeasuredState(null);
   }, [item?.testId, appId, lastProbe?.screenshotRevision]);
 
@@ -741,36 +743,36 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
       aria-label="Evidence inspector"
       className="flex flex-1 flex-col bg-background min-w-0 lg:min-h-0 lg:h-full lg:overflow-hidden"
     >
-      {/* Tier 1: Compact Check Identity & Primary Actions */}
-      <div className="shrink-0 border-b border-border/70 bg-card px-3.5 py-2 sm:px-4">
-        <div className="flex flex-col gap-1.5 md:flex-row md:items-center md:justify-between">
-          <div className="min-w-0 flex-1 space-y-0.5">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="font-mono text-xs font-bold text-primary shrink-0">
-                {item.testId}
-              </span>
-              <h2 className="font-display text-sm font-semibold text-foreground leading-snug truncate">
-                {item.testName}
-              </h2>
-              <span
-                className={`font-mono text-xs font-semibold tabular-nums shrink-0 ${
-                  cand.actualStatus >= 400
-                    ? 'text-rose-600 dark:text-rose-400'
-                    : 'text-emerald-600 dark:text-emerald-400'
-                }`}
-              >
-                HTTP {cand.actualStatus}
-              </span>
-              <span className="font-mono text-[11px] text-muted-foreground tabular-nums">
-                {candMs}ms{compareMode === 'compare' && baseMs ? ` vs ${baseMs}ms` : ''}
-              </span>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-1.5 font-mono text-[11px] text-muted-foreground">
+      {/* Tier 1: Ultra-Compact 34px Single-Line Check Identity, Gates & Actions */}
+      <div className="shrink-0 border-b border-border/70 bg-card px-3 py-1">
+        <div className="flex flex-wrap items-center justify-between gap-2 min-h-7">
+          <div className="flex flex-wrap items-center gap-1.5 min-w-0 flex-1">
+            <span className="font-mono text-xs font-bold text-primary shrink-0">
+              {item.testId}
+            </span>
+            <h2 className="font-display text-xs font-semibold text-foreground truncate max-w-[200px] xl:max-w-[260px]">
+              {item.testName}
+            </h2>
+            <span
+              className={`font-mono text-[11px] font-semibold tabular-nums shrink-0 ${
+                cand.actualStatus >= 400
+                  ? 'text-rose-600 dark:text-rose-400'
+                  : 'text-emerald-600 dark:text-emerald-400'
+              }`}
+            >
+              HTTP {cand.actualStatus}
+            </span>
+            <span className="font-mono text-[11px] text-muted-foreground tabular-nums shrink-0">
+              {candMs}ms{compareMode === 'compare' && baseMs ? ` vs ${baseMs}ms` : ''}
+            </span>
+            <span className="text-border hidden sm:inline">·</span>
+            <span className="hidden sm:inline-flex items-center gap-1 font-mono text-[11px] text-muted-foreground min-w-0">
               <span className="font-semibold text-foreground/80">
                 {cand.httpMethod || testDef?.httpMethod || typeMeta.defaultMethod}
               </span>
-              <span className="break-all text-foreground/75">{item.url}</span>
+              <span className="truncate max-w-[180px] xl:max-w-[240px] text-foreground/75">
+                {item.url}
+              </span>
               <button
                 type="button"
                 onClick={() => {
@@ -780,156 +782,74 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
                 }}
                 aria-label="Copy target URL"
                 title="Copy target URL"
-                className="inline-flex h-5 w-5 items-center justify-center rounded text-muted-foreground hover:bg-muted hover:text-foreground cursor-pointer"
+                className="inline-flex h-4.5 w-4.5 items-center justify-center rounded text-muted-foreground hover:bg-muted hover:text-foreground cursor-pointer shrink-0"
               >
                 {copiedUrl ? (
-                  <Check className="h-3 w-3 text-emerald-600" />
+                  <Check className="h-2.5 w-2.5 text-emerald-600" />
                 ) : (
-                  <Copy className="h-3 w-3" />
+                  <Copy className="h-2.5 w-2.5" />
                 )}
               </button>
-              <span className="text-border">·</span>
-              <span>{typeMeta.shortLabel}</span>
-              {candidateProfile && (
-                <>
-                  <span className="text-border">·</span>
-                  <span
-                    data-testid="inspector-topology-summary"
-                    className="inline-flex flex-wrap items-center gap-1 text-[10px]"
-                  >
-                    <span className="rounded bg-primary/10 px-1.5 py-0.2 font-semibold text-primary">
-                      {compareMode === 'single' ? 'Target:' : 'Env A:'}{' '}
-                      {candidateProfile.label || candidateProfile.provider}
-                    </span>
-                    <span className="text-foreground/80">
-                      {resolveEndpointUrlForPath(candidateProfile, testDef?.path || item.url)}
-                    </span>
-                    {Object.keys(candidateProfile.customHeaders).length > 0 && (
-                      <span className="rounded bg-violet-500/10 px-1 py-0.2 text-violet-700 dark:text-violet-300">
-                        Header: {formatHeaderKeyValueLine(candidateProfile.customHeaders)}
-                      </span>
-                    )}
-                    {compareMode === 'compare' && baselineProfile && (
-                      <>
-                        <span className="text-muted-foreground">vs</span>
-                        <span className="rounded bg-emerald-500/10 px-1.5 py-0.2 font-semibold text-emerald-700 dark:text-emerald-300">
-                          Env B: {baselineProfile.label || baselineProfile.provider}
-                        </span>
-                        <span className="text-foreground/80">
-                          {resolveEndpointUrlForPath(baselineProfile, testDef?.path || item.url)}
-                        </span>
-                      </>
-                    )}
-                  </span>
-                </>
-              )}
-            </div>
+            </span>
 
-            {/* Page-Specific UI & Functional Verification Profile */}
+            {candidateProfile && (
+              <span data-testid="inspector-topology-summary" className="sr-only">
+                {compareMode === 'single' ? 'Target:' : 'Env A:'}{' '}
+                {candidateProfile.label || candidateProfile.provider}{' '}
+                {resolveEndpointUrlForPath(candidateProfile, testDef?.path || item.url)}
+                {compareMode === 'compare' && baselineProfile
+                  ? ` vs Env B: ${baselineProfile.label || baselineProfile.provider} ${resolveEndpointUrlForPath(
+                      baselineProfile,
+                      testDef?.path || item.url
+                    )}`
+                  : ''}
+              </span>
+            )}
+
+            {/* Inline Compact Gate Pills */}
             <div
               data-testid="page-verification-profile"
-              className="flex flex-wrap items-center gap-1.5 pt-1 text-[11px] font-mono"
+              className="hidden 2xl:inline-flex items-center gap-1 text-[10px] font-mono ml-1"
             >
-              <span className="font-sans text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mr-0.5">
-                {compareMode === 'single' ? 'Captured Telemetry:' : 'Verified Gates:'}
-              </span>
-              <span
-                className={`inline-flex items-center gap-1 rounded border px-1.5 py-0.5 ${
-                  cand.actualStatus === Number(testDef?.expectedStatus || cand.expectedStatus || 200)
-                    ? 'border-emerald-500/30 bg-emerald-500/8 text-emerald-700 dark:text-emerald-300'
-                    : 'border-rose-500/35 bg-rose-500/10 text-rose-700 dark:text-rose-300'
-                }`}
-              >
-                <span>Status {cand.actualStatus}/{testDef?.expectedStatus || cand.expectedStatus || 200}</span>
-              </span>
               <button
                 type="button"
                 onClick={() => onChangeTab('headers')}
-                className={`inline-flex items-center gap-1 rounded border px-1.5 py-0.5 cursor-pointer transition-colors ${
+                className={`inline-flex items-center rounded border px-1.5 py-0.2 cursor-pointer ${
                   compareMode === 'single' || unacceptedHeaderCount === 0
-                    ? 'border-emerald-500/30 bg-emerald-500/8 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-500/15'
-                    : 'border-amber-500/35 bg-amber-500/10 text-amber-700 dark:text-amber-300 hover:bg-amber-500/15'
+                    ? 'border-emerald-500/30 bg-emerald-500/8 text-emerald-700 dark:text-emerald-300'
+                    : 'border-amber-500/35 bg-amber-500/10 text-amber-700 dark:text-amber-300'
                 }`}
               >
-                <span>
-                  Headers{' '}
-                  {compareMode === 'single'
-                    ? `(${headerKeys.length} captured)`
-                    : unacceptedHeaderCount === 0
-                    ? `(${headerKeys.length} parity)`
-                    : `(${unacceptedHeaderCount} drift)`}
-                </span>
+                Hdr {compareMode === 'single' ? headerKeys.length : unacceptedHeaderCount === 0 ? '✓' : unacceptedHeaderCount}
               </button>
               <button
                 type="button"
                 onClick={() => onChangeTab('cookies')}
-                className={`inline-flex items-center gap-1 rounded border px-1.5 py-0.5 cursor-pointer transition-colors ${
+                className={`inline-flex items-center rounded border px-1.5 py-0.2 cursor-pointer ${
                   compareMode === 'single' || unacceptedCookieCount === 0
-                    ? 'border-emerald-500/30 bg-emerald-500/8 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-500/15'
-                    : 'border-amber-500/35 bg-amber-500/10 text-amber-700 dark:text-amber-300 hover:bg-amber-500/15'
+                    ? 'border-emerald-500/30 bg-emerald-500/8 text-emerald-700 dark:text-emerald-300'
+                    : 'border-amber-500/35 bg-amber-500/10 text-amber-700 dark:text-amber-300'
                 }`}
               >
-                <span>
-                  Cookies{' '}
-                  {compareMode === 'single'
-                    ? `(${cookieKeys.length} captured)`
-                    : unacceptedCookieCount === 0
-                    ? `(${cookieKeys.length} parity)`
-                    : `(${unacceptedCookieCount} drift)`}
-                </span>
+                Cki {compareMode === 'single' ? cookieKeys.length : unacceptedCookieCount === 0 ? '✓' : unacceptedCookieCount}
               </button>
               <button
                 type="button"
                 onClick={() => onChangeTab('image')}
-                className={`inline-flex items-center gap-1 rounded border px-1.5 py-0.5 cursor-pointer transition-colors ${
+                className={`inline-flex items-center rounded border px-1.5 py-0.2 cursor-pointer ${
                   compareMode === 'single' || unacceptedDriftParamCount === 0 || effectivePixelDiff <= 0.1
-                    ? 'border-emerald-500/30 bg-emerald-500/8 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-500/15'
-                    : effectivePixelDiff > 5
-                    ? 'border-rose-500/35 bg-rose-500/10 text-rose-700 dark:text-rose-300 hover:bg-rose-500/15'
-                    : 'border-amber-500/35 bg-amber-500/10 text-amber-700 dark:text-amber-300 hover:bg-amber-500/15'
+                    ? 'border-emerald-500/30 bg-emerald-500/8 text-emerald-700 dark:text-emerald-300'
+                    : 'border-amber-500/35 bg-amber-500/10 text-amber-700 dark:text-amber-300'
                 }`}
               >
-                <span>
-                  {compareMode === 'single'
-                    ? 'DOM Screenshot (1280×760)'
-                    : `UI Layout (${effectivePixelDiff.toFixed(1)}% · ${
-                        itemizedFindings.filter((f) => f.severity === 'match').length
-                      }/${itemizedFindings.length} zones)`}
-                </span>
+                {compareMode === 'single' ? '1280×760' : `UI ${effectivePixelDiff.toFixed(1)}%`}
               </button>
-              {assertions.length > 0 && (
-                <button
-                  type="button"
-                  onClick={() => onChangeTab('headers')}
-                  className={`inline-flex items-center gap-1 rounded border px-1.5 py-0.5 cursor-pointer transition-colors ${
-                    failedAssertionCount === 0
-                      ? 'border-emerald-500/30 bg-emerald-500/8 text-emerald-700 dark:text-emerald-300'
-                      : 'border-rose-500/35 bg-rose-500/10 text-rose-700 dark:text-rose-300'
-                  }`}
-                >
-                  <span>
-                    SLA Assertions ({assertions.length - failedAssertionCount}/{assertions.length})
-                  </span>
-                </button>
-              )}
-              {stepResults.length > 0 && (
-                <button
-                  type="button"
-                  onClick={() => onChangeTab('flow')}
-                  className="inline-flex items-center gap-1 rounded border border-border bg-muted/40 px-1.5 py-0.5 text-foreground hover:bg-muted cursor-pointer"
-                >
-                  <span>
-                    UI Flow ({stepResults.filter((s) => s.status === 'pass').length}/
-                    {stepResults.length} steps)
-                  </span>
-                </button>
-              )}
             </div>
           </div>
 
-          <div className="flex items-center gap-1.5 shrink-0">
+          <div className="flex items-center gap-1 shrink-0">
             {(onPrevCheck || onNextCheck) && (
-              <div className="inline-flex items-center rounded-md border border-border bg-background overflow-hidden">
+              <div className="inline-flex items-center rounded border border-border bg-background overflow-hidden">
                 <button
                   type="button"
                   onClick={onPrevCheck}
@@ -937,11 +857,11 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
                   data-testid="btn-prev-check"
                   aria-label="Previous check"
                   title="Previous check (K)"
-                  className="inline-flex h-8 w-8 items-center justify-center text-muted-foreground hover:bg-muted hover:text-foreground disabled:opacity-35 cursor-pointer"
+                  className="inline-flex h-6.5 w-6.5 items-center justify-center text-muted-foreground hover:bg-muted hover:text-foreground disabled:opacity-35 cursor-pointer"
                 >
-                  <ChevronLeft className="h-4 w-4" />
+                  <ChevronLeft className="h-3.5 w-3.5" />
                 </button>
-                <div className="h-4 w-px bg-border" />
+                <div className="h-3.5 w-px bg-border" />
                 <button
                   type="button"
                   onClick={onNextCheck}
@@ -949,9 +869,9 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
                   data-testid="btn-next-check"
                   aria-label="Next check"
                   title="Next check (J)"
-                  className="inline-flex h-8 w-8 items-center justify-center text-muted-foreground hover:bg-muted hover:text-foreground disabled:opacity-35 cursor-pointer"
+                  className="inline-flex h-6.5 w-6.5 items-center justify-center text-muted-foreground hover:bg-muted hover:text-foreground disabled:opacity-35 cursor-pointer"
                 >
-                  <ChevronRight className="h-4 w-4" />
+                  <ChevronRight className="h-3.5 w-3.5" />
                 </button>
               </div>
             )}
@@ -961,10 +881,10 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
               onClick={() => onRerunCheck(item.testId)}
               disabled={isRerunningThis}
               data-testid="btn-rerun-check"
-              className="inline-flex h-8 items-center gap-1.5 rounded-md border border-border bg-background px-2.5 text-xs font-medium text-foreground hover:bg-muted disabled:opacity-60 whitespace-nowrap cursor-pointer"
+              className="inline-flex h-6.5 items-center gap-1 rounded border border-border bg-background px-2 text-[11px] font-medium text-foreground hover:bg-muted disabled:opacity-60 whitespace-nowrap cursor-pointer"
             >
               <RotateCw
-                className={`h-3.5 w-3.5 ${isRerunningThis ? 'animate-spin' : ''}`}
+                className={`h-3 w-3 ${isRerunningThis ? 'animate-spin' : ''}`}
               />
               <span>Re-run</span>
             </button>
@@ -978,12 +898,12 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
               }}
               data-testid="btn-copy-curl"
               title="Copy zero-secret cURL --resolve command"
-              className="inline-flex h-8 items-center gap-1.5 rounded-md border border-border bg-background px-2.5 text-xs font-medium text-foreground hover:bg-muted whitespace-nowrap cursor-pointer"
+              className="inline-flex h-6.5 items-center gap-1 rounded border border-border bg-background px-2 text-[11px] font-medium text-foreground hover:bg-muted whitespace-nowrap cursor-pointer"
             >
               {copiedCurl ? (
-                <Check className="h-3.5 w-3.5 text-emerald-600" />
+                <Check className="h-3 w-3 text-emerald-600" />
               ) : (
-                <Copy className="h-3.5 w-3.5 text-muted-foreground" />
+                <Copy className="h-3 w-3 text-muted-foreground" />
               )}
               <span>{copiedCurl ? 'Copied' : 'cURL'}</span>
             </button>
@@ -997,12 +917,12 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
               }}
               data-testid="btn-copy-mcp"
               title="Copy MCP JSON-RPC 2.0 inspect_check_evidence request"
-              className="inline-flex h-8 items-center gap-1.5 rounded-md border border-border bg-background px-2.5 text-xs font-medium text-foreground hover:bg-muted whitespace-nowrap cursor-pointer"
+              className="inline-flex h-6.5 items-center gap-1 rounded border border-border bg-background px-2 text-[11px] font-medium text-foreground hover:bg-muted whitespace-nowrap cursor-pointer"
             >
               {copiedMcp ? (
-                <Check className="h-3.5 w-3.5 text-emerald-600" />
+                <Check className="h-3 w-3 text-emerald-600" />
               ) : (
-                <Copy className="h-3.5 w-3.5 text-muted-foreground" />
+                <Copy className="h-3 w-3 text-muted-foreground" />
               )}
               <span>{copiedMcp ? 'Copied' : 'MCP'}</span>
             </button>
@@ -1700,106 +1620,209 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
 
         {activeTab === 'image' && compareMode === 'compare' && (
           <div className="space-y-2.5">
-            {/* Compact Single-Line Visual Toolbar + Hoverable Diff Region Pills (Images immediately below, no AI table) */}
-            <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-border bg-card px-3 py-2">
-              <div className="flex flex-wrap items-center gap-2 min-w-0 flex-1">
-                <div className="inline-flex h-7 items-center rounded-md border border-border bg-background p-0.5 text-[11px] shrink-0">
-                  {(
-                    [
-                      { id: 'side', label: 'Side-by-Side' },
-                      { id: 'wipe', label: 'Wipe Slider' },
-                      { id: 'heatmap', label: 'Diff Box' },
-                    ] as const
-                  ).map((mode) => (
-                    <button
-                      key={mode.id}
-                      type="button"
-                      onClick={() => setVisualMode(mode.id)}
-                      data-testid={`visual-mode-${mode.id}`}
-                      className={`h-6 rounded px-2 font-medium whitespace-nowrap cursor-pointer ${
-                        visualMode === mode.id
-                          ? 'bg-primary text-primary-foreground'
-                          : 'text-muted-foreground hover:text-foreground'
-                      }`}
-                    >
-                      {mode.label}
-                    </button>
-                  ))}
-                </div>
+            {/* Compact Single-Line Visual Toolbar + Persistent 1-Click Diff Region Accept Chips */}
+            <div className="rounded-lg border border-border bg-card px-3 py-1.5 space-y-1.5">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex flex-wrap items-center gap-2 min-w-0 flex-1">
+                  <div className="inline-flex h-6.5 items-center rounded border border-border bg-background p-0.5 text-[11px] shrink-0">
+                    {(
+                      [
+                        { id: 'side', label: 'Side-by-Side' },
+                        { id: 'wipe', label: 'Wipe Slider' },
+                        { id: 'heatmap', label: 'Diff Box' },
+                      ] as const
+                    ).map((mode) => (
+                      <button
+                        key={mode.id}
+                        type="button"
+                        onClick={() => setVisualMode(mode.id)}
+                        data-testid={`visual-mode-${mode.id}`}
+                        className={`h-5.5 rounded px-2 font-medium whitespace-nowrap cursor-pointer ${
+                          visualMode === mode.id
+                            ? 'bg-primary text-primary-foreground'
+                            : 'text-muted-foreground hover:text-foreground'
+                        }`}
+                      >
+                        {mode.label}
+                      </button>
+                    ))}
+                  </div>
 
-                <span
-                  data-testid="visual-overall-drift-pct"
-                  className={`font-mono text-xs font-semibold tabular-nums shrink-0 ${
-                    effectivePixelDiff > 5
-                      ? 'text-rose-600 dark:text-rose-400'
-                      : effectivePixelDiff > 0.1
-                      ? 'text-amber-600 dark:text-amber-400'
-                      : 'text-emerald-600 dark:text-emerald-400'
-                  }`}
-                >
-                  {effectivePixelDiff.toFixed(1)}% drift
-                </span>
-
-                <span className="text-[11px] text-muted-foreground truncate">
-                  · Hover any highlighted diff box on the screenshot to view caption &amp; accept
-                </span>
-              </div>
-
-              <div className="flex items-center gap-1.5 shrink-0">
-                <button
-                  type="button"
-                  onClick={() => onRunAiJudge(item.testId)}
-                  disabled={isAiRunning}
-                  data-testid="btn-run-ai-judge"
-                  className="inline-flex h-7 items-center gap-1 rounded-md border border-border bg-background px-2 text-xs font-medium text-foreground hover:bg-muted disabled:opacity-60 whitespace-nowrap cursor-pointer"
-                >
-                  <Sparkles
-                    className={`h-3.5 w-3.5 text-primary ${
-                      isAiRunning ? 'animate-pulse' : ''
-                    }`}
-                  />
-                  <span>{isAiRunning ? 'Analyzing…' : 'AI Judge'}</span>
-                </button>
-
-                {(hasVisualDiff || visualVerdict !== 'same' || isVisualAccepted) && (
-                  <button
-                    type="button"
-                    onClick={() => onToggleAcceptVisual(item.testId, driftingVisualParamIds)}
-                    data-testid="btn-accept-visual"
-                    className={`inline-flex h-7 items-center gap-1 rounded-md border px-2 text-xs font-medium whitespace-nowrap cursor-pointer ${
-                      isVisualAccepted
-                        ? 'border-border bg-muted text-muted-foreground hover:text-foreground'
-                        : 'border-primary/40 bg-primary/10 text-primary hover:bg-primary/20'
+                  <span
+                    data-testid="visual-overall-drift-pct"
+                    className={`font-mono text-xs font-semibold tabular-nums shrink-0 ${
+                      effectivePixelDiff > 5
+                        ? 'text-rose-600 dark:text-rose-400'
+                        : effectivePixelDiff > 0.1
+                        ? 'text-amber-600 dark:text-amber-400'
+                        : 'text-emerald-600 dark:text-emerald-400'
                     }`}
                   >
-                    {isVisualAccepted ? (
-                      <>
-                        <Undo2 className="h-3 w-3" /> Undo All
-                      </>
-                    ) : (
-                      <>
-                        <Check className="h-3 w-3" /> Accept All
-                      </>
-                    )}
-                  </button>
-                )}
+                    {effectivePixelDiff.toFixed(1)}% drift
+                  </span>
 
-                <button
-                  type="button"
-                  onClick={() => setLightboxOpen(true)}
-                  className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-border bg-background text-foreground hover:bg-muted cursor-pointer"
-                  aria-label="Expand screenshots"
-                >
-                  <Maximize2 className="h-3.5 w-3.5 text-muted-foreground" />
-                </button>
+                  <span className="text-[11px] text-muted-foreground truncate hidden xl:inline">
+                    · Click any region chip below or box badge to accept directly (or click a box to pin its popup)
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => onRunAiJudge(item.testId)}
+                    disabled={isAiRunning}
+                    data-testid="btn-run-ai-judge"
+                    className="inline-flex h-6.5 items-center gap-1 rounded border border-border bg-background px-2 text-xs font-medium text-foreground hover:bg-muted disabled:opacity-60 whitespace-nowrap cursor-pointer"
+                  >
+                    <Sparkles
+                      className={`h-3 w-3 text-primary ${
+                        isAiRunning ? 'animate-pulse' : ''
+                      }`}
+                    />
+                    <span>{isAiRunning ? 'Analyzing…' : 'AI Judge'}</span>
+                  </button>
+
+                  {(hasVisualDiff || visualVerdict !== 'same' || isVisualAccepted) && (
+                    <button
+                      type="button"
+                      onClick={() => onToggleAcceptVisual(item.testId, driftingVisualParamIds)}
+                      data-testid="btn-accept-visual"
+                      className={`inline-flex h-6.5 items-center gap-1 rounded border px-2 text-xs font-medium whitespace-nowrap cursor-pointer ${
+                        isVisualAccepted
+                          ? 'border-border bg-muted text-muted-foreground hover:text-foreground'
+                          : 'border-primary/40 bg-primary/10 text-primary hover:bg-primary/20'
+                      }`}
+                    >
+                      {isVisualAccepted ? (
+                        <>
+                          <Undo2 className="h-3 w-3" /> Undo All
+                        </>
+                      ) : (
+                        <>
+                          <Check className="h-3 w-3" /> Accept All
+                        </>
+                      )}
+                    </button>
+                  )}
+
+                  <button
+                    type="button"
+                    onClick={() => setLightboxOpen(true)}
+                    className="inline-flex h-6.5 w-6.5 items-center justify-center rounded border border-border bg-background text-foreground hover:bg-muted cursor-pointer"
+                    aria-label="Expand screenshots"
+                  >
+                    <Maximize2 className="h-3 w-3 text-muted-foreground" />
+                  </button>
+                </div>
               </div>
+
+              {/* Persistent Static 1-Click Diff Region Bar (never disappears on hover) */}
+              {itemizedFindings.some((f) => f.severity !== 'match') && (
+                <div
+                  data-testid="visual-static-diff-regions-bar"
+                  className="flex flex-wrap items-center gap-1.5 border-t border-border/60 pt-1.5"
+                >
+                  <span className="font-mono text-[10px] font-semibold uppercase tracking-wider text-muted-foreground shrink-0">
+                    Diff Regions:
+                  </span>
+                  {itemizedFindings.map((finding, idx) => {
+                    if (finding.severity === 'match') return null;
+                    const isParamAccepted = acceptedParamSet.has(finding.id);
+                    const isPinned = pinnedZoneIndex === idx;
+                    const isActive = isPinned || highlightedZoneIndex === idx;
+                    return (
+                      <div
+                        key={`static-chip-${finding.id || idx}`}
+                        data-testid={`visual-region-chip-${idx + 1}`}
+                        onMouseEnter={() => setHighlightedZoneIndex(idx)}
+                        onMouseLeave={() => setHighlightedZoneIndex(null)}
+                        className={`inline-flex h-6 items-center rounded border text-[11px] transition-colors ${
+                          isActive
+                            ? 'border-primary bg-primary/10 ring-1 ring-primary/40'
+                            : isParamAccepted
+                            ? 'border-emerald-500/40 bg-emerald-500/10'
+                            : finding.severity === 'major'
+                            ? 'border-rose-500/40 bg-rose-500/10'
+                            : 'border-amber-500/40 bg-amber-500/10'
+                        }`}
+                      >
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setPinnedZoneIndex((prev) => (prev === idx ? null : idx))
+                          }
+                          title={`${finding.description} (Click to pin/unpin region #${idx + 1})`}
+                          className="inline-flex h-full items-center gap-1 px-1.5 text-left cursor-pointer"
+                        >
+                          <span className="font-mono text-[10px] font-bold text-foreground">
+                            #{idx + 1}
+                          </span>
+                          <span className="font-medium text-foreground truncate max-w-[140px]">
+                            {finding.region}
+                          </span>
+                          <span className="font-mono text-[10px] tabular-nums text-muted-foreground">
+                            {finding.zoneDeltaPct.toFixed(1)}%
+                          </span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (onToggleAcceptVisualParam) {
+                              onToggleAcceptVisualParam(
+                                item.testId,
+                                finding.id,
+                                driftingVisualParamIds
+                              );
+                            } else {
+                              onToggleAcceptVisual(item.testId, driftingVisualParamIds);
+                            }
+                          }}
+                          data-testid={`toolbar-accept-visual-param-${finding.id}`}
+                          className={`inline-flex h-full items-center gap-0.5 border-l px-1.5 font-mono text-[10px] font-semibold cursor-pointer ${
+                            isParamAccepted
+                              ? 'border-emerald-500/30 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-500/20'
+                              : 'border-border/80 bg-background/80 text-primary hover:bg-primary hover:text-primary-foreground'
+                          }`}
+                        >
+                          {isParamAccepted ? (
+                            <>
+                              <Undo2 className="h-2.5 w-2.5" />
+                              <span>Undo</span>
+                            </>
+                          ) : (
+                            <>
+                              <Check className="h-2.5 w-2.5" />
+                              <span>Accept</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
 
             {(() => {
+              const triggerAcceptFinding = (finding: ItemizedVisualFinding) => {
+                if (onToggleAcceptVisualParam) {
+                  onToggleAcceptVisualParam(
+                    item.testId,
+                    finding.id,
+                    driftingVisualParamIds
+                  );
+                } else {
+                  onToggleAcceptVisual(item.testId, driftingVisualParamIds);
+                }
+              };
+
               const renderInteractiveDiffBoxes = (side: 'staging' | 'prod' | 'overlay') => (
                 <>
                   {itemizedFindings.map((finding, idx) => {
-                    const isSelected = highlightedZoneIndex === idx;
+                    const isPinned = pinnedZoneIndex === idx;
+                    const isHovered = highlightedZoneIndex === idx;
+                    const isSelected = isPinned || isHovered;
                     const isDrifting = finding.severity !== 'match';
                     if (!isDrifting && !isSelected) return null;
                     const b = finding.box;
@@ -1830,12 +1853,14 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
                             : `diff-zone-box-${side}-${idx + 1}`
                         }
                         onMouseEnter={() => setHighlightedZoneIndex(idx)}
-                        onMouseLeave={() => setHighlightedZoneIndex(null)}
+                        onMouseLeave={() =>
+                          setHighlightedZoneIndex((prev) => (prev === idx ? null : prev))
+                        }
                         onClick={() =>
-                          setHighlightedZoneIndex((prev) => (prev === idx ? null : idx))
+                          setPinnedZoneIndex((prev) => (prev === idx ? null : idx))
                         }
                         className={`group/box absolute border-2 transition-all cursor-pointer ${boxColor} ${
-                          isSelected ? 'ring-2 ring-primary z-30' : 'z-10 hover:z-30'
+                          isSelected ? 'ring-2 ring-primary z-50' : 'z-10 hover:z-50'
                         }`}
                         style={{
                           left: `${b.x}%`,
@@ -1844,104 +1869,155 @@ export const EvidenceInspectorPane: React.FC<EvidenceInspectorPaneProps> = ({
                           height: `${b.h}%`,
                         }}
                       >
-                        <span className="inline-flex items-center gap-1 bg-background/95 px-1 py-0.5 font-mono text-[9px] font-bold text-foreground shadow-xs border-b border-r border-border/70 opacity-85 group-hover/box:opacity-100">
+                        {/* Top-Left Corner Pill with Direct 1-Click Accept/Undo Button */}
+                        <div className="inline-flex items-center gap-1 bg-background/95 px-1 py-0.5 font-mono text-[9px] font-bold text-foreground shadow-xs border-b border-r border-border/70 opacity-95 group-hover/box:opacity-100">
                           <span>#{idx + 1}</span>
-                          <span className="hidden group-hover/box:inline font-sans font-semibold truncate max-w-[140px]">
+                          <span className="hidden group-hover/box:inline font-sans font-semibold truncate max-w-[125px]">
                             {finding.region}
                           </span>
                           <span className="tabular-nums text-muted-foreground">
                             {finding.zoneDeltaPct.toFixed(1)}%
                           </span>
-                        </span>
+                          {compareMode === 'compare' && isDrifting && (
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                triggerAcceptFinding(finding);
+                              }}
+                              data-testid={`box-pill-accept-${side}-${finding.id}`}
+                              title={
+                                isParamAccepted
+                                  ? `Undo accept for #${idx + 1} ${finding.region}`
+                                  : `Accept #${idx + 1} ${finding.region}`
+                              }
+                              className={`ml-0.5 inline-flex items-center gap-0.5 rounded px-1 py-0.2 font-mono text-[9px] font-bold cursor-pointer ${
+                                isParamAccepted
+                                  ? 'bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-500/30'
+                                  : 'bg-primary text-primary-foreground hover:opacity-90'
+                              }`}
+                            >
+                              {isParamAccepted ? (
+                                <>
+                                  <Undo2 className="h-2 w-2" />
+                                  <span>Undo</span>
+                                </>
+                              ) : (
+                                <>
+                                  <Check className="h-2 w-2" />
+                                  <span>Accept</span>
+                                </>
+                              )}
+                            </button>
+                          )}
+                        </div>
 
-                        {/* Floating Hover Caption Card right on the diff box */}
+                        {/* Zero-Gap Hover Bridge Wrapper (uses pt-1.5 / pb-1.5 padding instead of margin so cursor never loses hover) */}
                         <div
-                          data-testid={`diff-hover-caption-${side}-${idx + 1}`}
                           className={`absolute left-0 ${
-                            openUpward ? 'bottom-full mb-1.5' : 'top-full mt-1.5'
-                          } w-72 sm:w-80 rounded-md border border-border bg-popover/98 p-2.5 text-left text-xs text-popover-foreground shadow-xl backdrop-blur-xs transition-opacity ${
+                            openUpward ? 'bottom-full pb-1.5' : 'top-full pt-1.5'
+                          } w-72 sm:w-80 z-50 transition-opacity ${
                             isSelected
                               ? 'opacity-100 pointer-events-auto'
                               : 'opacity-0 pointer-events-none group-hover/box:opacity-100 group-hover/box:pointer-events-auto'
                           }`}
+                          onClick={(e) => e.stopPropagation()}
                         >
-                          <div className="flex items-center justify-between gap-2 border-b border-border/70 pb-1.5">
-                            <div className="font-semibold text-foreground truncate">
-                              #{idx + 1} {finding.region}
-                            </div>
-                            <span
-                              className={`font-mono text-[10px] font-bold shrink-0 ${
-                                isParamAccepted
-                                  ? 'text-emerald-600 dark:text-emerald-400'
-                                  : finding.severity === 'major'
-                                  ? 'text-rose-600 dark:text-rose-400'
-                                  : 'text-amber-600 dark:text-amber-400'
-                              }`}
-                            >
-                              {badgeLabel} · {finding.zoneDeltaPct.toFixed(1)}%
-                            </span>
-                          </div>
-                          <p className="mt-1.5 text-[11px] font-medium text-foreground leading-snug">
-                            {finding.description}
-                          </p>
-                          {(finding.stagingObservation || finding.prodObservation) && (
-                            <div className="mt-1.5 space-y-0.5 border-t border-border/50 pt-1.5 font-mono text-[10px] text-muted-foreground">
-                              {finding.stagingObservation && (
-                                <div className="truncate" title={finding.stagingObservation}>
-                                  <span className="font-semibold text-foreground">Env A:</span>{' '}
-                                  {finding.stagingObservation}
-                                </div>
-                              )}
-                              {compareMode === 'compare' && finding.prodObservation && (
-                                <div className="truncate" title={finding.prodObservation}>
-                                  <span className="font-semibold text-foreground">Env B:</span>{' '}
-                                  {finding.prodObservation}
-                                </div>
-                              )}
-                            </div>
-                          )}
-                          {compareMode === 'compare' && isDrifting && (
-                            <div className="mt-2 flex items-center justify-between border-t border-border/60 pt-1.5">
-                              <span className="text-[10px] text-muted-foreground truncate pr-2">
-                                {finding.impact || 'Visual region delta'}
-                              </span>
-                              <button
-                                type="button"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  if (onToggleAcceptVisualParam) {
-                                    onToggleAcceptVisualParam(
-                                      item.testId,
-                                      finding.id,
-                                      driftingVisualParamIds
-                                    );
-                                  } else {
-                                    onToggleAcceptVisual(item.testId, driftingVisualParamIds);
-                                  }
-                                }}
-                                data-testid={
-                                  side !== 'prod'
-                                    ? `accept-visual-param-${finding.id}`
-                                    : undefined
-                                }
-                                className={`inline-flex h-6 items-center gap-1 rounded border px-2 text-[10px] font-semibold shrink-0 cursor-pointer ${
-                                  isParamAccepted
-                                    ? 'border-border bg-muted text-muted-foreground hover:text-foreground'
-                                    : 'border-primary/40 bg-primary/10 text-primary hover:bg-primary/20'
-                                }`}
-                              >
-                                {isParamAccepted ? (
-                                  <>
-                                    <Undo2 className="h-2.5 w-2.5" /> Undo
-                                  </>
-                                ) : (
-                                  <>
-                                    <Check className="h-2.5 w-2.5" /> Accept
-                                  </>
+                          <div
+                            data-testid={`diff-hover-caption-${side}-${idx + 1}`}
+                            className="rounded-md border border-border bg-popover/98 p-2.5 text-left text-xs text-popover-foreground shadow-xl backdrop-blur-xs"
+                          >
+                            <div className="flex items-center justify-between gap-2 border-b border-border/70 pb-1.5">
+                              <div className="font-semibold text-foreground truncate">
+                                #{idx + 1} {finding.region}
+                              </div>
+                              <div className="flex items-center gap-1.5 shrink-0">
+                                {isPinned && (
+                                  <span className="rounded bg-primary/15 px-1 py-0.2 font-mono text-[9px] font-bold text-primary">
+                                    PINNED
+                                  </span>
                                 )}
-                              </button>
+                                <span
+                                  className={`font-mono text-[10px] font-bold ${
+                                    isParamAccepted
+                                      ? 'text-emerald-600 dark:text-emerald-400'
+                                      : finding.severity === 'major'
+                                      ? 'text-rose-600 dark:text-rose-400'
+                                      : 'text-amber-600 dark:text-amber-400'
+                                  }`}
+                                >
+                                  {badgeLabel} · {finding.zoneDeltaPct.toFixed(1)}%
+                                </span>
+                                {isPinned && (
+                                  <button
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setPinnedZoneIndex(null);
+                                      setHighlightedZoneIndex(null);
+                                    }}
+                                    aria-label="Unpin diff popup"
+                                    className="inline-flex h-4 w-4 items-center justify-center rounded text-muted-foreground hover:bg-muted hover:text-foreground cursor-pointer"
+                                  >
+                                    <X className="h-3 w-3" />
+                                  </button>
+                                )}
+                              </div>
                             </div>
-                          )}
+                            <p className="mt-1.5 text-[11px] font-medium text-foreground leading-snug">
+                              {finding.description}
+                            </p>
+                            {(finding.stagingObservation || finding.prodObservation) && (
+                              <div className="mt-1.5 space-y-0.5 border-t border-border/50 pt-1.5 font-mono text-[10px] text-muted-foreground">
+                                {finding.stagingObservation && (
+                                  <div className="truncate" title={finding.stagingObservation}>
+                                    <span className="font-semibold text-foreground">Env A:</span>{' '}
+                                    {finding.stagingObservation}
+                                  </div>
+                                )}
+                                {compareMode === 'compare' && finding.prodObservation && (
+                                  <div className="truncate" title={finding.prodObservation}>
+                                    <span className="font-semibold text-foreground">Env B:</span>{' '}
+                                    {finding.prodObservation}
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                            {compareMode === 'compare' && isDrifting && (
+                              <div className="mt-2 flex items-center justify-between border-t border-border/60 pt-1.5">
+                                <span className="text-[10px] text-muted-foreground truncate pr-2">
+                                  {finding.impact || 'Visual region delta'}
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    triggerAcceptFinding(finding);
+                                  }}
+                                  data-testid={
+                                    side !== 'prod'
+                                      ? `accept-visual-param-${finding.id}`
+                                      : undefined
+                                  }
+                                  className={`inline-flex h-6 items-center gap-1 rounded border px-2 text-[10px] font-semibold shrink-0 cursor-pointer ${
+                                    isParamAccepted
+                                      ? 'border-border bg-muted text-muted-foreground hover:text-foreground'
+                                      : 'border-primary/40 bg-primary/10 text-primary hover:bg-primary/20'
+                                  }`}
+                                >
+                                  {isParamAccepted ? (
+                                    <>
+                                      <Undo2 className="h-2.5 w-2.5" /> Undo
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Check className="h-2.5 w-2.5" /> Accept
+                                    </>
+                                  )}
+                                </button>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
                     );

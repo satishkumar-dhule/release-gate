@@ -100,13 +100,13 @@ export const ConfigHubView: React.FC<ConfigHubViewProps> = ({
       data-testid="config-hub-view"
       className="flex flex-col flex-1 min-w-0 lg:h-screen lg:overflow-hidden"
     >
-      {/* Single-Level Flattened Config Bar (1. Pages & Checks · 2. Environments & Routing · 3. Accepted Diff Rules) */}
-      <div className="shrink-0 border-b border-border bg-card px-4">
-        <div className="flex h-12 flex-wrap items-center justify-between gap-3">
+      {/* Condensed 38px Single-Level Flattened Config Bar */}
+      <div className="shrink-0 border-b border-border bg-card px-3">
+        <div className="flex h-9.5 flex-wrap items-center justify-between gap-3">
           <div
             role="tablist"
             aria-label="Configuration sections"
-            className="flex items-center gap-5 h-full"
+            className="flex items-center gap-4 h-full"
           >
             <button
               type="button"
@@ -114,7 +114,7 @@ export const ConfigHubView: React.FC<ConfigHubViewProps> = ({
               aria-selected={activeTab === 'checks'}
               data-testid="config-tab-suite"
               onClick={() => setActiveTab('checks')}
-              className={`relative inline-flex h-12 items-center gap-1.5 text-xs whitespace-nowrap shrink-0 cursor-pointer transition-colors ${
+              className={`relative inline-flex h-9.5 items-center gap-1.5 text-xs whitespace-nowrap shrink-0 cursor-pointer transition-colors ${
                 activeTab === 'checks'
                   ? 'font-semibold text-foreground'
                   : 'font-medium text-muted-foreground hover:text-foreground'
@@ -139,7 +139,7 @@ export const ConfigHubView: React.FC<ConfigHubViewProps> = ({
               aria-selected={activeTab === 'envs'}
               data-testid="setup-tab-envs"
               onClick={() => setActiveTab('envs')}
-              className={`relative inline-flex h-12 items-center gap-1.5 text-xs whitespace-nowrap shrink-0 cursor-pointer transition-colors ${
+              className={`relative inline-flex h-9.5 items-center gap-1.5 text-xs whitespace-nowrap shrink-0 cursor-pointer transition-colors ${
                 activeTab === 'envs'
                   ? 'font-semibold text-foreground'
                   : 'font-medium text-muted-foreground hover:text-foreground'
@@ -164,7 +164,7 @@ export const ConfigHubView: React.FC<ConfigHubViewProps> = ({
               aria-selected={activeTab === 'policies'}
               data-testid="config-tab-policies"
               onClick={() => setActiveTab('policies')}
-              className={`relative inline-flex h-12 items-center gap-1.5 text-xs whitespace-nowrap shrink-0 cursor-pointer transition-colors ${
+              className={`relative inline-flex h-9.5 items-center gap-1.5 text-xs whitespace-nowrap shrink-0 cursor-pointer transition-colors ${
                 activeTab === 'policies'
                   ? 'font-semibold text-foreground'
                   : 'font-medium text-muted-foreground hover:text-foreground'
@@ -184,7 +184,7 @@ export const ConfigHubView: React.FC<ConfigHubViewProps> = ({
             </button>
           </div>
 
-          <div className="hidden md:flex items-center gap-3 text-xs text-muted-foreground tabular-nums">
+          <div className="hidden md:flex items-center gap-2 text-[11px] text-muted-foreground tabular-nums">
             <span>
               {apps.length} {apps.length === 1 ? 'site' : 'sites'} · Editing{' '}
               <span className="font-mono font-medium text-foreground">{activeAppId}</span>

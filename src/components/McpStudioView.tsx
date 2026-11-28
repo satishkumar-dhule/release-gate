@@ -1309,9 +1309,9 @@ export const McpStudioView: React.FC<McpStudioViewProps> = ({
 
   return (
     <div className="flex flex-1 flex-col min-w-0 min-h-0 overflow-hidden">
-      {/* Unified 48px MCP Workspace Top Bar + Sub-tabs + Handshake */}
-      <section className="flex min-h-12 shrink-0 flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-border bg-card px-4 py-1.5">
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 min-w-0">
+      {/* Condensed 38px MCP Workspace Top Bar + Sub-tabs + Handshake */}
+      <section className="flex min-h-9.5 shrink-0 flex-wrap items-center justify-between gap-x-3 gap-y-1 border-b border-border bg-card px-3 py-1">
+        <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 min-w-0">
           <div className="flex items-center gap-1.5">
             <Terminal className="h-3.5 w-3.5 text-primary shrink-0" />
             <span className="font-mono text-xs font-semibold text-foreground">
@@ -1337,7 +1337,7 @@ export const McpStudioView: React.FC<McpStudioViewProps> = ({
           <div
             role="tablist"
             aria-label="MCP Studio sections"
-            className="inline-flex items-center rounded-md border border-border bg-background p-0.5 text-xs"
+            className="inline-flex items-center rounded border border-border bg-background p-0.5 text-xs"
           >
             {(
               [
@@ -1368,7 +1368,7 @@ export const McpStudioView: React.FC<McpStudioViewProps> = ({
                   aria-selected={active}
                   data-testid={`mcp-tab-${tab.id}`}
                   onClick={() => setSubTab(tab.id)}
-                  className={`inline-flex h-6.5 items-center gap-1.5 rounded px-2.5 text-xs whitespace-nowrap shrink-0 cursor-pointer transition-colors ${
+                  className={`inline-flex h-6 items-center gap-1 rounded px-2 text-[11px] whitespace-nowrap shrink-0 cursor-pointer transition-colors ${
                     active
                       ? 'bg-primary font-semibold text-primary-foreground'
                       : 'font-medium text-muted-foreground hover:text-foreground'
@@ -1388,20 +1388,20 @@ export const McpStudioView: React.FC<McpStudioViewProps> = ({
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-1.5 shrink-0">
+        <div className="flex flex-wrap items-center gap-1 shrink-0">
           <span
             data-testid="mcp-synthetics-plane-badge"
-            className="inline-flex h-6.5 items-center gap-1.5 rounded border border-emerald-500/30 bg-emerald-500/10 px-2 font-mono text-[10px] font-semibold text-emerald-700 dark:text-emerald-300"
+            className="inline-flex h-6 items-center gap-1 rounded border border-emerald-500/30 bg-emerald-500/10 px-1.5 font-mono text-[10px] font-semibold text-emerald-700 dark:text-emerald-300"
             title="Every MCP and UI test run dispatches through AWS CloudWatch Synthetics Canaries (syn-nodejs-puppeteer-9.1)"
           >
-            <span>AWS CloudWatch Synthetics</span>
+            <span>AWS Synthetics</span>
             <span className="text-muted-foreground">·</span>
             <span>ak-{activeAppId || 'www'}-prod-stg ↔ ak-{activeAppId || 'www'}-prod-prd</span>
           </span>
           {handshakeStatus.checked && (
             <span
               data-testid="mcp-handshake-status"
-              className={`font-mono text-[11px] font-medium tabular-nums mr-1 ${
+              className={`font-mono text-[10px] font-medium tabular-nums mr-1 ${
                 handshakeStatus.ok
                   ? 'text-emerald-700 dark:text-emerald-400'
                   : 'text-rose-700 dark:text-rose-400'
@@ -1418,21 +1418,21 @@ export const McpStudioView: React.FC<McpStudioViewProps> = ({
             onClick={handleRunHandshake}
             disabled={isHandshaking}
             data-testid="mcp-handshake-btn"
-            className="inline-flex h-7.5 items-center gap-1.5 rounded-md border border-border bg-background px-2.5 text-xs font-medium text-foreground hover:bg-muted disabled:opacity-60 whitespace-nowrap cursor-pointer"
+            className="inline-flex h-6.5 items-center gap-1 rounded border border-border bg-background px-2 text-[11px] font-medium text-foreground hover:bg-muted disabled:opacity-60 whitespace-nowrap cursor-pointer"
           >
             {isHandshaking ? (
-              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              <Loader2 className="h-3 w-3 animate-spin" />
             ) : (
-              <RefreshCw className="h-3.5 w-3.5 text-muted-foreground" />
+              <RefreshCw className="h-3 w-3 text-muted-foreground" />
             )}
-            <span>Ping / Initialize</span>
+            <span>Ping</span>
           </button>
 
           <button
             type="button"
             onClick={onOpenWorkbench}
             data-testid="mcp-open-workbench"
-            className="inline-flex h-7.5 items-center gap-1.5 rounded-md border border-border bg-background px-2.5 text-xs font-medium text-foreground hover:bg-muted whitespace-nowrap cursor-pointer"
+            className="inline-flex h-6.5 items-center gap-1 rounded border border-border bg-background px-2 text-[11px] font-medium text-foreground hover:bg-muted whitespace-nowrap cursor-pointer"
           >
             <span>Open Compare</span>
             <ArrowRight className="h-3.5 w-3.5 text-muted-foreground" />

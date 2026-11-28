@@ -6,7 +6,7 @@
       "suiteHash": "928981e1",
       "syncStatus": "AWS_SPEC_STAGED",
       "runtimeState": "RUNNING",
-      "lastSyncedAt": "2026-11-27T04:32:20.977Z",
+      "lastSyncedAt": "2026-11-28T03:04:41.075Z",
       "lastAwsMessage": "AWS credentials not configured; orchestrated via Control Plane Synthetics bridge"
     },
     "ak-www-prod-stg": {
@@ -14,8 +14,8 @@
       "targetId": "www.prod.staging",
       "suiteHash": "928981e1",
       "syncStatus": "AWS_SPEC_STAGED",
-      "runtimeState": "READY",
-      "lastSyncedAt": "2026-11-27T11:43:06.681Z",
+      "runtimeState": "RUNNING",
+      "lastSyncedAt": "2026-11-28T03:04:41.075Z",
       "lastAwsMessage": "AWS credentials not configured; orchestrated via Control Plane Synthetics bridge"
     },
     "ak-www-uat-prd": {
@@ -268,114 +268,6 @@
       "syncStatus": "AWS_SPEC_STAGED",
       "runtimeState": "READY",
       "lastSyncedAt": "2026-11-26T04:47:51.533Z",
-      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
-    },
-    "ak-apac-prod-prd": {
-      "canaryName": "ak-apac-prod-prd",
-      "targetId": "apac.prod.prod",
-      "suiteHash": "de9ea342",
-      "syncStatus": "AWS_SPEC_STAGED",
-      "runtimeState": "READY",
-      "lastSyncedAt": "2026-11-26T04:47:51.533Z",
-      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
-    },
-    "ak-apac-prod-stg": {
-      "canaryName": "ak-apac-prod-stg",
-      "targetId": "apac.prod.staging",
-      "suiteHash": "de9ea342",
-      "syncStatus": "AWS_SPEC_STAGED",
-      "runtimeState": "READY",
-      "lastSyncedAt": "2026-11-26T04:47:51.534Z",
-      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
-    },
-    "ak-emea-prod-prd": {
-      "canaryName": "ak-emea-prod-prd",
-      "targetId": "emea.prod.prod",
-      "suiteHash": "82416bf7",
-      "syncStatus": "AWS_SPEC_STAGED",
-      "runtimeState": "READY",
-      "lastSyncedAt": "2026-11-26T04:47:51.534Z",
-      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
-    },
-    "ak-emea-prod-stg": {
-      "canaryName": "ak-emea-prod-stg",
-      "targetId": "emea.prod.staging",
-      "suiteHash": "82416bf7",
-      "syncStatus": "AWS_SPEC_STAGED",
-      "runtimeState": "READY",
-      "lastSyncedAt": "2026-11-26T04:47:51.534Z",
-      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
-    },
-    "ak-americas-prod-prd": {
-      "canaryName": "ak-americas-prod-prd",
-      "targetId": "americas.prod.prod",
-      "suiteHash": "0614a079",
-      "syncStatus": "AWS_SPEC_STAGED",
-      "runtimeState": "READY",
-      "lastSyncedAt": "2026-11-26T04:47:51.535Z",
-      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
-    },
-    "ak-americas-prod-stg": {
-      "canaryName": "ak-americas-prod-stg",
-      "targetId": "americas.prod.staging",
-      "suiteHash": "0614a079",
-      "syncStatus": "AWS_SPEC_STAGED",
-      "runtimeState": "READY",
-      "lastSyncedAt": "2026-11-26T04:47:51.535Z",
-      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
-    },
-    "ak-japan-prod-prd": {
-      "canaryName": "ak-japan-prod-prd",
-      "targetId": "japan.prod.prod",
-      "suiteHash": "8d8563f5",
-      "syncStatus": "AWS_SPEC_STAGED",
-      "runtimeState": "READY",
-      "lastSyncedAt": "2026-11-26T04:47:51.535Z",
-      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
-    },
-    "ak-japan-prod-stg": {
-      "canaryName": "ak-japan-prod-stg",
-      "targetId": "japan.prod.staging",
-      "suiteHash": "8d8563f5",
-      "syncStatus": "AWS_SPEC_STAGED",
-      "runtimeState": "READY",
-      "lastSyncedAt": "2026-11-26T04:47:51.536Z",
-      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
-    },
-    "ak-uk-prod-prd": {
-      "canaryName": "ak-uk-prod-prd",
-      "targetId": "uk.prod.prod",
-      "suiteHash": "6defd271",
-      "syncStatus": "AWS_SPEC_STAGED",
-      "runtimeState": "READY",
-      "lastSyncedAt": "2026-11-26T04:47:51.536Z",
-      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
-    },
-    "ak-uk-prod-stg": {
-      "canaryName": "ak-uk-prod-stg",
-      "targetId": "uk.prod.staging",
-      "suiteHash": "6defd271",
-      "syncStatus": "AWS_SPEC_STAGED",
-      "runtimeState": "READY",
-      "lastSyncedAt": "2026-11-26T04:47:51.536Z",
-      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
-    },
-    "ak-germany-prod-prd": {
-      "canaryName": "ak-germany-prod-prd",
-      "targetId": "germany.prod.prod",
-      "suiteHash": "01c04aa2",
-      "syncStatus": "AWS_SPEC_STAGED",
-      "runtimeState": "READY",
-      "lastSyncedAt": "2026-11-26T04:47:51.537Z",
-      "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
-    },
-    "ak-germany-prod-stg": {
-      "canaryName": "ak-germany-prod-stg",
-      "targetId": "germany.prod.staging",
-      "suiteHash": "01c04aa2",
-      "syncStatus": "AWS_SPEC_STAGED",
-      "runtimeState": "READY",
-      "lastSyncedAt": "2026-11-26T04:47:51.537Z",
       "lastAwsMessage": "AWS Canary specification compiled & staged (configure live AWS credentials in .env or IAM role to push)"
     }
   },
@@ -701,5 +593,5 @@
       ]
     }
   ],
-  "updatedAt": "2026-11-27T11:43:06.681Z"
+  "updatedAt": "2026-11-28T09:51:57.299Z"
 }

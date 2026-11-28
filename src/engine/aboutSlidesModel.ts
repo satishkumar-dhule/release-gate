@@ -2,6 +2,14 @@ import { InspectorDimensionTab, WorkbenchViewMode } from './workbenchModel';
 
 export type SlideCategory = 'all' | 'journey' | 'architecture' | 'features';
 
+export type SlideSimulatorType =
+  | 'edge-pop-router'
+  | 'journey-timeline'
+  | 'hostmap-normalizer'
+  | 'cost-gate-sandbox'
+  | 'single-run-stream'
+  | 'mcp-rpc-console';
+
 export interface SlideInteractiveCta {
   label: string;
   targetView: WorkbenchViewMode;
@@ -26,6 +34,31 @@ export interface SlideHighlightCard {
   codeOrFormula?: string;
 }
 
+export interface SlideQuantMetric {
+  value: string;
+  label: string;
+  context: string;
+}
+
+export interface VideoChapterMarker {
+  timestampSec: number;
+  timeLabel: string;
+  title: string;
+  detail: string;
+}
+
+export interface AppWalkthroughVideo {
+  id: string;
+  number: string;
+  title: string;
+  subtitle: string;
+  durationLabel: string;
+  src: string;
+  relatedSlideId: string;
+  chapters: VideoChapterMarker[];
+  primaryCta: SlideInteractiveCta;
+}
+
 export interface AboutSlideDefinition {
   id: string;
   number: string;
@@ -36,11 +69,124 @@ export interface AboutSlideDefinition {
   executiveSummary: string;
   keyTakeaway: string;
   diagramTitle: string;
+  simulatorType: SlideSimulatorType;
+  videoId: string;
+  metrics: SlideQuantMetric[];
   diagramSteps: SlideDiagramStep[];
   highlights: SlideHighlightCard[];
   primaryCta: SlideInteractiveCta;
   secondaryCta?: SlideInteractiveCta;
 }
+
+export const APP_WALKTHROUGH_VIDEOS: AppWalkthroughVideo[] = [
+  {
+    id: 'video-fleet-canary-pop',
+    number: '01',
+    title: 'Global Fleet & PoP-Targeted Canary Execution',
+    subtitle:
+      'Watch how an operator selects a specific global Edge PoP (NRT — Tokyo), opens the AWS CloudWatch Synthetics Canary Drawer, and streams a live multi-check probe.',
+    durationLabel: '0:06 HD Walkthrough',
+    src: '/assets/videos/walkthrough-1-fleet-canary-pop.webm',
+    relatedSlideId: 'slide-overview',
+    chapters: [
+      {
+        timestampSec: 0,
+        timeLabel: '0:00',
+        title: 'Select Global Edge PoP (NRT · Tokyo)',
+        detail: 'Overrides the property default PoP to route canary checks through Tokyo Edge IP 23.54.18.92.',
+      },
+      {
+        timestampSec: 1.5,
+        timeLabel: '0:02',
+        title: 'Inspect Canary Deep-Dive Drawer',
+        detail: 'Opens ak-americas-prod-stg with 12 synthetic checks, historical runs, and AWS CLI reproduction.',
+      },
+      {
+        timestampSec: 3.0,
+        timeLabel: '0:03',
+        title: 'Trigger Live Canary Probe & Telemetry Stream',
+        detail: 'Executes live HTTP flow, 1280×760 DOM capture, and 3-Dim gate evaluation with real-time progress.',
+      },
+    ],
+    primaryCta: {
+      label: 'Launch 1. Sites & Canaries Live',
+      targetView: 'synthetics',
+      description: 'Open the fleet table and trigger a PoP-targeted canary run',
+    },
+  },
+  {
+    id: 'video-compare-visual-gate',
+    number: '02',
+    title: '2-Environment Diff Gate & Visual Bounding-Box Waiver',
+    subtitle:
+      'See how Candidate (Env A) vs Baseline (Env B) diffs are inspected across Side-by-Side, Wipe Slider, and RGBA Pixel Heatmap modes—with 1-click region acceptance.',
+    durationLabel: '0:07 HD Walkthrough',
+    src: '/assets/videos/walkthrough-2-compare-visual-gate.webm',
+    relatedSlideId: 'slide-3dim-gate-engine',
+    chapters: [
+      {
+        timestampSec: 0,
+        timeLabel: '0:00',
+        title: 'Open 2. Compare Release Gate Workbench',
+        detail: 'Displays side-by-side HTTP headers, Set-Cookie parity, and visual drift percentages.',
+      },
+      {
+        timestampSec: 1.5,
+        timeLabel: '0:02',
+        title: 'Pin & Accept Visual Diff Region',
+        detail: 'Clicks a bounding box to pin its inspection card and accepts the region via the persistent Diff Regions bar.',
+      },
+      {
+        timestampSec: 3.5,
+        timeLabel: '0:04',
+        title: 'Wipe Slider & RGBA Pixel Heatmap Modes',
+        detail: 'Interactive 50/50 split wipe comparison and zone-grounded RGBA diff heatmap overlay.',
+      },
+    ],
+    primaryCta: {
+      label: 'Open 2. Compare Visual Gate Live',
+      targetView: 'workbench',
+      compareMode: 'compare',
+      inspectorTab: 'image',
+      description: 'Jump directly to the Visual Diff inspector in 2. Compare',
+    },
+  },
+  {
+    id: 'video-single-run-and-mcp',
+    number: '03',
+    title: 'Full Single-Run Inspector & Headless MCP JSON-RPC Studio',
+    subtitle:
+      'Explore dedicated Single Run inspection (all captured headers, cookies, 1280×760 DOM snapshot, and multi-hop waterfall) plus live MCP JSON-RPC 2.0 agent calls.',
+    durationLabel: '0:06 HD Walkthrough',
+    src: '/assets/videos/walkthrough-3-single-run-and-mcp.webm',
+    relatedSlideId: 'slide-automation-mcp-iac',
+    chapters: [
+      {
+        timestampSec: 0,
+        timeLabel: '0:00',
+        title: 'Switch to Dedicated Single Run View',
+        detail: 'Inspects 100% of captured headers, cookies, SLA assertions, and 1280×760 DOM capture for one target.',
+      },
+      {
+        timestampSec: 1.6,
+        timeLabel: '0:02',
+        title: 'Multi-Hop HTTP Redirect & Timing Waterfall',
+        detail: 'Traces DNS, TCP, TLS, TTFB, and content transfer timings per hop with zero-secret curl --resolve.',
+      },
+      {
+        timestampSec: 3.2,
+        timeLabel: '0:04',
+        title: '4. Automate · Live MCP JSON-RPC 2.0 Handshake',
+        detail: 'Pings /api/v1/mcp/rpc and executes headless synthetic gate tools for Cursor, Claude, and CI/CD.',
+      },
+    ],
+    primaryCta: {
+      label: 'Open 4. Automate (MCP Studio) Live',
+      targetView: 'studio',
+      description: 'Execute live JSON-RPC 2.0 calls against the built-in MCP server',
+    },
+  },
+];
 
 export const ABOUT_SLIDES: AboutSlideDefinition[] = [
   {
@@ -56,6 +202,25 @@ export const ABOUT_SLIDES: AboutSlideDefinition[] = [
     keyTakeaway:
       'Replace manual curl scripts and eyeball screenshot checks with an automated, evidence-backed release decision across every site.',
     diagramTitle: 'End-to-End Release Gate Pipeline',
+    simulatorType: 'edge-pop-router',
+    videoId: 'video-fleet-canary-pop',
+    metrics: [
+      {
+        value: '14 Sites · 352 Checks',
+        label: 'Global Fleet Coverage',
+        context: 'Scales up to 50 properties × 64 checks per suite',
+      },
+      {
+        value: '9 Global Edge PoPs',
+        label: 'Geo-Targeted Routing',
+        context: 'AMER, EMEA, and APAC Akamai & CloudFront edges',
+      },
+      {
+        value: '0.1% Pixel Gate',
+        label: '$0 Zero-Token Short-Circuit',
+        context: 'Identical DOM captures bypass LLM calls at $0 cost',
+      },
+    ],
     diagramSteps: [
       {
         stepNumber: '01',
@@ -88,19 +253,19 @@ export const ABOUT_SLIDES: AboutSlideDefinition[] = [
     ],
     highlights: [
       {
-        kicker: 'Problem Solved',
+        kicker: '01 · Problem Solved',
         title: 'Catch Edge Drift Before Production Traffic Hits It',
         body: 'Traditional synthetic monitors only check if a single URL returns HTTP 200. Synthetic Release Gate compares Candidate vs Baseline (or inspects a Single Run) across edge headers, cookies, redirects, and rendered 1280×760 DOM layouts.',
         codeOrFormula: 'Verdict = f(HTTP Status, Header Parity, Set-Cookie Parity, Visual Layout)',
       },
       {
-        kicker: 'Real-Time Visibility',
+        kicker: '02 · Real-Time Visibility',
         title: 'Always Know Where & How Every Check Runs',
         body: 'Every canary or environment test streams live step-by-step progress (1/3 HTTP Probe → 2/3 DOM Capture → 3/3 Gate Evaluation) while showing the exact Canary name, Target environment, Edge IP, and PoP location.',
         codeOrFormula: 'Where: ak-www-prod-stg · Edge 23.54.18.92 (NRT · Tokyo, JP)',
       },
       {
-        kicker: 'Zero-Secret Safety',
+        kicker: '03 · Zero-Secret Safety',
         title: 'Reproduce Any Check Locally in One Second',
         body: 'Every check automatically generates a copy-ready curl --resolve command that pins the exact Akamai or CloudFront Edge IP while stripping Authorization, Cookie, and x-api-key secrets.',
         codeOrFormula: 'curl -sS -D - -o /dev/null --resolve www.salesforce.com:443:23.48.201.18',
@@ -131,6 +296,25 @@ export const ABOUT_SLIDES: AboutSlideDefinition[] = [
     keyTakeaway:
       'You can inspect a single environment run in isolation (Single Run View) or diff any two environments side-by-side (Compare 2 Envs).',
     diagramTitle: 'Operator Workflow: From Canary Trigger to Release Sign-Off',
+    simulatorType: 'journey-timeline',
+    videoId: 'video-fleet-canary-pop',
+    metrics: [
+      {
+        value: '3 Clicks',
+        label: 'Canary Trigger to Evidence',
+        context: 'Pick PoP → Run Canary → Inspect Single Run or Diff',
+      },
+      {
+        value: '2 Modes',
+        label: 'Single Run & Compare 2 Envs',
+        context: 'Switch freely in the top bar without re-running probes',
+      },
+      {
+        value: '1-Click Waivers',
+        label: 'Instant Verdict Recalculation',
+        context: 'Accept expected header, cookie, or visual region diffs',
+      },
+    ],
     diagramSteps: [
       {
         stepNumber: 'Step 1',
@@ -209,6 +393,25 @@ export const ABOUT_SLIDES: AboutSlideDefinition[] = [
     keyTakeaway:
       'Cross-domain redirects (e.g. www-uat1.salesforce.com → www.salesforce.com) are automatically normalized via hostMap so expected hostname differences never trigger false NO-GO alerts.',
     diagramTitle: 'Internal Request Resolution & Host Normalization Flow',
+    simulatorType: 'hostmap-normalizer',
+    videoId: 'video-fleet-canary-pop',
+    metrics: [
+      {
+        value: '4 Topologies',
+        label: 'Self-Contained Env Profiles',
+        context: 'Akamai Edge IP, CloudFront CD Header, Separate UAT URL, Origin',
+      },
+      {
+        value: '100% hostMap',
+        label: 'Redirect Hostname Parity',
+        context: 'Rewrites UAT/Stage 301/302 Location headers before diffing',
+      },
+      {
+        value: '0 Secrets Leaked',
+        label: 'Sanitized Reproduction',
+        context: 'Strips Authorization, Cookie, and x-api-key from curl output',
+      },
+    ],
     diagramSteps: [
       {
         stepNumber: '1. Input',
@@ -286,6 +489,25 @@ export const ABOUT_SLIDES: AboutSlideDefinition[] = [
     keyTakeaway:
       'Identical screenshots (< 0.1% RGBA pixel delta) short-circuit locally at $0 AI cost and 0 tokens. Only novel visual diffs invoke Bedrock Nova Lite.',
     diagramTitle: '3-Tier Zero-Token Visual AI & Gate Verdict Architecture',
+    simulatorType: 'cost-gate-sandbox',
+    videoId: 'video-compare-visual-gate',
+    metrics: [
+      {
+        value: '< 0.1% Delta',
+        label: 'Tier 1 Local RGBA Math',
+        context: '$0 cost · 0 LLM tokens · < 4ms execution',
+      },
+      {
+        value: 'SHA-256 Cache',
+        label: 'Tier 2 Verdict Dedup',
+        context: 'Reuses prior AI opinions on recurring diff signatures at 0 tokens',
+      },
+      {
+        value: 'Nova Lite v1:0',
+        label: 'Tier 3 Multimodal Judge',
+        context: 'Invoked strictly on novel visual diffs ≥ 0.1% pixel delta',
+      },
+    ],
     diagramSteps: [
       {
         stepNumber: 'Dim 1',
@@ -331,8 +553,8 @@ export const ABOUT_SLIDES: AboutSlideDefinition[] = [
       },
       {
         kicker: 'Dimension 3 · Visual Diff Canvas',
-        title: 'Direct Bounding-Box Hover & 1-Click Accept',
-        body: 'Visual regressions are highlighted directly on the 1280×760 screenshots. Hover any highlighted bounding box to read the structural diff explanation and click Accept Region to baseline it.',
+        title: 'Pin-to-Inspect & 1-Click Region Accept',
+        body: 'Visual regressions are highlighted directly on the 1280×760 screenshots. Click any diff region chip in the toolbar, click the corner badge, or click a box to pin its popup and accept it.',
         codeOrFormula: 'Pixel Delta < 0.1% -> $0 Cost Gate | Delta >= 0.1% -> Zone Grounded Diff',
       },
     ],
@@ -363,6 +585,25 @@ export const ABOUT_SLIDES: AboutSlideDefinition[] = [
     keyTakeaway:
       'Toggle between "Compare 2 Envs" and "Single Run" at any time using the top-left mode switcher in Screen 2, or click "Single Run" directly on any site or canary in Screen 1.',
     diagramTitle: 'Real-Time Execution Stream & Single Run Inspection',
+    simulatorType: 'single-run-stream',
+    videoId: 'video-single-run-and-mcp',
+    metrics: [
+      {
+        value: '3 Live Phases',
+        label: 'Synchronous Run Stream',
+        context: '1/3 HTTP Flow Probe → 2/3 1280×760 DOM Capture → 3/3 Gate Verdict',
+      },
+      {
+        value: '39+ Headers',
+        label: 'Full Single-Run Telemetry',
+        context: 'Inspect all captured headers, 13+ cookies, and SLA assertions',
+      },
+      {
+        value: '1280×760 JPEG',
+        label: 'Unmodified DOM Snapshot',
+        context: 'Real Chromium capture stored in S3 & served via CloudFront',
+      },
+    ],
     diagramSteps: [
       {
         stepNumber: 'Phase 1',
@@ -439,6 +680,25 @@ export const ABOUT_SLIDES: AboutSlideDefinition[] = [
     keyTakeaway:
       'Screen 4 (Automate) provides a live interactive MCP & REST API playground where you can execute real JSON-RPC calls and copy production Terraform stacks.',
     diagramTitle: 'Headless CI/CD & AI Agent Integration Stack',
+    simulatorType: 'mcp-rpc-console',
+    videoId: 'video-single-run-and-mcp',
+    metrics: [
+      {
+        value: '20 MCP Tools',
+        label: 'JSON-RPC 2.0 Server',
+        context: '/api/v1/mcp/rpc with 11 resources & 6 SRE prompts',
+      },
+      {
+        value: 'OpenAPI 3.1.0',
+        label: '12+ REST Endpoints',
+        context: 'Full CI/CD webhook, fan-out batch, and canary control plane',
+      },
+      {
+        value: '100% Terraform',
+        label: 'Clone-and-Apply HCL',
+        context: 'S3, SSM, DynamoDB, CloudFront, Synthetics & Bedrock IAM',
+      },
+    ],
     diagramSteps: [
       {
         stepNumber: 'Layer 1',
@@ -502,6 +762,15 @@ export const ABOUT_SLIDES: AboutSlideDefinition[] = [
     },
   },
 ];
+
+export function getWalkthroughVideoForSlide(
+  slide: AboutSlideDefinition
+): AppWalkthroughVideo {
+  return (
+    APP_WALKTHROUGH_VIDEOS.find((v) => v.id === slide.videoId) ||
+    APP_WALKTHROUGH_VIDEOS[0]
+  );
+}
 
 export function filterAboutSlides(
   slides: AboutSlideDefinition[],
